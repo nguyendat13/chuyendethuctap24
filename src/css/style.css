@@ -4,6 +4,58 @@
 * Author URI: https://untree.co/
 * License: https://creativecommons.org/licenses/by/3.0/
 */
+/* CSS Chức năng admin*/
+
+.insert{
+  float:left;
+  position: relative;
+  left:100px;
+}
+.card-header .row2{
+  position: relative;
+  left:290px;
+}
+.insert .btn{
+  background-color: #4168d1;
+}
+.insert .btn:hover{
+  background-color:#0441eb;
+}
+.trash .btn{
+  background-color: #ca4752;
+  
+}
+.trash .btn:hover{
+  background-color: #e90b1d;
+}
+.status .status-on{
+  background-color:#4aa85e;
+}
+.status .status-on:hover{
+  background-color:#159931;
+}
+.status .status-off{
+  background-color:#ca4752;
+}
+.status .status-off:hover{
+  background-color:#e90b1d;
+}
+.eye .btn{
+  background-color: #4168d1;
+}
+.eye .btn:hover{
+  background-color:#0441eb;
+}
+.regedit .btn{
+  background-color: #f8b810;
+}
+.functional .row{
+  position: relative;
+  top:20px;
+  left:60px;
+  height:100px;
+}
+/* CSS Chức năng admin*/
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 body {

@@ -1,10 +1,10 @@
-import AboutUs from "../pages/AboutUs";
-import Blog from "../pages/Blog";
-import Cart from "../pages/Cart";
-import Contact from "../pages/Contact";
-import Home from "../pages/index";
-import Services from "../pages/Services";
-import Shop from "../pages/Shop"; 
+import AboutUs from '../pages/frontend/AboutUs';
+import Blog from '../pages/frontend/Blog';
+import Cart from '../pages/frontend/Cart';
+import Contact from '../pages/frontend/Contact';
+import Home from '../pages/frontend/index'
+import Services from '../pages/frontend/Services';
+import Shop from '../pages/frontend/Shop';
 const RouterSite =[
     {
         path:'/',
