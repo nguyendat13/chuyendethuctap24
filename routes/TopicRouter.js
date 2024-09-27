@@ -4,6 +4,6 @@ const TopicController = require('../controllers/TopicController')
 
 router.get('/getAll',TopicController.getAll)
 router.delete(`/delete/:id`,TopicController.delete)
-router.post(`/store`, TopicController.store);
+router.post(`/store`,TopicController.store)
 
 module.exports=router

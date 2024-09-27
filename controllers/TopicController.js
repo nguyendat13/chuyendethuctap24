@@ -22,32 +22,34 @@ const TopicController={
         })
     },
     store: async (req, res) => {
-        const formBody = req.body;
-        let image = req.files.image;
-            image.mv("./assets/images/topics/" + image.name, function (error) {
-              if (error) throw error;
-            });
-        let d = new Date();
-        //Lấy dũ liệu form
-        const topic = {
-          name: formBody.name,
-          image:image.name,
-          sort_order: formBody.sort_order,
-          description: formBody.description,
-          status: formBody.status,
-          created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
-          created_by: 1,
+      const formBody = req.body;
+      let image = req.files.image;
+      image.mv("./assets/images/topics/" + image.name, function (err, data) {
+        if (err) throw err;
+      });
+      let d = new Date();
+      //Lấy dũ liệu form
+      const topic = {
+        name: formBody.name,
+        slug: formBody.slug,
+        sort_order: 0,
+        image: image.name,
+        description: formBody.description,
+        status: formBody.status,
+        created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} 
+        ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+        created_by: 1,
+      };
+       Topic.store(topic, function (data) {
+        //data thứ mà nó trả về
+        const result = {
+          topic: topic,
+          status: true,
+          message: "Thêm dữ liệu thành công!",
         };
-        Topic.store(topic, function (data) {
-          const result = {
-            topic: topic,
-            status: true,
-            message: "Thêm dữ liệu thành công!",
-          };
-          return res.status(200).json(result);
-        });
-     
-      },
+        return res.status(200).json(result);
+      });
+  },
 }
 
 module.exports=TopicController

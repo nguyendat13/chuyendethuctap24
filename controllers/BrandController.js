@@ -33,23 +33,25 @@ const BrandController ={
     },
     store: async (req, res) => {
         const formBody = req.body;
-            let image = req.files.image;
-            image.mv("./assets/images/brands/" + image.name, function (err) {
-              if (err) throw err;
-            });
+        let image = req.files.image;
+        image.mv("./assets/images/brands/" + image.name, function (err, data) {
+          if (err) throw err;
+        });
         let d = new Date();
         //Lấy dũ liệu form
         const brand = {
+            image: image.name,
           name: formBody.name,
-          image:image.name,
-          slug:formBody.slug,
+          slug: formBody.slug,
+          sort_order: 0,
           description: formBody.description,
-          sort_order:0,
           status: formBody.status,
-          created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+          created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} 
+          ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
           created_by: 1,
         };
-        Brand.store(brand, function (data) {
+         Brand.store(brand, function (data) {
+          //data thứ mà nó trả về
           const result = {
             brand: brand,
             status: true,
@@ -57,7 +59,7 @@ const BrandController ={
           };
           return res.status(200).json(result);
         });
-      },
+    },
 }
 
 module.exports=BrandController

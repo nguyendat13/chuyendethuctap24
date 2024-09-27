@@ -19,15 +19,15 @@ const Brand ={
         })
     },
     store: (brand, mycallback) => {
-        var sql = "INSERT INTO db_brand SET ?";
-        db.query(sql, brand, function (err, data) {
-          if (err) {
-            mycallback(err);
-          } else {
-            mycallback(data);
-          }
-        });
-      },
+      var sql = "INSERT INTO db_brand SET ?";
+      db.query(sql, brand, function (err, data) {
+        if (err) {
+          mycallback(err);
+        } else {
+          mycallback(data);
+        }
+      });
+    },
 }
 
 module.exports=Brand

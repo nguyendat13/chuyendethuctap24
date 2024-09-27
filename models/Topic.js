@@ -14,12 +14,15 @@ const Topic={
             else{mycallback(`xoa thanh cong ${id}`)}
         })
     },
-    store:(topic,mycallback)=>{
-        const sql=`INSERT INTO db_topic SET ?`
-        db.query(sql,topic,function(err,data){
-            if(err){mycallback(null)}
-            else{mycallback(data)}
-        })
-    }
+    store: (topic, mycallback) => {
+        var sql = "INSERT INTO db_topic SET ?";
+        db.query(sql, topic, function (err, data) {
+          if (err) {
+            mycallback(err);
+          } else {
+            mycallback(data);
+          }
+        });
+      },
 }
 module.exports=Topic
