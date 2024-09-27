@@ -5,8 +5,9 @@ import { urlImage } from '../../../config'
 import {FaToggleOff, FaEye, FaRegEdit, FaTrash, FaToggleOn } from 'react-icons/fa'
 const BrandList = () => {
     const {id}=useParams()
-    const [brands,setBrands]=useState()
-    const[isload,setIsload]=useState()
+    const [brands,setBrands]=useState("")
+    const[isload,setIsload]=useState("")
+  
     useEffect(()=>{
         (async()=>{
             const result = await BrandService.getAll()
@@ -14,6 +15,7 @@ const BrandList = () => {
             console.log(result.brands)
     })()
     },[isload])
+   
     const handleDelete =async(id)=>{
         const result=await BrandService.delete(id)
         if(result.status === true){
@@ -62,40 +64,7 @@ const BrandList = () => {
                     </div>
                     <div className="card-body">
                         <div className="row">
-                            {/* <div className="col-md-3">
-                                <form action="#" method="post" enctype="multipart/form-data">
-                                    <div className="mb-3">
-                                        <label for="name">Tên thương hiệu</label>
-                                        <input type="text" value="" name="name" id="name" className="form-control"/>
-
-                                    </div>
-                                    <div className="mb-3">
-                                        <label for="description">Mô tả</label>
-                                        <textarea name="description" id="description" className="form-control"></textarea>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label for="sort_order">Sắp xếp</label>
-                                        <select name="sort_order" id="sort_order" className="form-control">
-                                            <option value="0">None</option>
-
-                                        </select>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label for="image">Hình</label>
-                                        <input type="file" name="image" id="image" className="form-control"/>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label for="status">Trạng thái</label>
-                                        <select name="status" id="status" className="form-control">
-                                            <option value="2">Chưa xuất bản</option>
-                                            <option value="1">Xuất bản</option>
-                                        </select>
-                                    </div>
-                                    <div className="mb-3">
-                                        <button type="submit" name="create" className="btn btn-success">Thêm thương hiệu</button>
-                                    </div>
-                                </form>
-                            </div> */}
+                      
                             <div className="col-md-12">
                                 <table className="table table-bordered table-striped table-hover">
                                     <thead>

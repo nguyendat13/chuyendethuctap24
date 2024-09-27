@@ -13,17 +13,16 @@ const TopicCreate = () => {
 //load du lieu len grid
 const handleSubmit = (e) => {
   e.preventDefault();
-
   const image = document.querySelector("#image");
   let topic= new FormData();
   topic.append("name",name);
-  topic.append("sort_order",sort_order);
   topic.append("description",description);
+  topic.append("sort_order",sort_order);
   topic.append("image", image.files.length === 0 ? "" : image.files[0]);
   topic.append("status",status);
   (async () => {
     const result = await TopicService.store(topic);
-    if (result.status === true) {
+    if (result.status == true) {
       setIsload(result.topic.isLoad);
       window.location.href = "/admin/topic";
     }
@@ -55,7 +54,7 @@ const handleSubmit = (e) => {
       </div>
       <div className="card-body">
         <div className="row">
-        <form onSubmit={handleSubmit}>
+        <form  onSubmit={handleSubmit}>
               <div className="mb-2">
                 <label htmlFor="name" className="d-inline-block mb-2">
                   Tên
@@ -68,23 +67,6 @@ const handleSubmit = (e) => {
                   className="form-control"
                 />
               </div>
-             
-              <div className="mb-3">
-                <label htmlFor="sort_order" className="d-inline-block mb-2">
-                  Sắp xếp
-                </label>
-                <select
-                  id="sort_order"
-                  value={sort_order}
-                  onChange={(e) => setSortOrder(e.target.value)}
-                  className="form-select"
-                >
-                    <option value="0">None</option>
-                  {topics && topics.length >0 && topics.map((topic,index)=>{
-                    return <option key={topic.id} value={topic.id}>{topic.position}</option>
-                  })}
-                </select>
-              </div>
               <div className="mb-2">
                 <label htmlFor="description" className="d-inline-block mb-2">
                   Mô tả
@@ -95,6 +77,21 @@ const handleSubmit = (e) => {
                   onChange={(e) => setDescription(e.target.value)}
                   className="form-control"
                 ></textarea>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="sort_order" className="d-inline-block mb-2">
+                  Sắp xếp
+                </label>
+                <select
+                  id="sort_order"
+                  value={sort_order}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  className="form-select"
+                >
+                    <option value="1">Chọn vị trí</option>
+                    <option value="2">0</option>
+
+                </select>
               </div>
               <div className="mb-3">
               <label htmlFor="image" className="d-inline-block mb-1">

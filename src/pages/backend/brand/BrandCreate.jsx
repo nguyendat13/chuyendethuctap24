@@ -21,14 +21,13 @@ const BrandCreate = () => {
       brand.append("sort_order",sort_order);
       brand.append("image", image.files.length === 0 ? "" : image.files[0]);
       brand.append("status",status);
-      try {
-        const result =  BrandService.store(formData);
+      (async () => {
+        const result = await BrandService.store(brand);
         if (result.status === true) {
+          setIsload(result.brand.isLoad);
           window.location.href = "/admin/brand";
         }
-      } catch (error) {
-        console.error(error);
-      }
+      })();
       };
      
   return (

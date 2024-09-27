@@ -65,7 +65,6 @@ const TopicList = () => {
                   <th>#</th>
                   <th>Hình ảnh</th>
                   <th>Tên chủ đề</th>
-                  <th>Slug</th>
                   <th>Mô tả</th>
                   <th>ID</th>
                   <th className=''>Chức năng</th>
@@ -82,14 +81,13 @@ const TopicList = () => {
                         </td>
                         <td>
                       <img
-                        src={urlImage + "sliders/" + topic.image}
+                        src={urlImage + "topics/" + topic.image}
                         alt={topic.image}
                         className="img-fluid d-block"
                         style={{ width: "100px" }}
                       />
                     </td>
                         <td>{topic.name}</td>
-                        <td>{topic.slug}</td>
                         <td>{topic.description}</td>
                         <td>{topic.id}</td>
 
