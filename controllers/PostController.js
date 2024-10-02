@@ -38,7 +38,7 @@ const PostController={
           created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
           created_by: 1,
         };
-        Post.store(post, function (data) {
+        await Post.store(post, function (data) {
           const result = {
             post: post,
             status: true,

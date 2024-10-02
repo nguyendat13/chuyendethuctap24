@@ -13,6 +13,16 @@ const User ={
             if(err){mycallback(null)}
             else{mycallback(`xoa thanh cong ${id}`)}
         })
-    }
+    },
+    store: (user, mycallback) => {
+        const sql = `INSERT INTO db_user SET ?`;
+        db.query(sql, user, function (err, data) {
+          if (err) {
+            mycallback(null);
+          } else {
+            mycallback(data);
+          }
+        });
+      },
 }
 module.exports=User

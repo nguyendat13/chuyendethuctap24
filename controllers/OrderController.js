@@ -34,12 +34,15 @@ const OrderController ={
           delivery_email: formBody.delivery_email,
           delivery_phone: formBody.delivery_phone,
           delivery_address: formBody.delivery_address,
-          note: formBody.note,          
+          delivery_gender:formBody.delivery_gender,
+          note: formBody.note,
+          type:formBody.type,         
           image:image.name, 
           status: formBody.status,
-          created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+          created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()}
+           ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
         };
-        Order.store(order, function (data) {
+        await Order.store(order, function (data) {
           const result = {
             order: order,
             status: true,

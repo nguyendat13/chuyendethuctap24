@@ -24,7 +24,7 @@ const TopicController={
     store: async (req, res) => {
       const formBody = req.body;
       let image = req.files.image;
-      image.mv("./assets/images/topics/" + image.name, function (err, data) {
+      image.mv("./assets/images/topics/" + image.name, function (err) {
         if (err) throw err;
       });
       let d = new Date();
@@ -33,14 +33,14 @@ const TopicController={
         name: formBody.name,
         slug: formBody.slug,
         sort_order: 0,
-        image: image.name,
+        image:formBody.image,
         description: formBody.description,
         status: formBody.status,
         created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} 
         ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
         created_by: 1,
       };
-       Topic.store(topic, function (data) {
+       await Topic.store(topic, function (data) {
         //data thứ mà nó trả về
         const result = {
           topic: topic,

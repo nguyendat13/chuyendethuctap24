@@ -21,7 +21,18 @@ const Product ={
             if(err){mycallback(null)}
             else{mycallback(data)}
         })
-    }
+    },
+    //trang nguoi dung
+    getList: async (limit, offset, mycallback) => {
+        const sql = `SELECT * FROM db_product WHERE status='1' ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
+        await db.query(sql, function (err, products) {
+          if (err) {
+            mycallback(null);
+          } else {
+            mycallback(products);
+          }
+        });
+      },
 }
 
 module.exports=Product

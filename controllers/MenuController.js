@@ -43,7 +43,7 @@ const MenuController ={
           created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
           created_by: 1,
         };
-        Menu.store(menu, function (data) {
+        await Menu.store(menu, function (data) {
           const result = {
             menu: menu,
             status: true,
@@ -53,6 +53,18 @@ const MenuController ={
         });
      
       },
+      
+  list: async (req, res) => {
+      const parentid = req.params.parentid;
+      const limit = req.params.limit;
+      await Menu.getList(parentid, limit, function (menu) {
+        const result={
+          menu:menu,
+          status:true,
+          message:"tai du liu thanh cong"
+        }
+        return res.status(200).json(result)
+       })
 }
-
+}
 module.exports=MenuController

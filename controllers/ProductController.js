@@ -32,7 +32,8 @@ const ProductController ={
         //Lấy dũ liệu form
         const product = {
           name: formBody.name,
-          image:image.name,
+          slug:formBody.slug,
+          image:formBody.image,
           category_id:formBody.category_id,
           brand_id:formBody.brand_id,
           detail:formBody.detail,
@@ -43,7 +44,7 @@ const ProductController ={
           created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
           created_by: 1,
         };
-        Product.store(product, function (data) {
+        await Product.store(product, function (data) {
           const result = {
             product: product,
             status: true,
@@ -52,6 +53,39 @@ const ProductController ={
           return res.status(200).json(result);
         });
      
+      },
+      list: async (req, res) => {
+        try {
+          const page = req.params.page;
+          const limit = req.params.limit;
+          //Xử lý page
+          const offset = (page - 1) * limit;
+          //
+          await Product.getList(limit, offset, function (products) {
+            if (products == null) {
+              const result = {
+                products: null,
+                status: false,
+                message: "Không tìm thấy thông tin!",
+              };
+              return res.status(200).json(result);
+            } else {
+              const result = {
+                products: products,
+                status: true,
+                message: "Tải dữ liệu thành công!",
+              };
+              return res.status(200).json(result);
+            }
+          });
+        } catch (error) {
+          const result = {
+            products: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
       },
 }
 module.exports=ProductController

@@ -29,7 +29,7 @@ const CategoryController={
             });
             let d = new Date();
         //object data to stores
-        const data = {
+        const category = {
             name: bodyData.name,
             slug: myslug(bodyData.name),
             description: bodyData.description,
@@ -40,7 +40,7 @@ const CategoryController={
             updated_by: 1,
             updated_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
             };
-            Category.edit(data, id, function (category) {
+            Category.edit(category, id, function (data) {
                 const result = {
                 category: category,
                 status: true,
@@ -124,6 +124,36 @@ const CategoryController={
             return res.status(200).json(result)
         }
     },
+    //trang nguoi dung
+    list: async (req, res) => {
+        try {
+          const parentid = req.params.parentid;
+          await Category.getList(parentid, function (categorys) {
+            if (categorys == null) {
+              const result = {
+                categorys: null,
+                status: false,
+                message: "Không tìm thấy thông tin!",
+              };
+              return res.status(200).json(result);
+            } else {
+              const result = {
+                categorys: categorys,
+                status: true,
+                message: "Tải dữ liệu thành công!",
+              };
+              return res.status(200).json(result);
+            }
+          });
+        } catch (error) {
+          const result = {
+            categorys: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
+      },
 }
 
     module.exports=CategoryController

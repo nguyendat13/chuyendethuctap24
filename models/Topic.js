@@ -18,7 +18,7 @@ const Topic={
         var sql = "INSERT INTO db_topic SET ?";
         db.query(sql, topic, function (err, data) {
           if (err) {
-            mycallback(err);
+            mycallback(null);
           } else {
             mycallback(data);
           }

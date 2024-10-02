@@ -11,9 +11,9 @@ const Category={
           }
         });
       },
-      edit:(data,id,mycallback)=>{
+      edit:(category,id,mycallback)=>{
         const sql=`UPDATE db_category SET ? WHERE id='${id}'`
-        db.query(sql,data,function(err,category){
+        db.query(sql,category,function(err,data){
           if(err){
             mycallback(err)
           }
@@ -43,7 +43,6 @@ const Category={
           }
         });
       },
-     
       delete:(id,mycallback)=>{
         const sql=`DELETE FROM db_category WHERE id='${id}'`
         db.query(sql,function(err,category){
@@ -54,6 +53,17 @@ const Category={
             mycallback(`Xoa thanh cong '${id}'`)
           }
         })
+      },
+      //trang nguoi dung
+      getList: (parentid, mycallback) => {
+        const sql = `SELECT * FROM db_category WHERE parent_id ='${parentid}' AND status='1'`;
+        db.query(sql, function (err, categorys) {
+          if (err) {
+            mycallback(null);
+          } else {
+            mycallback(categorys);
+          }
+        });
       },
     }
 module.exports=Category

@@ -50,7 +50,7 @@ const BrandController ={
           ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
           created_by: 1,
         };
-         Brand.store(brand, function (data) {
+         await Brand.store(brand, function (data) {
           //data thứ mà nó trả về
           const result = {
             brand: brand,
