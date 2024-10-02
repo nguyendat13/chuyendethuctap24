@@ -53,7 +53,7 @@ category.append("description",description);
 category.append("image", image.files.length === 0 ? "" : image.files[0]);
 category.append("status",status);
 ( async function (data,id){
-  const result= await CategoryService.edit(data,id);
+  const result= await CategoryService.edit(category,id);
   if (result.status === true) { 
     setIsload(result.category.isLoad);
     console.log(result.message);  

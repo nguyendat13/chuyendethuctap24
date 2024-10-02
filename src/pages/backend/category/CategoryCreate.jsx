@@ -30,7 +30,6 @@ const handleSubmit = (e) => {
   (async () => {
     const result = await CategoryService.store(category);
     if (result.status === true) {
-    
       setIsload(result.category.isLoad);
       window.location.href = "/admin/category";
     }

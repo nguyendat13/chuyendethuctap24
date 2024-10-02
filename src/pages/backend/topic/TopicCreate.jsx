@@ -98,7 +98,7 @@ const handleSubmit = (e) => {
                 Image
               </label>
               <input type="file" id="image" className="form-control" />
-            </div>
+              </div>
               <div className="mb-3">
                 <label htmlFor="status" className="d-inline-block mb-2">
                   Trạng thái

@@ -9,6 +9,9 @@ const MenuService ={
     store:async(menu) => {
         return await httpAxios.post("menu/store",menu);
       },
+    list: async (parentid, limit) => {
+        return await httpAxios.get(`menu/list/${parentid}/${limit}`);
+      },
 }
 
 export default MenuService

@@ -84,7 +84,7 @@ const OrderList = () => {
                         </td>
                         <td>
                       <img
-                        src={urlImage + "sliders/" + order.image}
+                        src={urlImage + "orders/" + order.image}
                         alt={order.image}
                         className="img-fluid d-block"
                         style={{ width: "100px" }}

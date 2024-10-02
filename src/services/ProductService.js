@@ -8,6 +8,9 @@ const ProductService={
     },
     store:async(product)=>{
         return await httpAxios.post(`product/store`,product)
-    }
+    },
+    list: async (page, limit) => {
+        return await httpAxios.get(`product/list/${page}/${limit}`);
+      },
 }
 export default ProductService

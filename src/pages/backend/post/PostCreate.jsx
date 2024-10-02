@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {useEffect, useState } from "react";
-import BannerService from "../../../services/BannerService";
+import PostService from "../../../services/PostService";
 import { urlImage } from "../../../config";
 const PostCreate = () => {
-    const [banners, setBanners] = useState("");
+    const [posts, setposts] = useState("");
     const [isLoad,setIsload]=useState(0);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -15,16 +15,16 @@ const PostCreate = () => {
     e.preventDefault();
   
     const image = document.querySelector("#image");
-    let banner= new FormData();
-    banner.append("title",title);
-    banner.append("description",description);
-    banner.append("type",type);
-    banner.append("image", image.files.length === 0 ? "" : image.files[0]);
-    banner.append("status",status);
+    let post= new FormData();
+    post.append("title",title);
+    post.append("description",description);
+    post.append("type",type);
+    post.append("image", image.files.length === 0 ? "" : image.files[0]);
+    post.append("status",status);
     (async () => {
-      const result = await BannerService.store(banner);
+      const result = await PostService.store(post);
       if (result.status === true) {
-        setIsload(result.banner.isLoad);
+        setIsload(result.post.isload);
         window.location.href = "/admin/post";
       }
     })();

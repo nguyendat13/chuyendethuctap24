@@ -26,9 +26,7 @@ const Services = () => {
 		
 
 		<div class="why-choose-section">
-			<div class="container">
-				
-				
+			<div class="container">	
 				<div class="row my-5">
 					<div class="col-6 col-md-6 col-lg-3 mb-4">
 						<div class="feature">

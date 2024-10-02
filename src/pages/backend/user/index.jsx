@@ -1,2 +1,3 @@
 import UserList from "./UserList";
-export{UserList}
+import UserCreate from "./UserCreate";
+export{UserList,UserCreate}

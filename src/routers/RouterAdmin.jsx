@@ -7,7 +7,7 @@ import { OrderCreate, OrderList } from "../pages/backend/order"
 import { PostCreate, PostList } from "../pages/backend/post"
 import { ProductCreate, ProductList } from "../pages/backend/product"
 import { TopicCreate, TopicList } from "../pages/backend/topic"
-import { UserList } from "../pages/backend/user"
+import { UserCreate, UserList } from "../pages/backend/user"
 
 const RouterAdmin =[
    
@@ -43,7 +43,9 @@ const RouterAdmin =[
     {path:"topic/create",element:<TopicCreate/>},
 
 
-    {path:"user",element:<UserList/>}
+    {path:"user",element:<UserList/>},
+    { path: "user/create", element: <UserCreate/> },
+
 ]
 
 export default RouterAdmin

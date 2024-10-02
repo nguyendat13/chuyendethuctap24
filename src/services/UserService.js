@@ -5,6 +5,9 @@ const UserService ={
     },
     delete:async(id)=>{
         return await httpAxios.delete(`user/delete/${id}`)
-    }
+    },
+    store: async (user) => {
+        return await httpAxios.post(`user/store`, user);
+      },
 }
 export default UserService

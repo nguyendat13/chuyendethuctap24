@@ -49,7 +49,7 @@ const ProductList = () => {
               Thêm product
             </Link></div>
          
-            <div className='trash col-md-4'><Link to="/admin/product/trash/" className="trash btn btn-sm btn-danger  bproduct-0">
+            <div className='trash col-md-4'><Link to="/admin/product/trash/" className="trash btn btn-sm btn-danger">
             <FaTrash/> Thùng rác
             </Link></div>
             
@@ -84,7 +84,7 @@ const ProductList = () => {
                         </td>
                         <td>
                       <img
-                        src={urlImage + "sliders/" + product.image}
+                        src={urlImage + "products/" + product.image}
                         alt={product.image}
                         className="img-fluid d-block"
                         style={{ width: "100px" }}

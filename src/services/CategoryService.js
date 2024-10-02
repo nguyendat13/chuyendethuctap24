@@ -4,8 +4,8 @@ const CategoryService ={
     getAll:async()=>{
         return await httpAxios.get("category/getAll")
     },
-    edit:async(data,id)=>{
-        return await httpAxios.put(`category/edit/'${id}'`,data)
+    edit:async(category,id)=>{
+        return await httpAxios.put(`category/edit/'${id}'`,category)
     },
     store: async (category) => {
         return await httpAxios.post("category/store",category);

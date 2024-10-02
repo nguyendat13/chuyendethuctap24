@@ -4,9 +4,7 @@ import EO from '../../assets/images/envelope-outline.svg'
 const Footer = () => {
   return (
         <footer class="footer-section">
-
             <div class="container relative">
-
                 <div class="sofa-img">
                     <img src={Sofa} alt="Image" class="img-fluid"/>
                 </div>
