@@ -1,10 +1,7 @@
 import React from "react";
-import Pro1 from "../../assets/images/product-1.png";
-import Pro2 from "../../assets/images/product-2.png";
-import Pro3 from "../../assets/images/product-3.png";
-import Cross from "../../assets/images/cross.svg";
 import Couch from "../../assets/images/couch.png";
 import Line from "../../layouts/Line";
+import IntroProduct from "./product/IntroProduct";
 const index = () => {
   return (
     <div>
@@ -44,41 +41,7 @@ const index = () => {
                 </a>
               </p>
             </div>
-
-            <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-              <a className="product-item" href="/cart">
-                <img src={Pro1} className="img-fluid product-thumbnail" />
-                <h3 className="product-title">Nordic Chair</h3>
-                <strong className="product-price">$50.00</strong>
-
-                <span className="icon-cross">
-                  <img src={Cross} className="img-fluid" />
-                </span>
-              </a>
-            </div>
-            <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-              <a className="product-item" href="/cart">
-                <img src={Pro1} className="img-fluid product-thumbnail" />
-                <h3 className="product-title">Nordic Chair</h3>
-                <strong className="product-price">$50.00</strong>
-
-                <span className="icon-cross">
-                  <img src={Cross} className="img-fluid" />
-                </span>
-              </a>
-            </div>
-
-            <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-              <a className="product-item" href="/cart">
-                <img src={Pro3} className="img-fluid product-thumbnail" />
-                <h3 className="product-title">Ergonomic Chair</h3>
-                <strong className="product-price">$43.00</strong>
-
-                <span className="icon-cross">
-                  <img src={Cross} className="img-fluid" />
-                </span>
-              </a>
-            </div>
+            <IntroProduct/>
           </div>
         </div>
       </div>

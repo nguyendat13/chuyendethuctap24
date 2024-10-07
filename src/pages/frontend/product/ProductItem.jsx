@@ -50,7 +50,7 @@ const ProductItem = (props) => {
     <div class="untree_co-section product-section before-footer-section">
     <div class="container">
       <div class="row">
-        <div class="col-mg-5 col-md-4 ">
+        <div class="">
           <Link class="product-item" to={"/shop/" + product.slug}>
             <img src={urlImage + "products/" + product.image}
             alt={product.image}
@@ -58,14 +58,14 @@ const ProductItem = (props) => {
             <h3 class="product-title">{product.name}</h3>
                 <div className="row">
             <div className="col">
-              <span className="card-text fs-5 text-primary">Thể Loại</span>
+              <span className="card-text fs-5 text-primary">Category</span>
 
               <p className="card-text fs-5 fw-light text-black">
                 {getCategoryName(product.category_id)}
               </p>
             </div>
             <div className="col">
-              <span className="card-text fs-5 text-primary">Xuất xứ</span>
+              <span className="card-text fs-5 text-primary">Brand</span>
               <p className="card-text fs-5 fw-light text-center text-black">
                 {getBrandName(product.brand_id)}
               </p>

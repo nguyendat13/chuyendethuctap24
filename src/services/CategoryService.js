@@ -16,6 +16,9 @@ const CategoryService ={
     delete:async(id)=>{
         return await httpAxios.delete(`category/delete/${id}`)
     },
+    detail: async (slug, limit) => {
+        return await httpAxios.get(`category/categorydetail/${slug}/${limit}`);
+      },
 }
 
 export default CategoryService

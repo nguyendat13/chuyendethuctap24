@@ -7,7 +7,6 @@ const CategoryEdit = () => {
   const [categorys, setCategorys] = useState("");//list
   const [isLoad,setIsload]=useState(0);
   const [category, setCategory] = useState("");//list
-
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [parent_id, setParentId] = useState(0);

@@ -37,8 +37,8 @@ const Contact = () => {
         <div class="container">
           <div class="block">
             <div class="row justify-content-center">
-              <div class="col-md-8 col-lg-8 pb-4">
-                <div class="row mb-5">
+              <div class="col-md-8 col-lg-8 pb-4 m-4">
+                <div class="row mb-4">
                   <div class="col-lg-4">
                     <div
                       class="service no-shadow align-items-center link horizontal d-flex active"
@@ -58,7 +58,7 @@ const Contact = () => {
                         </svg>
                       </div>
                       <div class="service-contents">
-                        <p>43 Raymouth Rd. Baltemoer, London 3910</p>
+                        <p>16 Tang Nhon Phu ,Phuoc Long B,Thu Duc -Tp.HCM</p>
                       </div>
                     </div>
                   </div>
@@ -82,7 +82,7 @@ const Contact = () => {
                         </svg>
                       </div>
                       <div class="service-contents">
-                        <p>info@yourdomain.com</p>
+                        <p>PhatDat@gmail.com</p>
                       </div>
                     </div>
                   </div>
@@ -109,7 +109,7 @@ const Contact = () => {
                         </svg>
                       </div>
                       <div class="service-contents">
-                        <p>+1 294 3925 3939</p>
+                        <p>+84 845 553 994</p>
                       </div>
                     </div>
                   </div>
@@ -117,6 +117,16 @@ const Contact = () => {
 
                 <form>
                   <div class="row">
+                  <div class="col-md-12">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.746776096385!2d106.77242407468411!3d10.830680489321376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317526ffdc466379%3A0x89b09531e82960d!2zMjAgVMSDbmcgTmjGoW4gUGjDuiwgUGjGsOG7m2MgTG9uZyBCLCBRdeG6rW4gOSwgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oIDcwMDAwMCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1692683712719!5m2!1svi!2s"
+                  width="600"
+                  height="450"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+                  </div>
                     <div class="col-6">
                       <div class="form-group">
                         <label class="text-black" for="fname">

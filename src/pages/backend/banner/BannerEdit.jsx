@@ -5,7 +5,7 @@ import { useState,useEffect } from "react";
 import BannerService from "../../../services/BannerService";
 const BannerEdit = () => {
     const [banner, setBanner] = useState("");
-    const [isLoad,setIsload]=useState(false);
+    const [isLoad,setIsLoad]=useState();
     let{id}=useParams()
     const [name, setName] = useState("")
     const[position,setPosition] =useState()
@@ -24,12 +24,12 @@ const BannerEdit = () => {
           console.log(bannerObject);
           setName(bannerObject.name);
           setPosition(bannerObject.position);
-          setImage(bannerObject.image);
+          // setImage(bannerObject.image);
           setlink(bannerObject.link);
           setStatus(bannerObject.status);
         }
       })();
-    }, [isLoad]);
+    }, []);
    
     const handleUpdate = (event) => {
       event.preventDefault();
@@ -39,13 +39,13 @@ const BannerEdit = () => {
       banner.append("name", name);
       banner.append("position",position)
       banner.append("link", link);
-      banner.append("image", image.files.length === 0 ? "" : image.files[0])
+      // banner.append("image", image.files.length === 0 ? "" : image.files[0])
       banner.append("status", status);
   
       (async () => {
         const result = await BannerService.edit(id,banner);
         if (result.status === true) {
-          setIsload(result.banner.isLoad);
+          setIsLoad(result.banner.isLoad);
           console.log(result.banner);
           window.location.href = "/admin/banner";
         }
@@ -113,7 +113,7 @@ const BannerEdit = () => {
               </div>
             </div>
             <div className="col-md-3">
-              <div className="box-container mt-4 bg-white">
+              {/* <div className="box-container mt-4 bg-white">
                 <div className="box-header py-1 px-2 border-bottom">
                   <strong>Hình (*)</strong>
                 </div>
@@ -121,9 +121,9 @@ const BannerEdit = () => {
                 {banner.image}
                   <input type="file" id="image" className="form-control"/>
                 </div>
-              </div>
+              </div> */}
               <div className="box-container mt-4 bg-white">
-                <div className="box-body py-1 px-2 border-bottom">
+                <div className="box-body py-1 px-2">
                   <strong>Chọn trạng thái đăng</strong>
                   <select
                     value={status}

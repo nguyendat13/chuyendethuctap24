@@ -29,13 +29,13 @@ const Header = () => {
      					<span class="navbar-toggler-icon"></span>
      				</button>
 					<Search/>
-     				<div class="collapse navbar-collapse" id="navbarsFurni">		
+     				<div class="collapse navbar-collapse">		
               			<MainMenu/>
-     					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+     				</div>
+					 <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
      						<li><a class="nav-link" href="/login"><img src={User}/></a></li>
      						<li><a class="nav-link" href="/cart"><img src={Cart}/></a></li>
      					</ul>
-     				</div>
 					
      			</div>
                     

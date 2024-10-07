@@ -8,7 +8,6 @@ const ProductCreate = () => {
   const [products, setproducts] = useState("");
   const [isLoad,setIsload]=useState(0);
   const [name, setName] = useState("");
-
   const [detail, setDetail] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);

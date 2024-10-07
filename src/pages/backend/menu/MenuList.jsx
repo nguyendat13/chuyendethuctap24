@@ -208,7 +208,7 @@ const MenuList = () => {
                         </td>
                         <td>
                       <img
-                        src={urlImage + "sliders/" + menu.image}
+                        src={urlImage + "menus/" + menu.image}
                         alt={menu.image}
                         className="img-fluid d-block"
                         style={{ width: "100px" }}

@@ -792,19 +792,32 @@ textarea {
 
 }
 .shop .container{
-height: 500px;
+height: 420px;
 }
-.maincontent {
-  float:left;
-  height: 1000px;
-  width: 100%;
-  background-color: #ffffff;
-  margin-bottom: 20px;
-  border-bottom: #a7a2a2 1px solid;
+.maincontent .row .product-item{
   position: relative;
-  z-index: 1;
+  height: 500px;
+  width:100%;
+  margin-bottom:-200px;
 }
-
 .sofa-img{
-  margin-top:800px;
+  margin-top:20px;
+}
+.intro-pr{
+  position: relative;
+  left:440px;
+  bottom: 400px;
+  
+}
+.intro{
+  margin-bottom: -500px;
+}
+.container .list-group-item{
+  left:440px;
+  margin-left:50px;
+  font-size: 20px;
+  padding-left:20px;
+}
+.list-group :hover{
+  background-color: #b6af72;
 }

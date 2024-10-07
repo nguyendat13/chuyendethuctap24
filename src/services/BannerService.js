@@ -7,7 +7,7 @@ const BannerService ={
     delete:async(id)=>{
         return await httpAxios.delete(`banner/delete/${id}`)
     },
-    edit:async(banner,id)=>{
+    edit:async(id,banner)=>{
         return await httpAxios.put(`banner/edit/'${id}'`,banner)
     },
     show:async(id)=>{

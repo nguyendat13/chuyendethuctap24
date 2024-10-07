@@ -12,5 +12,21 @@ const ProductService={
     list: async (page, limit) => {
         return await httpAxios.get(`product/list/${page}/${limit}`);
       },
+    detail:async(slug,limit)=>{
+        return await httpAxios.get(`product/productdetail/${slug}/${limit}`)
+    },
+    list_product_category: async (categoryid, page, limit) => {
+        return await httpAxios.get(
+          `product/list_product_category/${categoryid}/${page}/${limit}`
+        );
+      },
+      list_brand: async (brandid, limit) => {
+        return await httpAxios.get(`product/list_brand/${brandid}/${limit}`);
+      },
+      list_category: async (categoryid,limit) => {
+        return await httpAxios.get(
+          `product/list_category/${categoryid}/${limit}`
+        );
+      },
 }
 export default ProductService
