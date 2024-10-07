@@ -33,6 +33,50 @@ const Product ={
           }
         });
       },
+    getBySlug:async(slug,mycallback)=>{
+      const sql= `SELECT * FROM db_product WHERE slug='${slug}'`
+      await db.query(sql,function(err,product){
+        if(err){mycallback(err)}
+        else{mycallback(product[0])}
+      })
+    },
+    getProductDetail:async(categoryid,id,limit,mycallback)=>{
+      const sql=`SELECT * FROM db_product WHERE category_id='${categoryid}' AND status='1' AND id!='${id}' ORDER BY created_at DESC LIMIT ${limit}`
+      await db.query(sql,function(err,products){
+        if(err){mycallback(null)}
+        else{mycallback(products)}
+      })
+    },
+    getListByCategory: (categoryid, limit, mycallback) => {
+      const sql = `SELECT * FROM db_product WHERE category_id ='${categoryid}' AND status='1' LIMIT ${limit}`;
+      db.query(sql, function (err, products) {
+        if (err) {
+          mycallback(null);
+        } else {
+          mycallback(products);
+        }
+      });
+    },
+    getListByBrand: (brandid, limit, mycallback) => {
+      const sql = `SELECT * FROM db_product WHERE brand_id ='${brandid}' AND status='1' LIMIT ${limit}`;
+      db.query(sql, function (err, products) {
+        if (err) {
+          mycallback(null);
+        } else {
+          mycallback(products);
+        }
+      });
+    },
+    getListProductCategory: async (categoryid, limit, offset, mycallback) => {
+      const sql = `SELECT * FROM db_product WHERE status='1' AND category_id='${categoryid}' ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
+      await db.query(sql, function (err, products) {
+        if (err) {
+          mycallback(null);
+        } else {
+          mycallback(products);
+        }
+      });
+    },
 }
 
 module.exports=Product

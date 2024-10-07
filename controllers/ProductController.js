@@ -57,6 +57,7 @@ const ProductController ={
       list: async (req, res) => {
         try {
           const page = req.params.page;
+          
           const limit = req.params.limit;
           //Xử lý page
           const offset = (page - 1) * limit;
@@ -78,6 +79,143 @@ const ProductController ={
               return res.status(200).json(result);
             }
           });
+        } catch (error) {
+          const result = {
+            products: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
+      },
+      productdetail:async(req,res)=>{
+        try{
+          const slug =req.params.slug
+          const limit = req.params.limit
+          await Product.getBySlug(slug,function(product){
+            if(product == null){
+              const result ={
+                product:null,
+                status:false,
+                message:"khong tim thay thong tin"
+              }
+              return res.status(200).json(result)
+            }else{
+              Product.getProductDetail(
+                product.category_id,
+                product.id,
+                limit,
+                function(products){
+                  const result={
+                    product :product,
+                    products:products,
+                    status:true,
+                    message:"tai du lieu thanh cong"
+                  }
+                  return res.status(200).json(result)
+                }
+              )
+            }
+          })
+        }catch(error){
+          const result={
+            products:null,
+            status:false,
+            message:error.message
+          }
+          return res.status(200).json(result)
+        }
+      },
+      list_category: async (req, res) => {
+        try {
+          const categoryid = req.params.categoryid;
+          const limit = req.params.limit;
+          await Product.getListByCategory(categoryid, limit, function (products) {
+            if (products == null) {
+              const result = {
+                products: null,
+                status: false,
+                message: "Không tìm thấy thông tin!",
+              };
+              return res.status(200).json(result);
+            } else {
+              const result = {
+                products: products,
+                status: true,
+                message: "Tải dữ liệu thành công!",
+              };
+              return res.status(200).json(result);
+            }
+          });
+        } catch (error) {
+          const result = {
+            products: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
+      },
+      list_brand: async (req, res) => {
+        try {
+          const brandid = req.params.brandid;
+          const limit = req.params.limit;
+          await Product.getListByBrand(brandid, limit, function (products) {
+            if (products == null) {
+              const result = {
+                products: null,
+                status: false,
+                message: "Không tìm thấy thông tin!",
+              };
+              return res.status(200).json(result);
+            } else {
+              const result = {
+                products: products,
+                status: true,
+                message: "Tải dữ liệu thành công!",
+              };
+              return res.status(200).json(result);
+            }
+          });
+        } catch (error) {
+          const result = {
+            products: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
+      },
+      list_product_category: async (req, res) => {
+        try {
+          const categoryid = req.params.categoryid;
+          const page = req.params.page;
+          const limit = req.params.limit;
+          //Xử lý page
+          let offset = (page - 1) * limit;
+          //
+          await Product.getListProductCategory(
+            categoryid,
+            limit,
+            offset,
+            function (products) {
+              if (products == null) {
+                const result = {
+                  products: null,
+                  status: false,
+                  message: "Không tìm thấy thông tin!",
+                };
+                return res.status(200).json(result);
+              } else {
+                const result = {
+                  products: products,
+                  status: true,
+                  message: "Tải dữ liệu thành công!",
+                };
+                return res.status(200).json(result);
+              }
+            }
+          );
         } catch (error) {
           const result = {
             products: null,

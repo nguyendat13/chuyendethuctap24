@@ -1,0 +1,1 @@
+SELECT * FROM User_DN WHERE User ='user2' 

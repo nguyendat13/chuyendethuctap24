@@ -64,25 +64,25 @@ const BannerController={
         const id=req.params.id
         let bodyData=req.body
          //image
-         let image =req.files.image
-         image.mv("./assets/images/banners/"+image.name,
-            function(err,result){
+        //  let image =req.files.image
+        //  image.mv("./assets/images/banners/"+image.name,
+        //     function(err,result){
     
-            if(err) throw err
-         })
+        //     if(err) throw err
+        //  })
          let d =new Date()
-         const data={
+         const banner={
             name:bodyData.name,
             position:bodyData.position,
-            link:bodyData.link,
+            link:bodyData.link, 
             sort_order:bodyData.sort_order,
-            image:image.name,
+            // image:bodyData.image,
             updated_at:`${d.getFullYear()}-${d.getMonth()}-${d.getDay()} 
             ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
             updated_by:1,
             status:bodyData.status,
          }
-         await Banner.edit(data,id,function(banner){
+         await Banner.edit(banner,id,function(data){
             const result ={
                 banner:banner,
                 status:true,

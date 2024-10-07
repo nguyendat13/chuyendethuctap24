@@ -31,16 +31,16 @@ const CategoryController={
         //object data to stores
         const category = {
             name: bodyData.name,
-            slug: myslug(bodyData.name),
+            slug: bodyData.slug,
             description: bodyData.description,
-            image: image.name,
+            image: bodyData.image,
             status: bodyData.status,
             sort_order: bodyData.sort_order,
             parent_id: bodyData.parent_id,
             updated_by: 1,
             updated_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
             };
-            Category.edit(category, id, function (data) {
+           await Category.edit(category, id, function (data) {
                 const result = {
                 category: category,
                 status: true,
@@ -143,6 +143,44 @@ const CategoryController={
                 message: "Tải dữ liệu thành công!",
               };
               return res.status(200).json(result);
+            }
+          });
+        } catch (error) {
+          const result = {
+            categorys: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
+      },
+    categorydetail: async (req, res) => {
+        try {
+          const slug = req.params.slug;
+          const limit = req.params.limit;
+          await Category.getBySlug(slug, function (category) {
+            if (category == null) {
+              const result = {
+                categorys: null,
+                status: false,
+                message: "Không tìm thấy thông tin!",
+              };
+              return res.status(200).json(result);
+            } else {
+              Category.getListOther(
+                category.sort_order,
+                category.id,
+                limit,
+                function (categorys) {
+                  const result = {
+                    category: category,
+                    categorys: categorys,
+                    status: true,
+                    message: "Tải dữ liệu thành công!",
+                  };
+                  return res.status(200).json(result);
+                }
+              );
             }
           });
         } catch (error) {

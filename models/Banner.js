@@ -22,9 +22,9 @@ const Banner={
         }
       })
     },
-    edit:(data,id,mycallback)=>{
+    edit:(banner,id,mycallback)=>{
       const sql=`UPDATE db_banner SET ? WHERE id='${id}'`
-      db.query(sql,data,function(err,banner){
+      db.query(sql,banner,function(err,data){
         if(err){
           mycallback(null)
         }

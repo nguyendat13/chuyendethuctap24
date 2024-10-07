@@ -9,6 +9,7 @@ router.post("/store", CategoryController.store)
 router.delete("/delete/:id",CategoryController.delete)
 //trang nguoi dung
 router.get("/list/:parentid", CategoryController.list);
+router.get("/categorydetail/:slug/:limit", CategoryController.categorydetail);
 
 
 module.exports = router;
