@@ -51,34 +51,34 @@ const MainMenuItem = (props) => {
   return (
     <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
     <li>
-      <a class="nav-link" href="/">
+      <Link class="nav-link" to="/home">
         Home
-      </a>
+      </Link>
     </li>
     <li>
-      <a class="nav-link " href="/shop">
+      <Link class="nav-link " to="/home/shop">
         Shop
-      </a>
+      </Link>
     </li>
     <li>
-      <a class="nav-link" href="/about-us">
+      <Link class="nav-link" to="/home/about-us">
         About us
-      </a>
+      </Link>
     </li>
     <li>
-      <a class="nav-link" href="/services">
+      <Link class="nav-link" to="/home/services">
         Services
-      </a>
+      </Link>
     </li>
     <li>
-      <a class="nav-link" href="/blog">
+      <Link class="nav-link" to="/home/blog">
         Blog
-      </a>
+      </Link>
     </li>
     <li>
-      <a class="nav-link" href="/contact">
+      <Link class="nav-link" to="/home/contact">
         Contact us
-      </a>
+      </Link>
     </li>
   </ul>
   )

@@ -51,7 +51,7 @@ const ProductItem = (props) => {
     <div class="container">
       <div class="row">
         <div class="">
-          <Link class="product-item" to={"/shop/" + product.slug}>
+          <Link class="product-item" to={"/home/shop/" + product.slug}>
             <img src={urlImage + "products/" + product.image}
             alt={product.image}
              class="img-fluid product-thumbnail" />

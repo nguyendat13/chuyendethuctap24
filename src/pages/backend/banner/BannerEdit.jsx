@@ -24,7 +24,7 @@ const BannerEdit = () => {
           console.log(bannerObject);
           setName(bannerObject.name);
           setPosition(bannerObject.position);
-          // setImage(bannerObject.image);
+          setImage(bannerObject.image);
           setlink(bannerObject.link);
           setStatus(bannerObject.status);
         }
@@ -39,19 +39,21 @@ const BannerEdit = () => {
       banner.append("name", name);
       banner.append("position",position)
       banner.append("link", link);
-      // banner.append("image", image.files.length === 0 ? "" : image.files[0])
+      banner.append("image", image.files.length === 0 ? "" : image.files[0])
       banner.append("status", status);
   
       (async () => {
         const result = await BannerService.edit(id,banner);
+        console.log(result.status);
         if (result.status === true) {
           setIsLoad(result.banner.isLoad);
-          console.log(result.banner);
+          console.log(result);
           window.location.href = "/admin/banner";
         }
       })();
     }
   return (
+<form onSubmit={handleUpdate}>
     <div className="card">
     <div className="card-header">
         <div className="row">
@@ -68,7 +70,6 @@ const BannerEdit = () => {
     <div  className="card-body">
       <div className='row'>
       <div className='col-md-12'>
-      <form onSubmit={handleUpdate}>
         <section className="content-body my-2">
           <input name="id" value="<?= $banner->id; ?>" type="hidden" />
           <div className="row">
@@ -113,7 +114,7 @@ const BannerEdit = () => {
               </div>
             </div>
             <div className="col-md-3">
-              {/* <div className="box-container mt-4 bg-white">
+              <div className="box-container mt-4 bg-white">
                 <div className="box-header py-1 px-2 border-bottom">
                   <strong>Hình (*)</strong>
                 </div>
@@ -121,7 +122,7 @@ const BannerEdit = () => {
                 {banner.image}
                   <input type="file" id="image" className="form-control"/>
                 </div>
-              </div> */}
+              </div>
               <div className="box-container mt-4 bg-white">
                 <div className="box-body py-1 px-2">
                   <strong>Chọn trạng thái đăng</strong>
@@ -142,16 +143,15 @@ const BannerEdit = () => {
                 <button 
                   type="submit"
                   className="btn btn-success text-white "
-                  name="CAPNHAT"
                 >
                   Cập nhật
                 </button>
               </div>
-      </form>
           </div>
           </div>
     </div>
     </div>
+    </form>
   )
 }
 

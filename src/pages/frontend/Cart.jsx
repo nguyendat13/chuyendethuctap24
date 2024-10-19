@@ -1,208 +1,224 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import CartService from "../../services/CartService";
+import { urlImage } from "../../config";
+
 const Cart = () => {
-  return (
-    <div>
-      <div className="untree_co-section before-footer-section">
-        <div className="container">
-          <div className="row mb-5">
-            <h1 className="mb-5 text-dark">Cart</h1>
-            <form className="col-md-12" method="post">
-              <div className="site-blocks-table">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th className="product-thumbnail">Image</th>
-                      <th className="product-name">Product</th>
-                      <th className="product-price">Price</th>
-                      <th className="product-quantity">Quantity</th>
-                      <th className="product-total">Total</th>
-                      <th className="product-remove">Remove</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="product-thumbnail">
-                        <img
-                          src="images/product-1.png"
-                          alt="Image"
-                          className="img-fluid"
-                        />
-                      </td>
-                      <td className="product-name">
-                        <h2 className="h5 text-black">Product 1</h2>
-                      </td>
-                      <td>$49.00</td>
-                      <td>
-                        <div className="input-group mb-3 d-flex align-items-center quantity-container">
-                          <div className="input-group-prepend">
-                            <button
-                              className="ps-5 ms-5 btn btn-outline-black decrease"
-                              type="button"
-                            >
-                              &minus;
-                            </button>
-                          </div>
-                          <input
-                            type="text"
-                            className="w-20 h-10 text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value="1"
-                            placeholder="1"
-                            aria-label="Quantity input"
-                            aria-describedby="button-addon1"
-                          />
+    const [cartItems, setCartItems] = useState([]);
+    const [subtotal, setSubtotal] = useState(0);
+    const [loadingItem, setLoadingItem] = useState(null);
+    const [isload,setIsload]=useState();
+    useEffect(() => {
+        fetchCartItems();
+    }, []);
 
-                          <div className="input-group-append">
-                            <button
-                              className="btn btn-outline-black increase"
-                              type="button"
-                            >
-                              &#43;
-                            </button>
-                          </div>
+    const fetchCartItems = async () => {
+        try {
+            const data = await CartService.getCart();
+            console.log("Full Cart Response:", data);
+
+            if (data?.product?.length) {
+                const mergedItems = mergeDuplicateItems((data.product));
+                setCartItems(mergedItems);
+                calculateSubtotal(mergedItems);
+                
+            } else {
+                setCartItems([]);
+                setSubtotal(0); // Reset subtotal when cart is empty
+                console.warn("No products found in the cart.");
+            }
+        } catch (error) {
+            console.error("Error fetching cart items:", error);
+            alert("Failed to fetch cart items.");
+        }
+    };
+
+    // Merge duplicate products based on product_id and sum their quantities
+    const mergeDuplicateItems = (items) => {
+        const itemMap = {};
+        items.forEach(item => {
+            if (itemMap[item.product_id]) {
+                itemMap[item.product_id].qty += item.qty; // Sum quantities of duplicate products
+            } else {
+                itemMap[item.product_id] = { ...item }; // Copy the item if it doesn't exist in the map
+            }
+        });
+        return Object.values(itemMap); // Return an array of merged items
+    };
+
+    const calculateSubtotal = (items) => {
+        const total = items.reduce((acc, item) => acc + item.price * item.qty, 0);
+        setSubtotal(total);
+    };
+
+    const updateCartItemQuantity = async (item, newQuantity) => {
+      if (newQuantity < 1) return;
+  
+      setLoadingItem(item.product_id);
+      try {
+          console.log("Updating item with product_id:", item.product_id, "to quantity:", newQuantity);
+          const result = await CartService.updateCartItem(item.product_id, { qty: newQuantity });
+          console.log("Update result:", result.item.product_id);
+  
+          if (result.status) {
+              // Instead of updating state manually, refetch the cart
+              fetchCartItems(); // Reset cart state
+          } else {
+              alert("Failed to update item quantity.");
+          }
+      } catch (error) {
+          console.error("Error updating quantity:", error);
+          fetchCartItems();  // Reset cart on error
+      } finally {
+          setLoadingItem(null);
+      }
+  };
+  
+    const handleQuantityChange = (item, delta) => {
+        const newQuantity = item.qty + delta;
+        updateCartItemQuantity(item, newQuantity);
+    };
+
+    const handleRemoveItem = async (product_id) => {
+        setLoadingItem(product_id);
+        try {
+            const result = await CartService.delete(product_id);
+            if (result.status) {
+                setCartItems((prevItems) => {
+                    const updatedItems = prevItems.filter((item) => item.product_id !== product_id);
+                    calculateSubtotal(updatedItems); // Update subtotal after removing the item
+                    return updatedItems;
+                });
+            } else {
+                alert("Failed to remove item. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error removing item:", error);
+            alert("Failed to remove item. Please try again.");
+            fetchCartItems(); // Reset state on error
+        } finally {
+            setLoadingItem(null);
+        }
+    };
+
+    return (
+        <div className="untree_co-section before-footer-section">
+            <div className="container">
+                <div className="row mb-5">
+                    <h1 className="mb-5 text-dark">Cart</h1>
+                    <form className="col-md-10">
+                        <div className="site-blocks-table">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {cartItems.length > 0 ? (
+                                        cartItems.map((item) => (
+                                            <tr key={item.product_id}>
+                                                <td>
+                                                    <img
+                                                        src={`${urlImage}products/${item.image}`}
+                                                        alt={item.name}
+                                                        className="img-fluid"
+                                                    />
+                                                </td>
+                                                <td>{item.name}</td>
+                                                <td>${item.price.toFixed(2)}</td>
+                                                <td>
+                                                    <div className="quantity-container">
+                                                        <button
+                                                            className="btn btn-outline-black"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handleQuantityChange(item, -1);
+                                                            }}
+                                                            disabled={loadingItem === item.product_id}
+                                                        >
+                                                            {loadingItem === item.product_id ? (
+                                                                <span className="spinner-border spinner-border-sm" />
+                                                            ) : (
+                                                                "-"
+                                                            )}
+                                                        </button>
+                                                        <input
+                                                            type="text"
+                                                            className="text-center"
+                                                            value={item.qty}
+                                                            readOnly
+                                                        />
+                                                        <button
+                                                            className="btn btn-outline-black"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handleQuantityChange(item, 1);
+                                                            }}
+                                                            disabled={loadingItem === item.product_id}
+                                                        >
+                                                            {loadingItem === item.product_id ? (
+                                                                <span className="spinner-border spinner-border-sm" />
+                                                            ) : (
+                                                                "+"
+                                                            )}
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td>${(item.price * item.qty).toFixed(2)}</td>
+                                                <td>
+                                                    <button
+                                                        className="btn btn-black"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleRemoveItem(item.product_id);
+                                                        }}
+                                                        disabled={loadingItem === item.product_id}
+                                                    >
+                                                        {loadingItem === item.product_id ? (
+                                                            <span className="spinner-border spinner-border-sm" />
+                                                        ) : (
+                                                            "X"
+                                                        )}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="6" className="text-center">
+                                                No items in cart.
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
                         </div>
-                      </td>
-                      <td>$49.00</td>
-                      <td>
-                        <a href="#" className="btn btn-black btn-sm">
-                          X
-                        </a>
-                      </td>
-                    </tr>
+                    </form>
+                </div>
 
-                    <tr>
-                      <td className="product-thumbnail">
-                        <img
-                          src="images/product-2.png"
-                          alt="Image"
-                          className="img-fluid"
-                        />
-                      </td>
-                      <td className="product-name">
-                        <h2 className="h5 text-black">Product 2</h2>
-                      </td>
-                      <td>$49.00</td>
-                      <td>
-                        <div className="input-group mb-3 d-flex align-items-center quantity-container">
-                          <div className="input-group-prepend">
-                            <button
-                              className="ps-5 ms-5 btn btn-outline-black decrease"
-                              type="button"
-                            >
-                              &minus;
-                            </button>
-                          </div>
-                          <input
-                            type="text"
-                            className="w-20 h-10 text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value="1"
-                            placeholder="1"
-                            aria-label="Quantity input"
-                            aria-describedby="button-addon1"
-                          />
-                          <div className="input-group-append">
-                            <button
-                              className="btn btn-outline-black increase"
-                              type="button"
-                            >
-                              &#43;
-                            </button>
-                          </div>
-                        </div>
-                      </td>
-                      <td>$49.00</td>
-                      <td>
-                        <a href="#" className="btn btn-black btn-sm">
-                          X
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </form>
-          </div>
-
-          <div className="row">
-            <div className="col-md-6">
-              <div className="row mb-5">
-                <div className="col-md-6 mb-3 mb-md-0">
-                  <button className="btn btn-black btn-sm btn-block">
-                    Update Cart
-                  </button>
-                </div>
-                <div className="col-md-6">
-                  <button className="btn btn-outline-black btn-sm btn-block">
-                    Continue Shopping
-                  </button>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  <label className="text-black h4" for="coupon">
-                    Coupon
-                  </label>
-                  <p>Enter your coupon code if you have one.</p>
-                </div>
-                <div className="col-md-8 mb-3 mb-md-0">
-                  <input
-                    type="text"
-                    className="form-control py-3"
-                    id="coupon"
-                    placeholder="Coupon Code"
-                  />
-                </div>
-                <div className="col-md-4">
-                  <button className="btn btn-black">Apply Coupon</button>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 pl-5">
-              <div className="row justify-content-end">
-                <div className="col-md-7">
-                  <div className="row">
-                    <div className="col-md-12 text-right border-bottom mb-5">
-                      <h3 className="text-black h4 text-uppercase">
-                        Cart Totals
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="row mb-3">
+                <div className="row">
                     <div className="col-md-6">
-                      <span className="text-black">Subtotal</span>
+                        <Link to="/home/shop" className="btn btn-outline-black ms-2">
+                            Continue Shopping
+                        </Link>
                     </div>
                     <div className="col-md-6 text-right">
-                      <strong className="text-black">$230.00</strong>
+                        <h4>Cart Totals</h4>
+                        <p>Subtotal: ${subtotal.toFixed(2)}</p>
+                        <Link to="/home/checkout" className="btn btn-black">
+                            Proceed To Checkout
+                        </Link>
                     </div>
-                  </div>
-                  <div className="row mb-5">
-                    <div className="col-md-6">
-                      <span className="text-black">Total</span>
-                    </div>
-                    <div className="col-md-6 text-right">
-                      <strong className="text-black">$230.00</strong>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-12">
-                      <a href="/checkout">
-                        <button
-                          className="btn btn-black btn-lg py-3 btn-block"
-                          onclick="window.location='checkout.html'"
-                        >
-                          Proceed To Checkout
-                        </button>
-                      </a>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Cart;

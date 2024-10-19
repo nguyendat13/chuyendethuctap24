@@ -6,36 +6,49 @@ import Home from "../pages/frontend/index";
 import Services from "../pages/frontend/Services";
 import Shop from "../pages/frontend/Shop";
 import Checkout from "../pages/frontend/Checkout";
-import Login from "../pages/frontend/account/Login"
 import ProductDetail from "../pages/frontend/product/ProductDetail";
 import PageCategory from "../pages/frontend/category/PageCategory";
 import PageBrand from "../pages/frontend/brand/PageBrand";
 import ProductCategory from "../pages/frontend/product/ProductCategory";
+import Register from "../pages/frontend/account/Register";
+import Profile from "../pages/frontend/account/profile";
+import Productbrand from "../pages/frontend/product/ProductBrand";
+import Login from "../pages/frontend/account/Login";
+import ForgotPassword from "../pages/frontend/account/ForgotPassword";
+import ResetPassword from "../pages/frontend/account/ResetPassword";
 const RouterSite = [
-  {path: "/",element: <Home />,},
+  
+  {path: "/home",element: <Home />,},
 
-  {path: "/shop",element: <Shop />,},
-  {path:"/shop/:slug",element:<ProductDetail/>},
+  {path: "/home/shop",element: <Shop />,},
+  {path:"/home/shop/:slug",element:<ProductDetail/>},
 
-  {path: "/about-us",element: <AboutUs />,},
+  {path: "/home/about-us",element: <AboutUs />,},
 
-  {path: "/services",element: <Services />,},
+  {path: "/home/services",element: <Services />,},
 
-  {path: "/blog",element: <Blog />,},
+  {path: "/home/blog",element: <Blog />,},
 
-  {path: "/contact",element: <Contact />,},
+  {path: "/home/contact",element: <Contact />,},
 
-  {path: "/cart",element: <Cart />,},
+  {path: "/home/cart",element: <Cart />,},
 
-  {path: "/checkout",element: <Checkout />,},
-
-  {path: "/login",element:<Login/>,},
-
-  {path:"/category",element:<PageCategory/>},
-  {path:"/category/:slug",element:<ProductCategory/>},
+  {path: "/home/checkout",element: <Checkout />,},
 
 
-  {path:"/brand",element:<PageBrand/>}
+  {path: "/home/profile",element:<Profile/>,},
+
+  {path:"/home/category",element:<PageCategory/>},
+  {path:"/home/category/:slug",element:<ProductCategory/>},
+
+
+  {path:"/home/brand",element:<PageBrand/>},
+  {path:"/home/brand/:slug",element:<Productbrand/>},
+
+  {path: "/home/forgot_password",element:<ForgotPassword/>,},
+  {path: "/home/reset_password",element:<ResetPassword/>,},
+
+
 ];
 
 export default RouterSite;

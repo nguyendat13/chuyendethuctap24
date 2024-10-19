@@ -7,9 +7,9 @@ const BannerService ={
     delete:async(id)=>{
         return await httpAxios.delete(`banner/delete/${id}`)
     },
-    edit:async(id,banner)=>{
-        return await httpAxios.put(`banner/edit/'${id}'`,banner)
-    },
+    edit: async (id, banner) => {
+    return await httpAxios.put(`banner/edit/${id}`, banner);
+  },
     show:async(id)=>{
         return await httpAxios.get(`banner/show/${id}`)
     },
@@ -18,6 +18,9 @@ const BannerService ={
     },
     store: async (banner) => {
         return await httpAxios.post("banner/store",banner);
+      },
+      slideshow: async (position) => {
+        return await httpAxios.get(`banner/list/${position}`);
       },
 }
 

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {useEffect, useState } from "react";
 import { urlImage } from "../../../config";
 import TopicService from "../../../services/TopicService";
+import UserService from "../../../services/UserService";
 const TopicCreate = () => {
   const [topics, settopics] = useState("");
   const [isLoad,setIsload]=useState(0);
@@ -23,7 +24,7 @@ const handleSubmit = (e) => {
   (async () => {
     const result = await TopicService.store(topic);
     if (result.status == true) {
-      setIsload(result.topic.isLoad);
+      setIsload(result.topic);
       window.location.href = "/admin/topic";
     }
   })();

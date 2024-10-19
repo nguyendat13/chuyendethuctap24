@@ -812,12 +812,149 @@ height: 420px;
 .intro{
   margin-bottom: -500px;
 }
+
 .container .list-group-item{
-  left:440px;
+  left:450px;
   margin-left:50px;
   font-size: 20px;
   padding-left:20px;
+  margin-top: 10px;
 }
 .list-group :hover{
   background-color: #b6af72;
+}
+
+.banner > * {
+  transform: translateY(10px);
+  transition: transform 0.3s;
+}
+
+.banner:hover > * {
+  transform: translateY(0);
+}
+.in{
+  position: relative;
+  right: 5px;
+  font-size:15px;
+  bottom:11px;
+  border-radius:100%;
+  padding: 5px;
+  background-color: #b85454;
+  color: #000000;
+}
+.user,.cart{
+  width: 30px;
+}
+.cart{
+  position: relative;
+  top: 3px;
+}
+.forgotpass{
+  position: relative;
+  right:650px;
+}
+.logo2{
+  width: 400px;
+  position:relative;
+  left: 300px;
+  bottom: 500px;  
+}
+.logo2 .img-fluid{
+  border-radius: 100px;
+}
+
+
+ .container-fluid.h-custom {
+  background-color:#9aa0ac; 
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.signup,.signin{
+  height: 100%;
+}
+.form-outline input {
+  border: 1px solid #524c4c;
+  border-radius: 0.25rem;
+}
+
+.form-check-label, .forgotpass, .form-label {
+  color: #000000;
+}
+
+/*profile
+/* Profile page main section styling */
+.profile-maincontent {
+  padding: 5rem;
+  margin: 100px;
+}
+
+/* Profile container with card-style layout */
+.profile-maincontent .container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Table styling */
+.profile-maincontent .table {
+  margin-top: 1rem;
+}
+
+.profile-maincontent .table td {
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  color: #495057;
+  vertical-align: middle;
+}
+
+.profile-maincontent .table-borderless td {
+  border: none;
+}
+
+/* Heading styling */
+.profile-maincontent .text-main {
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.profile-maincontent .btn-12 {
+  position: relative;
+  top:360px;
+  right:90px;
+  width: 150px;
+  height: 50px;
+  background-color: #ff4b2b;
+  color: white;
+  border-radius: 15px;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.profile-maincontent .btn-12:hover {
+  background-color: #ff6f61;
+  transform: scale(1.05); /* Slight zoom effect */
+  cursor: pointer;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .profile-maincontent .container {
+    padding: 1.5rem;
+  }
+
+  .profile-maincontent .table td {
+    font-size: 1rem;
+  }
+
+  .profile-maincontent .btn-12 {
+    width: 100%; /* Full width button on small screens */
+  }
 }

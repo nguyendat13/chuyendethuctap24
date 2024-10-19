@@ -9,7 +9,10 @@ const BrandService ={
     },
     store:async(brand)=>{
         return await httpAxios.post("brand/store",brand)
-    }
+    },
+    detail: async (slug, limit) => {
+        return await httpAxios.get(`brand/branddetail/${slug}/${limit}`);
+      },
     
 }
 

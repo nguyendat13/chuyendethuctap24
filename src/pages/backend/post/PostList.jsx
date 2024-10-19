@@ -65,6 +65,7 @@ const PostList = () => {
                   <th>#</th>
                   <th>Hình ảnh</th>
                   <th>Tiêu đề</th>
+                  <th>Chi tiết</th>
                   <th>Mô tả</th>
                   <th>Kiểu</th>
                   <th>ID</th>
@@ -82,20 +83,21 @@ const PostList = () => {
                         </td>
                         <td>
                       <img
-                        src={urlImage + "sliders/" + post.image}
+                        src={urlImage + "posts/" + post.image}
                         alt={post.image}
                         className="img-fluid d-block"
                         style={{ width: "100px" }}
                       />
                     </td>
-                        <td>{post.title}</td>
-                        <td>{post.description}</td>
+                        <td className='col-2'>{post.title}</td>
+                        <td className='col-2'>{post.detail}</td>
+                        <td className='col-2'>{post.description}</td>
                         <td>{post.type}</td>
                         <td>{post.id}</td>
 
-                        <td className="functional"
+                        <td className="functional col-4"
                      >   
-                            <div className='row col-md-13 text-end'>
+                            <div className='row col-md-10 text-end'>
                                                     <div className='status col-md-2 '><button 
                                                 className={post.status==1?'status-on btn btn-sm btn-success bpost-0':'status-off btn btn-sm btn-danger  bpost-0 '}>
                                                         {/* onClick={()=>handleStatus(post.status)} */}

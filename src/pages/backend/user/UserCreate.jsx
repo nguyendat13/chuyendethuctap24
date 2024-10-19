@@ -4,7 +4,6 @@ import UserService from "../../../services/UserService";
 
 const UserCreate = () => {
   const [insertId, setInsertId] = useState(0);
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
@@ -38,15 +37,18 @@ const UserCreate = () => {
       alert("Mật khẩu xác nhận không đúng");
       return;
     } else {
-      (async () => {
-        const result = await UserService.store(user);
-        if (result.status === true) {
-          alert(result.message);
-          setInsertId(result.user.insertId);
-          console.log(result);
-          window.location.href = "/admin/user";
-        }
-      })();
+      if(username ==="" && email === "" && password===""){
+          alert("không được để trống")
+      }else{
+        (async () => {
+          const result = await UserService.store(user);
+          if (result.status === true) {
+            setInsertId(result.user.insertId);
+            window.location.href = "/login";
+          }
+        })();
+      }
+      
     }
   };
   return (
@@ -174,10 +176,10 @@ const UserCreate = () => {
                 />
               </div>
               <div className="mb-3">
-                <label>
-                  <strong>Hình đại diện</strong>
-                </label>
-                <input type="file" id="image" className="form-control" />
+              <label htmlFor="image" className="d-inline-block mb-1">
+                Image
+              </label>
+              <input type="file" id="image" className="form-control" />
               </div>
               <div className="mb-3">
                 <label>

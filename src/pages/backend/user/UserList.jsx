@@ -84,7 +84,7 @@ const UserList = () => {
                         </td>
                         <td>
                       <img
-                        src={urlImage + "sliders/" + user.image}
+                        src={urlImage + "users/" + user.image}
                         alt={user.image}
                         className="img-fluid d-block"
                         style={{ width: "100px" }}

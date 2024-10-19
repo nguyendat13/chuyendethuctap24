@@ -1,7 +1,7 @@
 import React from "react";
-import Couch from "../../assets/images/couch.png";
 import Line from "../../layouts/Line";
 import IntroProduct from "./product/IntroProduct";
+import Banner from "./banner/Banner";
 const index = () => {
   return (
     <div>
@@ -17,9 +17,7 @@ const index = () => {
               </div>
             </div>
             <div className="col-lg-7">
-              <div className="hero-img-wrap">
-                <img src={Couch} className="img-fluid" />
-              </div>
+              <Banner/>
             </div>
           </div>
         </div>
@@ -27,20 +25,6 @@ const index = () => {
       <div className="product-section">
         <div className="container">
           <div className="row">
-            <div className="col-md-12 col-lg-3 mb-5 mb-lg-0">
-              <h2 className="mb-4 section-title">
-                Crafted with excellent material.
-              </h2>
-              <p className="mb-4">
-                Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet
-                velit. Aliquam vulputate velit imperdiet dolor tempor tristique.{" "}
-              </p>
-              <p>
-                <a href="/shop" className="btn">
-                  Explore
-                </a>
-              </p>
-            </div>
             <IntroProduct/>
           </div>
         </div>

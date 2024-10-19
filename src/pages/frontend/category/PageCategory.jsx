@@ -4,6 +4,7 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import ProductItem from "../product/ProductItem";
 import Cross from "../../../assets/images/cross.svg";
 import Pagination from "../Pagination";
+import MenuCategory from "./MenuCategory";
 const PageCategory = () => {
   const [limit, setLimit] = useState(10);
   const [products, setProducts] = useState([]);
@@ -18,35 +19,9 @@ const PageCategory = () => {
 
   return (
     <div>
-         <section className="maincontent">
+         <section className="menu-cate maincontent">
         <div className="container ">
-        <ul className="list-group  list-group-horizontal border-bottom fs-6 fw-normal pt-3 pb-3 position-relative">
-          
-            <li
-              className="list-group-item me-1 rounded-pill"
-              data-tab="tab-2"
-            >
-              <Link to="/category" className="category text-decoration-none text-dark">
-                All
-              </Link>
-            </li>
-          <li
-            className="list-group-item me-1 rounded-pill"
-            data-tab="tab-2"
-          >
-            <Link to="/category/modern" className="text-decoration-none text-dark">
-            Modern
-            </Link>
-          </li>
-          <li
-            className="list-group-item me-1 rounded-pill"
-            data-tab="tab-3"s
-          >
-            <Link to="/category/classical" className="text-decoration-none text-dark">
-              Classical
-            </Link>
-          </li>
-        </ul>
+          <MenuCategory/>
             <div className="row ">
               {products &&
                 products.length > 0 &&

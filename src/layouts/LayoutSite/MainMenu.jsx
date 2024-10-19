@@ -4,16 +4,15 @@ import MainMenuItem from "./MainMenuItem";
 
 const MainMenu = () => {
   // const [menus, setMenus] = useState([]);
-  const [menus, setMenus] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const result = await MenuService.list(0, 13);
-      if (result.status === true) {
-        setMenus(result.menus);
-      }
-    })();
-  }, []);
-  //
+  // useEffect(() => {
+  //   (async () => {
+  //     const result = await MenuService.list(0, 13);
+  //     if (result.status === true) {
+  //       setMenus(result.menus);
+  //     }
+  //   })();
+  // }, []);
+  
   return (
     // <nav className=" navbar navbar-expand-lg fs-6">
     //   <div className="container-fluid">

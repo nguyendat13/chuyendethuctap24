@@ -7,6 +7,7 @@ const PostCreate = () => {
     const [posts, setposts] = useState("");
     const [isLoad,setIsload]=useState(0);
     const [title, setTitle] = useState("");
+    const [detail, setDetail] = useState("");
     const [description, setDescription] = useState("");
     const [type, setType] = useState(2);
     const [status, setStatus] = useState(2);
@@ -17,6 +18,7 @@ const PostCreate = () => {
     const image = document.querySelector("#image");
     let post= new FormData();
     post.append("title",title);
+    post.append("detail",detail);
     post.append("description",description);
     post.append("type",type);
     post.append("image", image.files.length === 0 ? "" : image.files[0]);
@@ -66,6 +68,17 @@ const PostCreate = () => {
                   onChange={(e) => setTitle(e.target.value)}
                   className="form-control"
                 />
+              </div>
+              <div className="mb-2">
+                <label htmlFor="detail" className="d-inline-block mb-2">
+                  Chi tiết
+                </label>
+                <textarea
+                  id="detail"
+                  value={detail}
+                  onChange={(e) => setDetail(e.target.value)}
+                  className="form-control"
+                ></textarea>
               </div>
               <div className="mb-2">
                 <label htmlFor="description" className="d-inline-block mb-2">

@@ -4,6 +4,7 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import ProductItem from "./product/ProductItem"
 import Cross from "../../assets/images/cross.svg";
 import Pagination from "./Pagination";
+import Slider from "./banner/Slider";
 const Shop = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -50,7 +51,7 @@ const Shop = () => {
                     You Should checkout now before the sales is end
                   </p>
                   <p>
-                    <a href="/cart" class="btn btn-secondary me-2">
+                    <a href="/home/cart" class="btn btn-secondary me-2">
                       Pay immediately
                     </a>
                   </p>
@@ -59,13 +60,7 @@ const Shop = () => {
               <div class="hero-img-wrap"></div>
             </div>
             <div class="col-lg-7">
-              <div class="hero-img-wrap"></div>
-              <div className="container">
-                <img
-                  src="https://dalanadecor.com/wp-content/uploads/2020/09/dalana-decor-banner-1.jpg"
-                  className="img-fluid border rounded"
-                />
-              </div>
+              <Slider/>
             </div>
           </div>
 
@@ -80,17 +75,17 @@ const Shop = () => {
             className="list-group-item me-3 rounded-pill"
             data-tab="tab-2"
           >
-            <a href="category" className="text-decoration-none text-dark">
+            <Link to="/home/category" className="text-decoration-none text-dark">
               Category
-            </a>
+            </Link>
           </li>
           <li
             className="list-group-item me-3 rounded-pill"
-            data-tab="tab-3"s
+            data-tab="tab-3"
           >
-            <a href="brand" className="text-decoration-none text-dark">
+            <Link to="/home/brand" className="text-decoration-none text-dark">
               Brand
-            </a>
+            </Link>
           </li>
         </ul>
             <div className="row ">
@@ -108,7 +103,7 @@ const Shop = () => {
                 <Pagination
                   limit={limit}
                   currentPage={currentPage}
-                  url={"/shop"} // Example base URL
+                  url={"/home/shop"} // Example base URL
                   onPageChange={handlePageChange}
                   total={totalProducts}
                 />

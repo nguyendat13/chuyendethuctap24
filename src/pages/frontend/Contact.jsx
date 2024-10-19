@@ -1,8 +1,39 @@
 import React from "react";
-import Line from "../../layouts/Line";
-import ContactImg from "../../assets/images/contact.png";
+import { Link } from "react-router-dom";
+import {useEffect, useState } from "react";
+import ContactService from "../../services/ContactService";
+import ContactImg from "../../assets/images/contact.png"
+const ContactCreate = () => {
+    const [contacts, setcontacts] = useState("");
+  const [isLoad,setIsload]=useState(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState(0);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [status, setStatus] = useState(2);
+//load du lieu len grid
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-const Contact = () => {
+  const image = document.querySelector("#image");
+  let contact= new FormData();
+  contact.append("name",name);
+  contact.append("email",email);
+  contact.append("phone",phone);
+  contact.append("title",title);
+  contact.append("content",content);
+  contact.append("image", image.files.length === 0 ? "" : image.files[0]);
+  contact.append("status",status);
+  (async () => {
+    const result = await ContactService.store(contact);
+    if (result.status === true) {
+      setIsload(result.contact.isLoad);
+      window.location.href = "/home/contact";
+    }
+  })();
+  };
+ 
   return (
     <div>
       <div class="hero">
@@ -114,67 +145,92 @@ const Contact = () => {
                     </div>
                   </div>
                 </div>
-
-                <form>
                   <div class="row">
                   <div class="col-md-12">
-                <iframe
+                  <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.746776096385!2d106.77242407468411!3d10.830680489321376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317526ffdc466379%3A0x89b09531e82960d!2zMjAgVMSDbmcgTmjGoW4gUGjDuiwgUGjGsOG7m2MgTG9uZyBCLCBRdeG6rW4gOSwgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oIDcwMDAwMCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1692683712719!5m2!1svi!2s"
                   width="600"
                   height="450"
                   allowfullscreen=""
                   loading="lazy"
                   referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
+                  ></iframe>
                   </div>
-                    <div class="col-6">
+                  <form onSubmit={handleSubmit}>
+                    <div class="col-12">
                       <div class="form-group">
-                        <label class="text-black" for="fname">
-                          First name
+                        <label class="text-black" for="name">
+                          Name
                         </label>
-                        <input type="text" class="form-control" id="fname" />
+                        <input  value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        type="text" class="form-control" id="name" />
                       </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12">
                       <div class="form-group">
-                        <label class="text-black" for="lname">
-                          Last name
+                        <label class="text-black" for="phone">
+                          Phone
                         </label>
-                        <input type="text" class="form-control" id="lname" />
+                        <input  value={phone}
+                        onChange={(e) => setPhone(e.target.value)} type="phone" class="form-control" id="phone" />
                       </div>
                     </div>
-                  </div>
-                  <div class="form-group">
+                 
+                    <div class="form-group">
                     <label class="text-black" for="email">
                       Email address
                     </label>
-                    <input type="email" class="form-control" id="email" />
-                  </div>
-
-                  <div class="form-group mb-5">
-                    <label class="text-black" for="message">
+                    <input  value={email}
+                   onChange={(e) => setEmail(e.target.value)} type="email" class="form-control" id="email" />
+                    </div>
+                    <div class="form-group mb-4">
+                    <label class="text-black" for="title">
+                      Title
+                    </label>
+                    <textarea
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                      name=""
+                      class="form-control"
+                      id="title"
+                      cols="10"
+                      rows="1"
+                    ></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                    <label class="text-black" for="content">
                       Message
                     </label>
                     <textarea
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
                       name=""
                       class="form-control"
-                      id="message"
+                      id="content"
                       cols="30"
                       rows="5"
                     ></textarea>
-                  </div>
-
+                    </div>
+                    <div className="mb-4">
+               <label htmlFor="image" className="d-inline-block mb-1">
+                Image
+              </label>
+              <input type="file" id="image" className="form-control" />
+                    </div>
                   <button type="submit" class="btn btn-primary-hover-outline">
                     Send Message
                   </button>
-                </form>
+                  </form>
+                  </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
 
-export default Contact;
+}
+
+export default ContactCreate

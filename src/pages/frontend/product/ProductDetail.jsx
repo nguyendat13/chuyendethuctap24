@@ -1,114 +1,141 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import ProductService from "../../../services/ProductService";
 import ProductItem from "./ProductItem";
 import { urlImage } from "../../../config";
-
+import CartService from "../../../services/CartService";
+import { useCart } from "../cart/CartContext";
 const ProductDetail = () => {
-  let { slug } = useParams();
-  const [product, setProduct] = useState([]);
+  const { slug } = useParams();
+  const navigate = useNavigate();
+
+  const [product, setProduct] = useState({});
   const [products, setProducts] = useState([]);
+  const [qty, setQty] = useState(1); // Quantity state
+  const { addToCart } = useCart();
   useEffect(() => {
     (async () => {
-      const result = await ProductService.detail(slug, 4);
-      setProduct(result.product); // chi tiet
-      setProducts(result.products); // cung loai
-      console.log(result.product);
+      try {
+        const result = await ProductService.detail(slug, 4);
+        setProduct(result.product);
+        setProducts(result.products);
+      } catch (error) {
+        console.error("Error fetching product details", error);
+      }
     })();
   }, [slug]);
+
+  const handleAddToCart = async (productId) => {
+    try {
+      const result=await CartService.addToCart(productId, qty); // Pass quantity when adding to cart
+      console.log("Product added to cart successfully",result.productId);
+      navigate("/home/cart"); // Redirect to cart page
+    } catch (error) {
+      console.error("Failed to add product to cart", error);
+    }
+  };
+  
+
+  const handleQuantityChange = (delta) => {
+    setQty((prev) => Math.max(1, prev + delta)); // Prevent negative quantities
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <section className="maincontent py-2">
       <div className="container">
         <div className="row m-5">
+          {/* Product Image Section */}
           <div className="col-md-4">
             <div className="image">
               <img
-                src={urlImage + "products/" + product.image}
+                src={`${urlImage}products/${product.image}`}
                 className="img-fluid"
+                alt={product.name}
               />
             </div>
             <div className="list-image mt-3">
               <div className="row">
-                <div className="col-3">
-                  <img
-                    className="img-fluid w-100"
-                    src={urlImage + "products/" + product.image}
-                    alt="..."
-                    onclick="changeimage(src)"
-                  />
-                </div>
-                <div className="col-3">
-                  <img
-                    className="img-fluid"
-                    src={urlImage + "products/" + product.image}
-                    alt="..."
-                    onclick="changeimage(src)"
-                  />
-                </div>
+                {[...Array(2)].map((_, index) => (
+                  <div className="col-3" key={index}>
+                    <img
+                      className="img-fluid w-100"
+                      src={`${urlImage}products/${product.image}`}
+                      alt="Product thumbnail"
+                      onClick={() => console.log("Change image logic here")} // Placeholder
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+
+          {/* Product Details Section */}
           <div className="col-md-6">
             <h1 className="text-main">{product.name}</h1>
             <h3 className="fs-5 py-2">{product.description}</h3>
-            <h2 className="text-main py-4   p-2 h1">
-              <div className="flex-fill text-danger">
-                {new Intl.NumberFormat("de-DE").format(product.price)} đ
-              </div>
+            <h2 className="text-main py-4 p-2 h1 text-danger">
+              {new Intl.NumberFormat("de-DE").format(product.price)} đ
             </h2>
+
+            {/* Quantity Control */}
             <div className="mb-3">
-              <label for="">Số lượng</label>
+              <label>Quantity</label>
               <div className="input-group mb-3">
-                <span
+                <button
                   className="input-group-text"
-                  id="sub"
-                  onclick="changenumber(id)"
+                  onClick={() => handleQuantityChange(-1)}
                 >
                   -
-                </span>
+                </button>
                 <input
                   type="text"
-                  value="1"
-                  id="qty"
+                  value={qty}
+                  readOnly
                   className="text-center"
                   size="3"
                 />
-                <span
+                <button
                   className="input-group-text"
-                  id="add"
-                  onclick="changenumber(id)"
+                  onClick={() => handleQuantityChange(1)}
                 >
                   +
-                </span>
+                </button>
               </div>
             </div>
+
+            {/* Action Buttons */}
             <div className="mb-3">
-              <Link className="btn btn-success me-1">Mua ngay</Link>
-              <Link className="btn btn-success ms-1" to="/cart" aria-hidden="true">
-                Thêm vào giỏ hàng
-              </Link>
+              <form onSubmit={handleSubmit}>
+                <button type="submit" className="btn btn-success me-1">
+                  Buy
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-success ms-3"
+                  onClick={() => handleAddToCart(product.id)}
+                >
+                  Add to Cart
+                </button>
+              </form>
             </div>
           </div>
-          <h2 className="text-success m-3">CHI TIẾT SẢN PHẨM</h2>
-              <p className="detail">{product.detail}</p>
-          <h2 className="text-success m-4">SẢN PHẨM KHÁC</h2>
+
+          {/* Product Description */}
+          <h2 className="text-success m-3">Detailed Product Description</h2>
+          <p className="detail">{product.detail}</p>
+
+          {/* Other Products */}
+          <h2 className="text-success m-4">Other Products</h2>
           <div className="row">
-            <div className="row">
-              {products &&
-                products.length > 0 &&
-                products.map((product, index) => {
-                  if (
-                    product.category_id === product.category_id ||
-                    product.brand_id === product.brand_id
-                  ) {
-                    return (
-                      <div className="col-3" key={index}>
-                        <ProductItem product={product} />
-                      </div>
-                    );
-                  }
-                })}
-            </div>
+            {products.map((relatedProduct, index) => (
+              <div className="col-3" key={index}>
+                <ProductItem product={relatedProduct} />
+              </div>
+            ))}
           </div>
         </div>
       </div>

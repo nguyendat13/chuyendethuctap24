@@ -28,5 +28,12 @@ const ProductService={
           `product/list_category/${categoryid}/${limit}`
         );
       },
+      show: async (id) => {
+        return await httpAxios.get(`product/show/${id}`);
+      },
+      edit: async (id, product) => {
+        return await httpAxios.put(`product/edit/${id}`, product);
+      },
+    
 }
 export default ProductService
