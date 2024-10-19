@@ -4,9 +4,11 @@ const BannerController =require("../controllers/BannerController");
 
 router.get("/getAll",BannerController.getAll);
 router.delete("/delete/:id",BannerController.delete)
-router.put(`/edit/:id`,BannerController.edit)
+router.put("/edit/:id", BannerController.edit);
 router.get(`/show/:id`,BannerController.show)
 router.post(`/store`, BannerController.store);
+//trang nguoi dung
+router.get("/list/:position", BannerController.list);
 
 // router.updateStatus(`/status`,BannerController.updateStatus)
 module.exports = router

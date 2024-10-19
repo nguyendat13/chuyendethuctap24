@@ -24,9 +24,9 @@ const CategoryController={
         let bodyData = req.body;
             //image
         let image = req.files.image;
-        image.mv("./assets/images/categorys/" + image.name, function (err, result) {
-            if (err) throw err;
-            });
+        // image.mv("./assets/images/categorys/" + image.name, function (err, result) {
+        //     if (err) throw err;
+        //     });
             let d = new Date();
         //object data to stores
         const category = {

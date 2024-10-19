@@ -24,17 +24,17 @@ const Banner={
     },
     edit:(banner,id,mycallback)=>{
       const sql=`UPDATE db_banner SET ? WHERE id='${id}'`
-      db.query(sql,banner,function(err,data){
+      db.query(sql,banner,function(err,result){
         if(err){
-          mycallback(null)
+          mycallback(err)
         }
         else{
-          mycallback(data)
+          mycallback(result)
         }
       })
     },
     show:(id,mycallback)=>{
-      const sql=`SELECT * FROM db_banner WHERE id='${id}'`
+      const sql=`SELECT * FROM db_banner WHERE id='${id}' LIMIT 1`
       db.query(sql,function(err,banner) {
         if(err) {
           mycallback(null)
@@ -53,16 +53,16 @@ const Banner={
         }
       });
     },
-    // updateStatus:(status,mycallback)=>{
-    //   const sql=`UPDATE db_banner SET ? WHERE status='${status}'`
-    //   db.query(sql,function(err,banner){
-    //     if(err || status != 1){
-    //       mycallback(null)
-    //     }{
-    //       mycallback(banner)
-    //     }
-    //   })
-    // }
+    getList: (position, mycallback) => {
+      const sql = `SELECT * FROM db_banner WHERE position ='${position}' AND status='1'`;
+      db.query(sql, function (err, banners) {
+        if (err) {
+          mycallback(null);
+        } else {
+          mycallback(banners);
+        }
+      });
+    },
 }
 module.exports=Banner;
 

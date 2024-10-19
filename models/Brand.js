@@ -28,6 +28,27 @@ const Brand ={
         }
       });
     },
+    getBySlug: async (slug, mycallback) => {
+      const sql = `SELECT * FROM db_brand WHERE slug='${slug}' LIMIT 1`;
+      await db.query(sql, function (err, category) {
+        if (err) {
+          mycallback(err);
+        } else {
+          mycallback(category);
+        }
+      });
+    },
+    getListOther: async (sort_order, id, limit, mycallback) => {
+      const sql = `SELECT * FROM db_brand WHERE sort_order = '${sort_order}' AND status='1' AND id!='${id}'  ORDER BY created_at DESC LIMIT ${limit}`;
+      // console.log(sql);
+      await db.query(sql, function (err, categorys) {
+        if (err) {
+          mycallback(null);
+        } else {
+          mycallback(categorys);
+        }
+      });
+    },
 }
 
 module.exports=Brand

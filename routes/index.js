@@ -8,6 +8,8 @@ const PostRouter=require('./PostRouter')
 const ProductRouter=require('./ProductRouter')
 const TopicRouter=require('./TopicRouter')
 const UserRouter=require('./UserRouter')
+const CartRouter=require('./CartRouter')
+
 const router =(app)=>{
     app.use('/api/banner',BannerRouter)
     app.use('/api/category',CategoryRouter)
@@ -19,5 +21,7 @@ const router =(app)=>{
     app.use('/api/product',ProductRouter)
     app.use('/api/topic',TopicRouter)
     app.use('/api/user',UserRouter)
+    app.use('/api/cart',CartRouter)
+
 }
 module.exports=router

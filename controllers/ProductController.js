@@ -1,4 +1,5 @@
 const Product =require('../models/Product')
+const Cart =require('../models/Cart')
 const ProductController ={
     getAll:async(req,res)=>{
      
@@ -33,7 +34,7 @@ const ProductController ={
         const product = {
           name: formBody.name,
           slug:formBody.slug,
-          image:formBody.image,
+          image:image.name,
           category_id:formBody.category_id,
           brand_id:formBody.brand_id,
           detail:formBody.detail,
@@ -225,5 +226,74 @@ const ProductController ={
           return res.status(200).json(result);
         }
       },
+      edit: async (req, res) => {
+        try {
+          const id = req.params.id;
+          let bodyData = req.body;
+          //image
+          let image;
+     if (req.files && req.files.image) {
+      image = req.files.image;
+      await image.mv(
+        "./assets/images/products/" + image.name,
+        (err) => {
+          if (err) {
+            throw new Error("Error saving image: " + err.message);
+           }
+         }
+       );
+        }
+          let d = new Date();
+          const product = {
+            name: bodyData.name,
+            slug: bodyData.slug,
+            category_id: bodyData.category_id,
+            brand_id: bodyData.brand_id,  
+            ...(image && { image: image.name }),
+            detail: bodyData.detail,
+            // qty: bodyData.qty,
+            price: bodyData.price,
+            pricesale: bodyData.pricesale,
+            description: bodyData.description,
+            updated_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+            updated_by: 1,
+            status: bodyData.status,
+          };
+          await Product.edit(product, id, function (data) {
+            const result = {
+              product: product,
+              status: true,
+              message: "Cập nhật dữ liệu thành công!",
+            };
+            return res.status(200).json(result);
+          });
+        } catch (error) {
+          const result = {
+            product: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
+      },
+      show: (req, res) => {
+        const id = req.params.id;
+        Product.show(id, function (data) {
+          if (data == null) {
+            return res.status(200).json({
+              product: null,
+              status: false,
+              message: "Khong tim thay du lieu",
+            });
+          } else {
+            return res.status(200).json({
+              product: data,
+              status: true,
+              message: "Tai du lieu thanh cong",
+            });
+          }
+        });
+      },
+     
 }
 module.exports=ProductController

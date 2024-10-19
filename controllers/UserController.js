@@ -1,4 +1,7 @@
 const User=require('../models/User')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const sendEmail = require('../node_modules/utils/sendEmail');
 const UserController ={
     getAll:async(req,res)=>{
         await User.getAll(function(users){
@@ -23,10 +26,10 @@ const UserController ={
     },
     store: async (req, res) => {
         const formBody = req.body;
-        let image = req.files.image;
-        image.mv("./assets/images/users/" + image.name, function (err, data) {
-          if (err) throw err;
-        });
+        // let image = req.files.image;
+        // image.mv("./assets/images/users/" + image.name, function (err) {
+        //   if (err) throw err;
+        // });
         let d = new Date();
         const user = {
           name: formBody.name,
@@ -37,7 +40,7 @@ const UserController ={
           password: formBody.password,
           repassword:formBody.repassword,
           address: formBody.address,
-          image: formBody.image,
+          // image:image.name,
           roles: formBody.roles,
           created_by: 1,
           status: formBody.status,
@@ -52,5 +55,77 @@ const UserController ={
           return res.status(200).json(result);
         });
       },
+  
+    login :async (req, res) => {
+      try {
+        const { email, password } = req.body;
+    
+        if (!email || !password) {
+          return res.status(400).json({
+            user: null,
+            status: false,
+            message: "Email and password cannot be empty",
+          });
+        }
+    
+        const user = {
+          email: email,
+          password: password,
+        
+        };
+    
+        User.login(user, (err, data) => {
+          if (err) {
+            return res.status(401).json({
+              user: null,
+              status: false,
+              message: "Invalid email or password",
+            });
+          }
+    
+          res.status(200).json({
+            user: data,
+            status: true,
+            message: "Login successful",
+          });
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          user: null,
+          status: false,
+          message: "Internal server error",
+        });
+      }
+    },
+    forgotPassword :async (req, res) => {
+      const { email } = req.body;
+      try {
+          const user = await User.findEmail(user);
+          if (!user) return res.status(404).json({ message: 'User not found' });
+  
+          const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+          const link = `http://localhost:3000/home/reset_password`;
+          
+          await sendEmail(email, 'Reset Password', `Click here to reset your password: ${link}`);
+          
+          res.status(200).json({ message: 'Email sent' });
+      } catch (err) {
+          res.status(500).json({ message: 'Server error' });
+      }    
+  },
+  resetPassword :async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        await User.updatePassword(decoded.id, hashedPassword);
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Invalid or expired token' });
+    }
+}
 }
 module.exports=UserController

@@ -25,13 +25,13 @@ const ContactController ={
    
     store:async(req,res)=>{
         const formBody= req.body
-        let image = req.files.image;
-            image.mv("./assets/images/contacts/" + image.name, function (err) {
-              if (err) throw err;
-            });
+        // let image = req.files.image;
+        //     image.mv("./assets/images/contacts/" + image.name, function (err) {
+        //       if (err) throw err;
+        //     });
         let d = new Date();
         const contact={
-            image:image.name,
+            // image:image.name,
             name:formBody.name,
             email:formBody.email,
             phone:formBody.phone,

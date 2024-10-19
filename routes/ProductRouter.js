@@ -5,6 +5,9 @@ const ProductController=require('../controllers/ProductController')
 router.get('/getAll',ProductController.getAll)
 router.delete('/delete/:id',ProductController.delete)
 router.post(`/store`, ProductController.store);
+router.put("/edit/:id", ProductController.edit);
+router.get("/show/:id", ProductController.show);
+
 //trang nguoi dung
 router.get("/list/:page/:limit", ProductController.list);
 router.get("/productdetail/:slug/:limit",ProductController.productdetail)
@@ -12,4 +15,6 @@ router.get("/list_category/:categoryid/:limit",ProductController.list_category);
 router.get("/list_brand/:brandid/:limit", ProductController.list_brand);
 router.get("/list_product_category/:categoryid/:page/:limit",ProductController.list_product_category);
 
+
+// router.get("/cart",ProductController.getCart)
 module.exports=router

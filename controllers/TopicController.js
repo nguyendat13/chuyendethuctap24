@@ -33,7 +33,7 @@ const TopicController={
         name: formBody.name,
         slug: formBody.slug,
         sort_order: 0,
-        image:formBody.image,
+        image:image.name,
         description: formBody.description,
         status: formBody.status,
         created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} 

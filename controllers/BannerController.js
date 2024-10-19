@@ -60,23 +60,23 @@ const BannerController={
         }
     },
     edit:async(req,res)=>{
-        try{
+      try{
         const id=req.params.id
         let bodyData=req.body
          //image
-        //  let image =req.files.image
-        //  image.mv("./assets/images/banners/"+image.name,
-        //     function(err,result){
+         let image =req.files.image
+         image.mv("./assets/images/banners/"+image.name,
+            function(err,data){
     
-        //     if(err) throw err
-        //  })
+            if(err) throw err
+         })
          let d =new Date()
          const banner={
             name:bodyData.name,
             position:bodyData.position,
             link:bodyData.link, 
             sort_order:bodyData.sort_order,
-            // image:bodyData.image,
+            image:image.name,
             updated_at:`${d.getFullYear()}-${d.getMonth()}-${d.getDay()} 
             ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
             updated_by:1,
@@ -90,14 +90,15 @@ const BannerController={
             }
             return res.status(200).json(result)
          })
-        }catch(error){
-            const result ={
-                banner:null,
-                status:false,
-                message:error.message,
-            }
-            return res.status(500).json(result)
-        }
+      }catch (error) {
+        const result = {
+          banner: null,
+          status: false,
+          message: error.message,
+        };
+        return res.status(200).json(result);
+      }
+ 
         },
     show:(req,res)=>{
         const id=req.params.id
@@ -145,5 +146,35 @@ const BannerController={
         });
      
       },
+      list: async (req, res) => {
+        try {
+          const position = req.params.position;
+          await Banner.getList(position, function (banners) {
+            if (banners == null) {
+              const result = {
+                banners: null,
+                status: false,
+                message: "Không tìm thấy thông tin!",
+              };
+              return res.status(200).json(result);
+            } else {
+              const result = {
+                banners: banners,
+                status: true,
+                message: "Tải dữ liệu thành công!",
+              };
+              return res.status(200).json(result);
+            }
+          });
+        } catch (error) {
+          const result = {
+            banners: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
+      },
     }
+    
 module.exports=BannerController

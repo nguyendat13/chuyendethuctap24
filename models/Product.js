@@ -77,6 +77,26 @@ const Product ={
         }
       });
     },
+    edit: (product, id, mycallback) => {
+      var sql = `UPDATE db_product SET ? WHERE id = '${id}'`;
+      db.query(sql, product, function (err, result) {
+        if (err) {
+          mycallback(err);
+        } else {
+          mycallback(result);
+        }
+      });
+    },
+    show: (id, result) => {
+      const sql = `SELECT * FROM db_product WHERE id='${id}' LIMIT 1`;
+      db.query(sql, function (err, product, fields) {
+        if (err) {
+          result(null);
+        } else {
+          result(product);
+        }
+      });
+    },
+ 
 }
-
 module.exports=Product

@@ -40,7 +40,7 @@ const BrandController ={
         let d = new Date();
         //Lấy dũ liệu form
         const brand = {
-            image: image.name,
+          image: image.name,
           name: formBody.name,
           slug: formBody.slug,
           sort_order: 0,
@@ -60,6 +60,44 @@ const BrandController ={
           return res.status(200).json(result);
         });
     },
+    branddetail: async (req, res) => {
+        try {
+          const slug = req.params.slug;
+          const limit = req.params.limit;
+          await Brand.getBySlug(slug, function (brand) {
+            if (brand == null) {
+              const result = {
+                brands: null,
+                status: false,
+                message: "Không tìm thấy thông tin!",
+              };
+              return res.status(200).json(result);
+            } else {
+              Brand.getListOther(
+                brand.sort_order,
+                brand.id,
+                limit,
+                function (brands) {
+                  const result = {
+                    brand: brand,
+                    brands: brands,
+                    status: true,
+                    message: "Tải dữ liệu thành công!",
+                  };
+                  return res.status(200).json(result);
+                }
+              );
+            }
+          });
+        } catch (error) {
+          const result = {
+            brands: null,
+            status: false,
+            message: error.message,
+          };
+          return res.status(200).json(result);
+        }
+      },
 }
 
 module.exports=BrandController
