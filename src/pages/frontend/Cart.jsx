@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartService from "../../services/CartService";
 import { urlImage } from "../../config";
 
@@ -7,7 +7,8 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
     const [loadingItem, setLoadingItem] = useState(null);
-    const [isload,setIsload]=useState();
+    const navigate = useNavigate();
+
     useEffect(() => {
         fetchCartItems();
     }, []);
@@ -18,14 +19,12 @@ const Cart = () => {
             console.log("Full Cart Response:", data);
 
             if (data?.product?.length) {
-                const mergedItems = mergeDuplicateItems((data.product));
+                const mergedItems = mergeDuplicateItems(data.product);
                 setCartItems(mergedItems);
                 calculateSubtotal(mergedItems);
-                
             } else {
                 setCartItems([]);
                 setSubtotal(0); // Reset subtotal when cart is empty
-                console.warn("No products found in the cart.");
             }
         } catch (error) {
             console.error("Error fetching cart items:", error);
@@ -33,17 +32,16 @@ const Cart = () => {
         }
     };
 
-    // Merge duplicate products based on product_id and sum their quantities
     const mergeDuplicateItems = (items) => {
         const itemMap = {};
         items.forEach(item => {
             if (itemMap[item.product_id]) {
-                itemMap[item.product_id].qty += item.qty; // Sum quantities of duplicate products
+                itemMap[item.product_id].qty += item.qty;
             } else {
-                itemMap[item.product_id] = { ...item }; // Copy the item if it doesn't exist in the map
+                itemMap[item.product_id] = { ...item };
             }
         });
-        return Object.values(itemMap); // Return an array of merged items
+        return Object.values(itemMap);
     };
 
     const calculateSubtotal = (items) => {
@@ -52,28 +50,29 @@ const Cart = () => {
     };
 
     const updateCartItemQuantity = async (item, newQuantity) => {
-      if (newQuantity < 1) return;
-  
-      setLoadingItem(item.product_id);
-      try {
-          console.log("Updating item with product_id:", item.product_id, "to quantity:", newQuantity);
-          const result = await CartService.updateCartItem(item.product_id, { qty: newQuantity });
-          console.log("Update result:", result.item.product_id);
-  
-          if (result.status) {
-              // Instead of updating state manually, refetch the cart
-              fetchCartItems(); // Reset cart state
-          } else {
-              alert("Failed to update item quantity.");
-          }
-      } catch (error) {
-          console.error("Error updating quantity:", error);
-          fetchCartItems();  // Reset cart on error
-      } finally {
-          setLoadingItem(null);
-      }
-  };
-  
+        if (newQuantity < 1) return;
+        setLoadingItem(item.product_id);
+        try {
+            console.log("Updating item with product_id:", item.product_id, "to quantity:", newQuantity);
+            const result = await CartService.updateCartItem(item.product_id, { qty: newQuantity });
+            console.log("Update result:", result.item.product_id);
+              
+            if (result.status) {
+                // Instead of updating state manually, refetch the cart
+                fetchCartItems(); // Reset cart state
+                
+            } else {
+                alert("Failed to update item quantity.");
+            }
+        } catch (error) {
+            console.error("Error updating quantity:", error);
+            fetchCartItems();  // Reset cart on error
+        } finally {
+            setLoadingItem(null);
+        }
+    };
+      
+      
     const handleQuantityChange = (item, delta) => {
         const newQuantity = item.qty + delta;
         updateCartItemQuantity(item, newQuantity);
@@ -84,18 +83,17 @@ const Cart = () => {
         try {
             const result = await CartService.delete(product_id);
             if (result.status) {
-                setCartItems((prevItems) => {
-                    const updatedItems = prevItems.filter((item) => item.product_id !== product_id);
-                    calculateSubtotal(updatedItems); // Update subtotal after removing the item
-                    return updatedItems;
-                });
+                setCartItems((prevItems) =>
+                    prevItems.filter((item) => item.product_id !== product_id)
+                );
+                calculateSubtotal(cartItems);
             } else {
                 alert("Failed to remove item. Please try again.");
             }
         } catch (error) {
             console.error("Error removing item:", error);
-            alert("Failed to remove item. Please try again.");
-            fetchCartItems(); // Reset state on error
+            alert("Failed to remove item.");
+            fetchCartItems();
         } finally {
             setLoadingItem(null);
         }
@@ -211,9 +209,14 @@ const Cart = () => {
                     <div className="col-md-6 text-right">
                         <h4>Cart Totals</h4>
                         <p>Subtotal: ${subtotal.toFixed(2)}</p>
-                        <Link to="/home/checkout" className="btn btn-black">
+                        <button
+                            onClick={() =>
+                                navigate("/home/checkout", { state: { cartItems, subtotal } })
+                            }
+                            className="btn btn-black"
+                        >
                             Proceed To Checkout
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>

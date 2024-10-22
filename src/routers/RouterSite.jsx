@@ -16,6 +16,7 @@ import Productbrand from "../pages/frontend/product/ProductBrand";
 import Login from "../pages/frontend/account/Login";
 import ForgotPassword from "../pages/frontend/account/ForgotPassword";
 import ResetPassword from "../pages/frontend/account/ResetPassword";
+import Thankyou from "../pages/frontend/thankyou";
 const RouterSite = [
   
   {path: "/home",element: <Home />,},
@@ -32,7 +33,7 @@ const RouterSite = [
   {path: "/home/contact",element: <Contact />,},
 
   {path: "/home/cart",element: <Cart />,},
-
+  {path: "/home/thanks",element: <Thankyou/>},
   {path: "/home/checkout",element: <Checkout />,},
 
 

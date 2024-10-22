@@ -1,6 +1,9 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-
-		<!-- Start Hero Section -->
+const Thankyou = () => {
+  return (
+    <div>
 			<div class="hero">
 				<div class="container">
 					<div class="row justify-content-between">
@@ -15,7 +18,6 @@
 					</div>
 				</div>
 			</div>
-		<!-- End Hero Section -->
 		<div class="untree_co-section">
     <div class="container">
       <div class="row">
@@ -28,8 +30,14 @@
           </span>
           <h2 class="display-3 text-black">Thank you!</h2>
           <p class="lead mb-5">You order was successfuly completed.</p>
-          <p><a href="shop.html" class="btn btn-sm btn-outline-black">Back to shop</a></p>
+          <p><Link to="/home/shop" class="btn btn-sm btn-outline-black">Back to shop</Link></p>
         </div>
       </div>
     </div>
   </div>
+
+    </div>
+  )
+}
+
+export default Thankyou

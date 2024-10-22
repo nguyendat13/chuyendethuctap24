@@ -958,3 +958,34 @@ height: 420px;
     width: 100%; /* Full width button on small screens */
   }
 }
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.5s, transform 0.5s;
+  z-index: 1000;
+}
+
+.custom-alert.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.no-item{
+  position: relative;
+  left: 900px;
+  top:100px;
+  height: 300px;
+}
+.no{
+  margin-top:20px;
+  left: 50px;
+  position: relative;
+}

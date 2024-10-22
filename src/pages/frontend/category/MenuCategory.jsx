@@ -10,7 +10,7 @@ const MenuCategory = () => {
             className=" list-group-item me-1 rounded-pill"
             data-tab="tab-2"
           >
-            <Link to="/home/category" className="category text-decoration-none text-dark">
+            <Link to="/home/shop" className="category text-decoration-none text-dark">
               All
             </Link>
           </li>

@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
 import ProductService from "../../services/ProductService";
-import { Link, Navigate, useLocation } from "react-router-dom";
-import ProductItem from "./product/ProductItem"
-import Cross from "../../assets/images/cross.svg";
-import Pagination from "./Pagination";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import ProductItem from "./product/ProductItem";
 import Slider from "./banner/Slider";
+import Pagination from "./Pagination";
+
 const Shop = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Extract current page from query parameters
   const queryParams = new URLSearchParams(location.search);
-  const page = parseInt(queryParams.get("page")) || 1;
+  const pageFromUrl = parseInt(queryParams.get("page")) || 1;
 
   const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [offset, setOffset] = useState(0);
+  const [currentPage, setCurrentPage] = useState(pageFromUrl);
   const [totalProducts, setTotalProducts] = useState(0);
   const [products, setProducts] = useState([]);
 
-
+  // Fetch products when the current page or limit changes
   useEffect(() => {
     fetchData();
-    const newOffset = (currentPage - 1) * limit;
-    setOffset(newOffset);
   }, [currentPage, limit]);
+
   const fetchData = async () => {
     try {
-      const result = await ProductService.list(currentPage, limit);
+      const result = await ProductService.getAll(currentPage, limit);
       setProducts(result.products);
       setTotalProducts(result.totalCount);
     } catch (error) {
@@ -34,204 +35,67 @@ const Shop = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    // Update URL with new page number
-    Navigate(`/shop?page=${pageNumber}`);
+    navigate(`/shop?page=${pageNumber}`); // Update URL on page change
   };
+
   return (
     <div>
-      <div class="hero">
-        <div className="shop">
-        <div class="container">
-          <div class="row justify-content-between">
-            <div class="col-lg-5">
-              <div class="intro-excerpt">
-                <h1>All Product</h1>
-                <div>
-                  <p class="mb-4">
-                    You Should checkout now before the sales is end
-                  </p>
-                  <p>
-                    <a href="/home/cart" class="btn btn-secondary me-2">
-                      Pay immediately
-                    </a>
-                  </p>
-                </div>
-              </div>
-              <div class="hero-img-wrap"></div>
+      <div className="hero">
+        <div className="container">
+          <div className="row justify-content-between">
+            <div className="col-lg-5">
+              <h1>All Products</h1>
+              <p className="mb-4">Check out before the sale ends!</p>
+              <a href="/home/cart" className="btn btn-secondary me-2">
+                Pay immediately
+              </a>
             </div>
-            <div class="col-lg-7">
-              <Slider/>
+            <div className="col-lg-7">
+              <Slider />
             </div>
           </div>
-
-        </div>
         </div>
       </div>
+
       <section className="maincontent">
-        <div className="container ">
-        <ul className="list-group  list-group-horizontal border-bottom fs-6 fw-normal pt-3 pb-3 position-relative">
-          
-          <li
-            className="list-group-item me-3 rounded-pill"
-            data-tab="tab-2"
-          >
-            <Link to="/home/category" className="text-decoration-none text-dark">
-              Category
-            </Link>
-          </li>
-          <li
-            className="list-group-item me-3 rounded-pill"
-            data-tab="tab-3"
-          >
-            <Link to="/home/brand" className="text-decoration-none text-dark">
-              Brand
-            </Link>
-          </li>
-        </ul>
-            <div className="row ">
-              {products &&
-                products.length > 0 &&
-                products.map((product,index) => {
-                  return (
-                    <div className="col-md-3" key={index}>
-                      <ProductItem product={product} />
-                    </div>
-                  );  
-                })}
-            </div>
-              <div className=" text-center pt-3">
-                <Pagination
-                  limit={limit}
-                  currentPage={currentPage}
-                  url={"/home/shop"} // Example base URL
-                  onPageChange={handlePageChange}
-                  total={totalProducts}
-                />
-              </div>
+        <div className="container">
+          <ul className="list-group list-group-horizontal border-bottom fs-6 fw-normal pt-3 pb-3">
+            <li className="list-group-item me-3 rounded-pill">
+              <Link to="/home/category" className="text-decoration-none text-dark">
+                Category
+              </Link>
+            </li>
+            <li className="list-group-item me-3 rounded-pill">
+              <Link to="/home/brand" className="text-decoration-none text-dark">
+                Brand
+              </Link>
+            </li>
+          </ul>
+
+          <div className="row">
+            {products.length > 0 ? (
+              products.map((product, index) => (
+                <div className="col-md-3" key={index}>
+                  <ProductItem product={product} />
+                </div>
+              ))
+            ) : (
+              <p>No products available</p>
+            )}
+          </div>
+
+          {/* <div className="text-center pt-3">
+            <Pagination
+              total={totalProducts}
+              limit={limit}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </div> */}
         </div>
       </section>
-   </div>   
+    </div>
   );
 };
 
 export default Shop;
-//   {/* <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-//               <a class="product-item" href="cart.html">
-//                 <img src={Pro1} class="img-fluid product-thumbnail" />
-//                 <h3 class="product-title">Nordic Chair</h3>
-//                 <strong class="product-price">$50.00</strong>
-
-//                 <span class="icon-cross">
-//                   <img src={Cross} class="img-fluid" />
-//                 </span>
-//               </a>
-//             </div>
-
-//             <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-//               <a class="product-item" href="cart.html">
-//                 <img src={Pro3} class="img-fluid product-thumbnail" />
-//                 <h3 class="product-title">Ergonomic Chair</h3>
-//                 <strong class="product-price">$43.00</strong>
-
-//                 <span class="icon-cross">
-//                   <img src={Cross} class="img-fluid" />
-//                 </span>
-//               </a>
-//             </div> */}
-
-//             {/* <div class="col-12 col-md-4 col-lg-3 mb-5">
-// 						<a class="product-item" href="#">
-// 							<img src="images/product-3.png" class="img-fluid product-thumbnail"/>
-// 							<h3 class="product-title">Nordic Chair</h3>
-// 							<strong class="product-price">$50.00</strong>
-
-// 							<span class="icon-cross">
-// 								<img src="images/cross.svg" class="img-fluid"/>
-// 							</span>
-// 						</a>
-// 					</div> 
-						
-// 					<div class="col-12 col-md-4 col-lg-3 mb-5">
-// 						<a class="product-item" href="#">
-// 							<img src="images/product-1.png" class="img-fluid product-thumbnail"/>
-// 							<h3 class="product-title">Nordic Chair</h3>
-// 							<strong class="product-price">$50.00</strong>
-
-// 							<span class="icon-cross">
-// 								<img src="images/cross.svg" class="img-fluid"/>
-// 							</span>
-// 						</a>
-// 					</div> 
-
-// 					<div class="col-12 col-md-4 col-lg-3 mb-5">
-// 						<a class="product-item" href="#">
-// 							<img src="images/product-2.png" class="img-fluid product-thumbnail"/>
-// 							<h3 class="product-title">Kruzo Aero Chair</h3>
-// 							<strong class="product-price">$78.00</strong>
-
-// 							<span class="icon-cross">
-// 								<img src="images/cross.svg" class="img-fluid"/>
-// 							</span>
-// 						</a>
-// 					</div>
-
-// 					<div class="col-12 col-md-4 col-lg-3 mb-5">
-// 						<a class="product-item" href="#">
-// 							<img src="images/product-3.png" class="img-fluid product-thumbnail"/>
-// 							<h3 class="product-title">Ergonomic Chair</h3>
-// 							<strong class="product-price">$43.00</strong>
-
-// 							<span class="icon-cross">
-// 								<img src="images/cross.svg" class="img-fluid"/>
-// 							</span>
-// 						</a>
-// 					</div>
-
-
-// 					<div class="col-12 col-md-4 col-lg-3 mb-5">
-// 						<a class="product-item" href="#">
-// 							<img src="images/product-3.png" class="img-fluid product-thumbnail"/>
-// 							<h3 class="product-title">Nordic Chair</h3>
-// 							<strong class="product-price">$50.00</strong>
-
-// 							<span class="icon-cross">
-// 								<img src="images/cross.svg" class="img-fluid"/>
-// 							</span>
-// 						</a>
-// 					</div> 
-						
-// 					<div class="col-12 col-md-4 col-lg-3 mb-5">
-// 						<a class="product-item" href="#">
-// 							<img src="images/product-1.png" class="img-fluid product-thumbnail"/>
-// 							<h3 class="product-title">Nordic Chair</h3>
-// 							<strong class="product-price">$50.00</strong>
-
-// 							<span class="icon-cross">
-// 								<img src="images/cross.svg" class="img-fluid"/>
-// 							</span>
-// 						</a>
-// 					</div> 
-
-// 					<div class="col-12 col-md-4 col-lg-3 mb-5">
-// 						<a class="product-item" href="#">
-// 							<img src="images/product-2.png" class="img-fluid product-thumbnail"/>
-// 							<h3 class="product-title">Kruzo Aero Chair</h3>
-// 							<strong class="product-price">$78.00</strong>
-
-// 							<span class="icon-cross">
-// 								<img src="images/cross.svg" class="img-fluid"/>
-// 							</span>
-// 						</a>
-// 					</div>
-
-// 					<div class="col-12 col-md-4 col-lg-3 mb-5">
-// 						<a class="product-item" href="#">
-// 							<img src="images/product-3.png" class="img-fluid product-thumbnail"/>
-// 							<h3 class="product-title">Ergonomic Chair</h3>
-// 							<strong class="product-price">$43.00</strong>
-
-// 							<span class="icon-cross">
-// 								<img src="images/cross.svg" class="img-fluid"/>
-// 							</span>
-// 						</a>
-// 					</div> */}

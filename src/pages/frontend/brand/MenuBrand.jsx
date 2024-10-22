@@ -10,7 +10,7 @@ const MenuBrand = () => {
             className="list-group-item me-1 rounded-pill"
             data-tab="tab-2"
           >
-            <Link to="/home/brand" className="brand text-decoration-none text-dark">
+            <Link to="/home/shop" className="brand text-decoration-none text-dark">
               All
             </Link>
           </li>

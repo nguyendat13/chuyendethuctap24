@@ -17,9 +17,21 @@ const UserCreate = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // alert("Đã thêm sản phẩm");
+  
     const image = document.querySelector("#image");
-
+  
+    // Validate input fields
+    if (!username || !email || !password || !repassword) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+  
+    if (password !== repassword) {
+      alert("Password confirmation does not match.");
+      return;
+    }
+  
+    // Create a form data object
     const user = new FormData();
     user.append("username", username);
     user.append("password", password);
@@ -31,26 +43,25 @@ const UserCreate = () => {
     user.append("roles", roles);
     user.append("address", address);
     user.append("status", status);
-    user.append("image", image.files.length === 0 ? "" : image.files[0]);
-
-    if (repassword != password) {
-      alert("Mật khẩu xác nhận không đúng");
-      return;
-    } else {
-      if(username ==="" && email === "" && password===""){
-          alert("không được để trống")
-      }else{
-        (async () => {
-          const result = await UserService.store(user);
-          if (result.status === true) {
-            setInsertId(result.user.insertId);
-            window.location.href = "/login";
-          }
-        })();
+    user.append("image", image.files.length > 0 ? image.files[0] : null);
+  
+    // Submit form using UserService
+    (async () => {
+      try {
+        const result = await UserService.store(user);
+        if (result.status === true) {
+          setInsertId(result.user.insertId);
+          window.location.href = "/admin/user";
+        } else {
+          alert("Error saving user. Please try again.");
+        }
+      } catch (error) {
+        alert("An error occurred. Please check the server.");
+        console.error(error);
       }
-      
-    }
+    })();
   };
+  
   return (
     <div className="bg-light p-3">
       <section className="content-header my-2">
@@ -180,6 +191,19 @@ const UserCreate = () => {
                 Image
               </label>
               <input type="file" id="image" className="form-control" />
+              </div>
+              <div className="mb-3">
+                <label>
+                  <strong>Roles</strong>
+                </label>
+                <select
+                  value={roles}
+                  onChange={(e) => setRoles(e.target.value)}
+                  className="form-select"
+                >
+                  <option value="1">Admin</option>
+                  <option value="2">User</option>
+                </select>
               </div>
               <div className="mb-3">
                 <label>

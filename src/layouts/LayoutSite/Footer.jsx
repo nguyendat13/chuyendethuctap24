@@ -4,6 +4,8 @@ import EO from '../../assets/images/envelope-outline.svg'
 const Footer = () => {
   return (
         <footer class="footer-section">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
             <div class="container relative">
                 <div class="sofa-img">
                     <img src={Sofa} alt="Image" class="img-fluid"/>

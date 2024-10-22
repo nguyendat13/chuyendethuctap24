@@ -1,72 +1,72 @@
-  import React, { useState } from "react";
+import React from "react";
 
-  function Pagination({ total, limit, onPageChange, currentPage, url }) {
-    const [numPages, setNumPages] = useState(Math.ceil(total / limit));
+function Pagination({ total, limit, onPageChange, currentPage }) {
+  const numPages = Math.ceil(total / limit);
 
-    const renderPageLinks = () => {
-  
-      const links = [];
-      if (numPages === 1) return links;
+  const handlePageClick = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= numPages) {
+      onPageChange(pageNumber);
+    }
+  };
 
-      links.push(
-        <li key="first" className="page-item">
-          <a className="page-link" href={`${url}`}>
-            Đầu
-          </a>
-        </li>
-      );
+  const renderPageLinks = () => {
+    const links = [];
+    if (numPages <= 1) return links;
 
-      links.push(
-        <li key="prev" className="page-item">
-          <a className="page-link" href={`${url}&page=${currentPage - 1}`}>
-            &laquo;
-          </a>
-        </li>
-      );
-
-      let startPage = 1;
-      if (currentPage > 3 && numPages > 5) {
-        startPage = Math.min(currentPage - 2, numPages - 4);
-      }
-
-      const endPage = Math.min(startPage + 4, numPages);
-
-      for (let i = startPage; i <= endPage; i++) {
-        links.push(
-          <li
-            key={i}
-            className={`page-item ${currentPage === i ? "active" : ""}`}
-          >
-            <a className="page-link" href={`${url}&page=${i}`}>
-              {i}
-            </a>
-          </li>
-        );
-      }
-
-      links.push(
-        <li key="next" className="page-item">
-          <a className="page-link" href={`${url}&page=${currentPage + 1}`}>
-            &raquo;
-          </a>
-        </li>
-      );
-
-      links.push(
-        <li key="last" className="page-item">
-          <a className="page-link" href={`${url}&page=${numPages}`}>
-            Cuối
-          </a>
-        </li>
-      );
-     
-      return links;
-      
-    };
-
-    return (
-      <ul className="pagination justify-content-center">{renderPageLinks()}</ul>
+    // First Page Button
+    links.push(
+      <li key="first" className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+        <button className="page-link" onClick={() => handlePageClick(1)}>
+          Đầu
+        </button>
+      </li>
     );
-  }
 
-  export default Pagination;
+    // Previous Page Button
+    links.push(
+      <li key="prev" className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+        <button className="page-link" onClick={() => handlePageClick(currentPage - 1)}>
+          &laquo;
+        </button>
+      </li>
+    );
+
+    // Generate Page Numbers
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(startPage + 4, numPages);
+
+    for (let i = startPage; i <= endPage; i++) {
+      links.push(
+        <li key={i} className={`page-item ${currentPage === i ? "active" : ""}`}>
+          <button className="page-link" onClick={() => handlePageClick(i)}>
+            {i}
+          </button>
+        </li>
+      );
+    }
+
+    // Next Page Button
+    links.push(
+      <li key="next" className={`page-item ${currentPage === numPages ? "disabled" : ""}`}>
+        <button className="page-link" onClick={() => handlePageClick(currentPage + 1)}>
+          &raquo;
+        </button>
+      </li>
+    );
+
+    // Last Page Button
+    links.push(
+      <li key="last" className={`page-item ${currentPage === numPages ? "disabled" : ""}`}>
+        <button className="page-link" onClick={() => handlePageClick(numPages)}>
+          Cuối
+        </button>
+      </li>
+    );
+
+    return links;
+  };
+
+  return <ul className="pagination justify-content-center">{renderPageLinks()}</ul>;
+}
+
+export default Pagination;

@@ -5,6 +5,7 @@ import ProductItem from "./ProductItem";
 import { urlImage } from "../../../config";
 import CartService from "../../../services/CartService";
 import { useCart } from "../cart/CartContext";
+
 const ProductDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const ProductDetail = () => {
   const [products, setProducts] = useState([]);
   const [qty, setQty] = useState(1); // Quantity state
   const { addToCart } = useCart();
+
   useEffect(() => {
     (async () => {
       try {
@@ -25,23 +27,19 @@ const ProductDetail = () => {
     })();
   }, [slug]);
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (productId, quantity) => {
     try {
-      const result=await CartService.addToCart(productId, qty); // Pass quantity when adding to cart
-      console.log("Product added to cart successfully",result.productId);
+      const result = await CartService.addToCart(productId, quantity); // Pass quantity when adding to cart
+      console.log("Product added to cart successfully", result.productId);
+      alert("Đã thêm một sản phẩm vào giỏ hàng");
       navigate("/home/cart"); // Redirect to cart page
     } catch (error) {
       console.error("Failed to add product to cart", error);
     }
   };
-  
 
   const handleQuantityChange = (delta) => {
     setQty((prev) => Math.max(1, prev + delta)); // Prevent negative quantities
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
   };
 
   return (
@@ -109,14 +107,14 @@ const ProductDetail = () => {
 
             {/* Action Buttons */}
             <div className="mb-3">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={(e) => { e.preventDefault(); handleAddToCart(product.id, qty); }}>
                 <button type="submit" className="btn btn-success me-1">
                   Buy
                 </button>
                 <button
                   type="button"
                   className="btn btn-success ms-3"
-                  onClick={() => handleAddToCart(product.id)}
+                  onClick={() => handleAddToCart(product.id, qty)}
                 >
                   Add to Cart
                 </button>

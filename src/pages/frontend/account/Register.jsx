@@ -12,7 +12,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
-  const [roles, setRoles] = useState("admin");
+  // const [roles, setRoles] = useState("admin");
   const [gender, setGender] = useState(1);
   const [address, setAddress] = useState("");
   const [status, setStatus] = useState(1);
@@ -23,7 +23,7 @@ const Register = () => {
     
     event.preventDefault();
     // alert("Đã thêm sản phẩm");
-    const image = document.querySelector("#image");
+    // const image = document.querySelector("#image");
     const user = new FormData();
     user.append("username", username);
     user.append("password", password);
@@ -32,10 +32,10 @@ const Register = () => {
     user.append("phone", phone);
     user.append("name", name);
     user.append("gender", gender);
-    user.append("roles", roles);
+    // user.append("roles", roles);
     user.append("address", address);
     user.append("status", status);
-    user.append("image", image.files.length === 0 ? "" : image.files[0]);
+    // user.append("image", image.files.length === 0 ? "" : image.files[0]);
 
     const isPasswordComplex = (password) => {
       const minLength = 8;
@@ -215,12 +215,12 @@ const Register = () => {
                 />
               </div>
 
-              <div className="mb-3">
+              {/* <div className="mb-3">
               <label htmlFor="image" className="d-inline-block mb-1">
                 Image
               </label>
               <input type="file" id="image" className="form-control" />
-              </div>
+              </div> */}
               {/* <div data-mdb-input-init className="form-outline mb-4 mt-4">
                 <label className="form-label" for="status">
                   Status
