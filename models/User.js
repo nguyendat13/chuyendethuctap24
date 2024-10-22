@@ -54,6 +54,20 @@ const User ={
       if(err){mycallback(er)}
       else{mycallback(result)}
     })
+  },
+  getUser:(user,mycallback)=>{
+    const sql = `SELECT * FROM db_user WHERE email = ? AND password =?`;
+    db.query(sql, [user.email, user.password], (err, data) => {
+      if (err) {
+        mycallback(err); // Handle error appropriately (e.g., log, display message)
+      } else if (data.length > 0) {
+        // Successful login
+        mycallback(null, data[0]); // Pass the user data as the second argument
+      } else {
+        // Login failed
+        mycallback(new Error('Invalid email or password'));
+      }
+    });
   }
 }
 module.exports=User

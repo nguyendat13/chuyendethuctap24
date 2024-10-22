@@ -54,17 +54,36 @@ const MenuController ={
      
       },
       
-  list: async (req, res) => {
-      const parentid = req.params.parentid;
-      const limit = req.params.limit;
-      await Menu.getList(parentid, limit, function (menu) {
-        const result={
-          menu:menu,
-          status:true,
-          message:"tai du liu thanh cong"
+      list: async (req, res) => {
+        try {
+          const parentId = req.params.parentid || 0; // Default to 0 if no parent ID is provided.
+          const limit = parseInt(req.params.limit) || 10; // Default limit to 10 if not provided.
+      
+          // Use the getList method to fetch the menus.
+          Menu.getList(parentId, limit, (menu) => {
+            if (!menu) {
+              return res.status(500).json({
+                status: false,
+                message: "Failed to fetch menu data.",
+              });
+            }
+      
+            // Send a successful response with the menu data.
+            const result = {
+              menu,
+              status: true,
+              message: "Data fetched successfully",
+            };
+            return res.status(200).json(result);
+          });
+        } catch (error) {
+          console.error("Error fetching menus:", error);
+          return res.status(500).json({
+            status: false,
+            message: "An unexpected error occurred.",
+          });
         }
-        return res.status(200).json(result)
-       })
-}
+      },
+      
 }
 module.exports=MenuController

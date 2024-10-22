@@ -26,10 +26,12 @@ const UserController ={
     },
     store: async (req, res) => {
         const formBody = req.body;
-        // let image = req.files.image;
-        // image.mv("./assets/images/users/" + image.name, function (err) {
-        //   if (err) throw err;
-        // });
+        let image = req.files.image;
+        image.mv("./assets/images/users/" + image.name, function (err) {
+          if (err) throw err;
+        });
+      
+            
         let d = new Date();
         const user = {
           name: formBody.name,
@@ -40,7 +42,7 @@ const UserController ={
           password: formBody.password,
           repassword:formBody.repassword,
           address: formBody.address,
-          // image:image.name,
+         image:image.name,
           roles: formBody.roles,
           created_by: 1,
           status: formBody.status,

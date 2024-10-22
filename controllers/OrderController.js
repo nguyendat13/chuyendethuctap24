@@ -22,27 +22,43 @@ const OrderController ={
         })
     },
     store: async (req, res) => {
+      try {
         const formBody = req.body;
-        let image = req.files.image;
-            image.mv("./assets/images/orders/" + image.name, function (error) {
-              if (error) throw error;
+        let imageName = ""; // Default empty string for optional image
+    
+        // Check if an image file was uploaded
+        if (req.files && req.files.image) {
+          let image = req.files.image;
+          imageName = image.name;
+    
+          // Move the image to the destination folder
+          await new Promise((resolve, reject) => {
+            image.mv(`./assets/images/orders/${image.name}`, (error) => {
+              if (error) return reject(error);
+              resolve();
             });
+          });
+        }
+    
         let d = new Date();
-        //Lấy dũ liệu form
+    
+        // Prepare the order object with form data
         const order = {
           delivery_name: formBody.delivery_name,
           delivery_email: formBody.delivery_email,
           delivery_phone: formBody.delivery_phone,
           delivery_address: formBody.delivery_address,
-          delivery_gender:formBody.delivery_gender,
+          delivery_gender: formBody.delivery_gender,
           note: formBody.note,
-          type:formBody.type,         
-          image:image.name, 
+          type: formBody.type,
+          image: imageName, // Use the image name (empty if no image)
           status: formBody.status,
-          created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()}
-           ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+          created_at: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} 
+                       ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
         };
-        await Order.store(order, function (data) {
+    
+        // Store the order in the database
+        await Order.store(order, (data) => {
           const result = {
             order: order,
             status: true,
@@ -50,7 +66,13 @@ const OrderController ={
           };
           return res.status(200).json(result);
         });
-     
-      },
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+          status: false,
+          message: "Có lỗi xảy ra trong quá trình thêm đơn hàng.",
+        });
+      }
+    }    
 }
 module.exports=OrderController

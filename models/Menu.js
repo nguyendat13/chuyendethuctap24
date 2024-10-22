@@ -27,16 +27,18 @@ const Menu ={
           }
         });
       },
-      getList: (parentid, limit, mycallback) => {
-        const sql = `SELECT * FROM db_menu WHERE parent_id ='${parentid}' LIMIT ${limit}`;
-        db.query(sql, function (err, menu) {
-          if (err) {
-            mycallback(null);
-          } else {
-            mycallback(menu);
-          }
-        });
-      },
+      // Updated method using a parameterized query to avoid SQL injection.
+getList: (parentId, limit, callback) => {
+  const sql = "SELECT * FROM db_menu WHERE parent_id = ? LIMIT ?";
+  db.query(sql, [parentId, limit], (err, menu) => {
+    if (err) {
+      console.error("Database query error:", err);
+      return callback(null); // Return null if an error occurs.
+    }
+    callback(menu); // Return the fetched menu data.
+  });
+},
+
 }
 
 module.exports=Menu
