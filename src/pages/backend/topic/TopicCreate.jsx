@@ -4,6 +4,8 @@ import {useEffect, useState } from "react";
 import { urlImage } from "../../../config";
 import TopicService from "../../../services/TopicService";
 import UserService from "../../../services/UserService";
+import myslug from "../../Myslug";
+
 const TopicCreate = () => {
   const [topics, settopics] = useState("");
   const [isLoad,setIsload]=useState(0);
@@ -11,12 +13,14 @@ const TopicCreate = () => {
   const [sort_order, setSortOrder] = useState(0);
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(2);
+  const [slug,setSlug]=useState("");
 //load du lieu len grid
 const handleSubmit = (e) => {
   e.preventDefault();
   const image = document.querySelector("#image");
   let topic= new FormData();
   topic.append("name",name);
+  topic.append("slug", myslug(name));
   topic.append("description",description);
   topic.append("sort_order",sort_order);
   topic.append("image", image.files.length === 0 ? "" : image.files[0]);
@@ -65,6 +69,17 @@ const handleSubmit = (e) => {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <label>
+                  <strong>Ten slug</strong>
+                </label>
+                <input
+                  value={myslug(name)}
+                  onChange={(e) => setSlug(e.target.value)}
+                  type="text"
                   className="form-control"
                 />
               </div>

@@ -113,8 +113,8 @@ const Cart = () => {
                                         <th>Product</th>
                                         <th>Price</th>
                                         <th>Quantity</th>
-                                        <th>Total</th>
-                                        <th>Remove</th>
+                                        <th className="col-md-2">Total</th>
+                                        <th>Tasks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,7 +129,7 @@ const Cart = () => {
                                                     />
                                                 </td>
                                                 <td>{item.name}</td>
-                                                <td>${item.price.toFixed(2)}</td>
+                                                <td>{item.price.toFixed()}</td>
                                                 <td>
                                                     <div className="quantity-container">
                                                         <button
@@ -168,7 +168,7 @@ const Cart = () => {
                                                         </button>
                                                     </div>
                                                 </td>
-                                                <td>${(item.price * item.qty).toFixed(2)}</td>
+                                                <td>{(item.price * item.qty).toFixed()}</td>
                                                 <td>
                                                     <button
                                                         className="btn btn-black"
@@ -184,6 +184,7 @@ const Cart = () => {
                                                             "X"
                                                         )}
                                                     </button>
+                                                 
                                                 </td>
                                             </tr>
                                         ))
@@ -208,7 +209,7 @@ const Cart = () => {
                     </div>
                     <div className="col-md-6 text-right">
                         <h4>Cart Totals</h4>
-                        <p>Subtotal: ${subtotal.toFixed(2)}</p>
+                        <p>Subtotal: {subtotal.toFixed()}</p>
                         <button
                             onClick={() =>
                                 navigate("/home/checkout", { state: { cartItems, subtotal } })

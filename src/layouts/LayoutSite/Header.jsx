@@ -1,14 +1,17 @@
 import React from 'react';
-import User from '../../assets/images/user.svg';
 import { Link } from 'react-router-dom';
 import Search from './Search';
 import MainMenu from './MainMenu';
 import CartIcon from '../../pages/frontend/cart/CartIcon';
+import UserIcon from '../../pages/frontend/user/UserIcon';
 
 const Header = () => {
   return (
     <header>
-      <nav className="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
+      <nav
+        className="custom-navbar navbar navbar-expand-md navbar-dark bg-dark"
+        aria-label="Furni navigation bar"
+      >
         <div className="container">
           <Link className="navbar-brand" to="/home">
             Furni<span>.</span>
@@ -25,20 +28,18 @@ const Header = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          
+
           <Search />
 
           <div className="collapse navbar-collapse" id="navbarsFurni">
             <MainMenu />
           </div>
 
-          <ul className="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-            <li>
-              <Link className="nav-link" to="/home/profile">
-                <img className="user" src={User} alt="User Profile" />
-              </Link>
+          <ul className="navbar-nav align-items-center ms-auto">
+            <UserIcon />
+            <li className="nav-item ms-3">
+              <CartIcon />
             </li>
-            <CartIcon />
           </ul>
         </div>
       </nav>

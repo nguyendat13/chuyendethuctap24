@@ -8,6 +8,9 @@ const OrderService ={
     },
     store:async(order)=>{
         return await httpAxios.post(`order/store`,order)
-    }
+    },
+    show: async (id) => {
+        return await httpAxios.get(`order/show/${id}`);
+      },
 }
 export default OrderService

@@ -8,8 +8,8 @@ import { PostCreate, PostList } from "../pages/backend/post"
 import { ProductCreate, ProductList } from "../pages/backend/product"
 import { TopicCreate, TopicList } from "../pages/backend/topic"
 import { UserCreate, UserList } from "../pages/backend/user"
-import Register from "../pages/frontend/account/Register"
 import ProductEdit from "../pages/backend/product/ProductEdit"
+import OrderShow from "../pages/backend/order/OrderShow"
 
 const RouterAdmin =[
    
@@ -33,13 +33,14 @@ const RouterAdmin =[
 
     {path:"order",element:<OrderList/>},
     {path:"order/create",element:<OrderCreate/>},
+    {path:"order/show/:id",element:<OrderShow/>},
 
     {path:"post",element:<PostList/>},
     {path:"post/create",element:<PostCreate/>},
 
     {path:"product",element:<ProductList/>},
     {path:"product/create",element:<ProductCreate/>},
-    { path: "/admin/product/edit/:id",element:<ProductEdit/>},
+    { path: "product/edit/:id",element:<ProductEdit/>},
 
 
 

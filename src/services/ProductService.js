@@ -6,9 +6,9 @@ const ProductService={
     delete:async(id)=>{
         return await httpAxios.delete(`product/delete/${id}`)
     },
-    store:async(product)=>{
-        return await httpAxios.post(`product/store`,product)
-    },
+    store: async (product) => {
+      return await httpAxios.post(`product/store`, product);
+  },
     list: async (page, limit) => {
         return await httpAxios.get(`product/list/${page}/${limit}`);
       },
