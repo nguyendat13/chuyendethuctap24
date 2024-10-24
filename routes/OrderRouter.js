@@ -5,5 +5,6 @@ const OrderController=require('../controllers/OrderController')
 router.get('/getAll',OrderController.getAll)
 router.delete('/delete/:id',OrderController.delete)
 router.post(`/store`, OrderController.store);
+router.get("/show/:id", OrderController.show);
 
 module.exports=router

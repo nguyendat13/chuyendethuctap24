@@ -15,12 +15,12 @@ const Product ={
             else{mycallback(`xoa thanh cong ${id}`)}
         })
     },
-    store:(product,mycallback)=>{
-        const sql=`INSERT INTO db_product SET ?`
-        db.query(sql,product,function(err,data){
-            if(err){mycallback(null)}
-            else{mycallback(data)}
-        })
+    store: (product, mycallback) => {
+      const sql = "INSERT INTO db_product SET ?";
+      db.query(sql, product, (err, result) => {
+        if (err) return mycallback(err);
+        mycallback(null, result);
+      });
     },
     //trang nguoi dung
     getList: async (limit, offset, mycallback) => {
@@ -97,6 +97,20 @@ const Product ={
         }
       });
     },
- 
+    findById:(productId) =>{
+      return new Promise((resolve, reject) => {
+          const query = "SELECT * FROM db_product WHERE id = ?";
+          db.query(query, [productId], (error, results) => {
+              if (error) {
+                  return reject(error);
+              }
+              if (results.length > 0) {
+                  resolve(results[0]); // Return the first product found
+              } else {
+                  resolve(null); // No product found
+              }
+          });
+      });
+  }
 }
 module.exports=Product

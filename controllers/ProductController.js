@@ -24,26 +24,31 @@ const ProductController ={
         })
     },
     store: async (req, res) => {
+      try {
         const formBody = req.body;
         let image = req.files.image;
-            image.mv("./assets/images/products/" + image.name, function (error) {
-              if (error) throw error;
-            });
+        image.mv(
+          "./assets/images/products/" + image.name,
+          function (err, result) {
+            if (err) throw err;
+          }
+        );
         let d = new Date();
         //Lấy dũ liệu form
         const product = {
+          category_id: formBody.category_id,
+          brand_id: formBody.brand_id,
           name: formBody.name,
-          slug:formBody.slug,
-          image:image.name,
-          category_id:formBody.category_id,
-          brand_id:formBody.brand_id,
-          detail:formBody.detail,
+          slug: formBody.slug,
+          image: image.name,
+          detail: formBody.detail,
+          qty: formBody.qty,
+          price: formBody.price,
+          pricesale: formBody.pricesale,
           description: formBody.description,
-          price:formBody.price,
-          pricesale:formBody.pricesale,
-          status: formBody.status,
           created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
           created_by: 1,
+          status: formBody.status,
         };
         await Product.store(product, function (data) {
           const result = {
@@ -53,9 +58,18 @@ const ProductController ={
           };
           return res.status(200).json(result);
         });
-     
-      },
-      list: async (req, res) => {
+      } catch (error) {
+        const result = {
+          product: null,
+          status: false,
+          message: error.message,
+        };
+        return res.status(200).json(result);
+      }
+    },
+    
+    
+    list: async (req, res) => {
         try {
           const page = req.params.page;
           

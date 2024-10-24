@@ -15,15 +15,15 @@ const User ={
         })
     },
     store: (user, mycallback) => {
-        const sql = `INSERT INTO db_user SET ?`;
-        db.query(sql, user, function (err, data) {
-          if (err) {
-            mycallback(null);
-          } else {
-            mycallback(data);
-          }
-        });
-      },
+      var sql = "INSERT INTO db_user SET ?";
+      db.query(sql, user, function (err, result) {
+        if (err) {
+          mycallback(err);
+        } else {
+          mycallback(result);
+        }
+      });
+    },
   login: (user, myCallback) => {
   const sql = `SELECT * FROM db_user WHERE email = ? AND password =?`;
   db.query(sql, [user.email, user.password], (err, data) => {

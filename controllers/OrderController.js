@@ -24,21 +24,21 @@ const OrderController ={
     store: async (req, res) => {
       try {
         const formBody = req.body;
-        let imageName = ""; // Default empty string for optional image
+        // let imageName = ""; // Default empty string for optional image
     
-        // Check if an image file was uploaded
-        if (req.files && req.files.image) {
-          let image = req.files.image;
-          imageName = image.name;
+        // // Check if an image file was uploaded
+        // if (req.files && req.files.image) {
+        //   let image = req.files.image;
+        //   imageName = image.name;
     
-          // Move the image to the destination folder
-          await new Promise((resolve, reject) => {
-            image.mv(`./assets/images/orders/${image.name}`, (error) => {
-              if (error) return reject(error);
-              resolve();
-            });
-          });
-        }
+        //   // Move the image to the destination folder
+        //   await new Promise((resolve, reject) => {
+        //     image.mv(`./assets/images/orders/${image.name}`, (error) => {
+        //       if (error) return reject(error);
+        //       resolve();
+        //     });
+        //   });
+        // }
     
         let d = new Date();
     
@@ -51,9 +51,9 @@ const OrderController ={
           delivery_gender: formBody.delivery_gender,
           note: formBody.note,
           type: formBody.type,
-          image: imageName, // Use the image name (empty if no image)
+          // image: imageName, // Use the image name (empty if no image)
           status: formBody.status,
-          created_at: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} 
+          created_at: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}
                        ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
         };
     
@@ -66,13 +66,33 @@ const OrderController ={
           };
           return res.status(200).json(result);
         });
-      } catch (error) {
+      } catch (error) { 
         console.error(error);
         return res.status(500).json({
           status: false,
           message: "Có lỗi xảy ra trong quá trình thêm đơn hàng.",
         });
       }
-    }    
+    },
+    show: (req, res) => {
+      const id = req.params.id; // Extract ID from the request parameters
+  
+      Order.show(id, (data) => {
+          if (!data) {
+              return res.status(404).json({ // Use 404 status for "not found"
+                order: null,
+                  status: false,
+                  message: "Order not found",
+              });
+          }
+  
+          return res.status(200).json({
+              order: data,
+              status: true,
+              message: "Data loaded successfully",
+          });
+      });
+  },
+  
 }
 module.exports=OrderController

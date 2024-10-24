@@ -32,7 +32,7 @@ const TopicController={
       const topic = {
         name: formBody.name,
         slug: formBody.slug,
-        sort_order: 0,
+        sort_order:formBody.sort_order,
         image:image.name,
         description: formBody.description,
         status: formBody.status,

@@ -24,15 +24,46 @@ const UserController ={
             return res.status(200).json(result)
         })
     },
+    // store: async (req, res) => {
+    //     const formBody = req.body;
+    //     let image = req.files.image;
+    //     image.mv("./assets/images/users/" + image.name, function (err) {
+    //       if (err) throw err;
+    //     });    
+    //     let d = new Date();
+    //     const user = {
+    //       name: formBody.name,
+    //       email: formBody.email,
+    //       gender: formBody.gender,
+    //       phone: formBody.phone,
+    //       username: formBody.username,
+    //       password: formBody.password,
+    //       repassword:formBody.repassword,
+    //       address: formBody.address,
+    //      image:image.name,
+    //       roles: formBody.roles,
+    //       created_by: 1,
+    //       status: formBody.status,
+    //       created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+    //     };
+    //     await User.store(user, function (data) {
+    //       const result = {
+    //         user: user,
+    //         status: true,
+    //         message: "them du lieu thanh cong",
+    //       };
+    //       return res.status(200).json(result);
+    //     });
+    //   },
     store: async (req, res) => {
+      try {
         const formBody = req.body;
         let image = req.files.image;
-        image.mv("./assets/images/users/" + image.name, function (err) {
+        image.mv("./assets/images/users/" + image.name, function (err, result) {
           if (err) throw err;
         });
-      
-            
         let d = new Date();
+        //Lấy dũ liệu form
         const user = {
           name: formBody.name,
           email: formBody.email,
@@ -40,24 +71,33 @@ const UserController ={
           phone: formBody.phone,
           username: formBody.username,
           password: formBody.password,
-          repassword:formBody.repassword,
           address: formBody.address,
-         image:image.name,
+          image: formBody.image,
           roles: formBody.roles,
           created_by: 1,
           status: formBody.status,
           created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
         };
         await User.store(user, function (data) {
+          //data thứ mà nó trả về
           const result = {
             user: user,
             status: true,
-            message: "them du lieu thanh cong",
+            message: "Thêm dữ liệu thành công!",
+            
           };
           return res.status(200).json(result);
         });
-      },
-  
+      } catch (error) {
+        const result = {
+          user: null,
+          status: false,
+          message: error.message,
+        };
+        return res.status(200).json(result);
+      }
+    },
+    
     login :async (req, res) => {
       try {
         const { email, password } = req.body;

@@ -20,7 +20,19 @@ const Order={
             if(err){mycallback(null)}
             else{mycallback(data)}
         })
-    }
+    },
+    show: (id, result) => {
+        const sql = `SELECT * FROM db_order WHERE id = ? LIMIT 1`; // Use parameterized query to prevent SQL injection
+        db.query(sql, [id], (err, rows) => {
+            if (err) {
+                console.error("Database error:", err); // Log the error for debugging
+                result(null); // Pass null to indicate an error occurred
+            } else {
+                result(rows.length > 0 ? rows[0] : null); // Return the first row or null if not found
+            }
+        });
+    },
+    
 }
 
 module.exports=Order
