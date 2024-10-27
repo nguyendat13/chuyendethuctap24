@@ -42,10 +42,10 @@ const ProductList = () => {
             <strong><h1>Quản lí product</h1></strong>
           </div>
       
-          <div className="row2 row col-md-6 text-end ">
-            <div className='insert col-md-4'>
+          <div className="row2 row col-md-5 text-end ">
+            <div className='insert col-md-5'>
                <Link to="/admin/product/create" 
-               className="btn btn-sm btn-success  bproduct-0">
+               className="btn btn-sm btn-success">
               Thêm product
             </Link></div>
          

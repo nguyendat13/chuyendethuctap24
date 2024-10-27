@@ -8,13 +8,14 @@ const UserList = () => {
     const[users,setUsers]=useState()
     const[isLoad,setIsload]=useState(0)
   
-  useEffect(()=>{
-    (async () => {
-      const result = await UserService.getAll();
-      setUsers(result.users);
-      console.log(result.users);
-    })();
-  },[isLoad]);
+    useEffect(()=>{
+      (async () => {
+        const result = await UserService.getAll();
+        setUsers(result.users);
+          console.log(result.users);
+      })();
+    },[isLoad]);
+    
   const handleDelete=async(id)=>{
     const result=await UserService.delete(id)
     console.log(result.message)
@@ -68,7 +69,7 @@ const UserList = () => {
                   <th>Số điện thoại</th>
                   <th>Email</th>
                   <th>Địa chỉ</th>
-                  <th>Roles</th>
+                  {/* <th>Roles</th> */}
                   <th>ID</th>
                   <th className='col-md-4'>Chức năng</th>
                 </tr>
@@ -96,7 +97,7 @@ const UserList = () => {
                         <td>{user.phone}</td>
                         <td>{user.email}</td>
                         <td>{user.address}</td>
-                        <td>{user.roles}</td>
+                        {/* <td>{user.roles}</td> */}
                         <td>{user.id}</td>
 
                         <td className="functional"

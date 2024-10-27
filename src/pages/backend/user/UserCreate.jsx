@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import UserService from "../../../services/UserService";
-
 const UserCreate = () => {
   const [insertId, setInsertId] = useState(0);
   const [username, setUsername] = useState("");
@@ -10,10 +9,10 @@ const UserCreate = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
-  const [roles, setRoles] = useState("admin");
+  // const [roles, setRoles] = useState("admin");
   const [gender, setGender] = useState(1);
   const [address, setAddress] = useState("");
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(2);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -40,24 +39,19 @@ const UserCreate = () => {
     user.append("phone", phone);
     user.append("name", name);
     user.append("gender", gender);
-    user.append("roles", roles);
+    // user.append("roles", roles);
     user.append("address", address);
     user.append("status", status);
-    user.append("image", image.files.length > 0 ? image.files[0] : null);
+    user.append("image", image.files.length === 0 ? "" : image.files[0]);
   
     // Submit form using UserService
     (async () => {
-      try {
-        const result = await UserService.store(user);
-        if (result.status === true) {
-          setInsertId(result.user.insertId);
-          window.location.href = "/admin/user";
-        } else {
-          alert("Error saving user. Please try again.");
-        }
-      } catch (error) {
-        alert("An error occurred. Please check the server.");
-        console.error(error);
+      const result = await UserService.store(user);
+      if (result.status === true) {
+        alert(result.message);
+        setInsertId(result.user.insertId);
+        console.log(result.user);
+        window.location.href = "/admin/user";
       }
     })();
   };
@@ -169,7 +163,7 @@ const UserCreate = () => {
                   id="gender"
                   className="form-select"
                 >
-                  <option>Chọn giới tinh</option>
+                  <option>Chọn giới tính</option>
                   <option value="1">Nam</option>
                   <option value="0">Nữ</option>
                 </select>
@@ -192,7 +186,7 @@ const UserCreate = () => {
               </label>
               <input type="file" id="image" className="form-control" />
               </div>
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <label>
                   <strong>Roles</strong>
                 </label>
@@ -204,7 +198,7 @@ const UserCreate = () => {
                   <option value="1">Admin</option>
                   <option value="2">User</option>
                 </select>
-              </div>
+              </div> */}
               <div className="mb-3">
                 <label>
                   <strong>Trạng thái</strong>

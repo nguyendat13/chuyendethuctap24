@@ -4,8 +4,8 @@ import UserService from "../../../services/UserService";
 import LogoLogin from "../../../assets/images/logo_login.webp";
 import logo2 from "../../../assets/images/img-grid-2.jpg";
 import Validation from "./LoginValidation";
-import SignWithOther from "./SignWithOther"; // Imported correctly
-
+import SignWithOther from "./SignWithOther"; 
+  
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,38 +15,30 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
     const validationErrors = Validation({ email, password });
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    const user = { email, password };
-    try {
-      const result = await UserService.login(user);
-      if (result.ok) {
-        localStorage.setItem("sessionToken", result.headers.get("Set-Cookie"));
-        // const userData = await result.json(); // Assuming backend returns user data on successful login
-        // const storage = rememberMe ? localStorage : sessionStorage;
-        // // Store user data in chosen storage
-        // storage.setItem("user", JSON.stringify(userData));
-        navigate("/");
-      } else {
-        if (result.status) {
-          // Store the session token and handle Remember Me
-          navigate("/home/profile");
-        } else {
-          setErrors({ login: result.message });
-        }
-      }
-    } catch (error) {
-      alert("Sai Email hoặc mật khẩu! Vui lòng nhập lại");
-      console.error("Login error:", error.message);
-      setErrors({ general: "An error occurred. Please try again." });
-    }
- 
   
+    const user = { email, password };
+  
+    try {
+      const { user: userData, token } = await UserService.login(user);
+  
+      localStorage.setItem("sessionToken", token);
+      localStorage.setItem("userData", JSON.stringify(userData));
+  
+      navigate("/home/profile");
+    } catch (error) {
+      console.error("Login error:", error.message);
+      setErrors({ general: error.message || "Invalid credentials" });
+    }
   };
-
+  
+  
+  
   return (
     <section className="signin container py-5">
       <div className="container-fluid h-custom py-5">
