@@ -1,4 +1,5 @@
 const db=require('../config/db')
+const bcrypt = require("bcrypt");
 const User ={
     getAll:(mycallback)=>{
         const sql=`SELECT * FROM db_user ORDER BY created_at DESC`
@@ -24,20 +25,16 @@ const User ={
         }
       });
     },
-  login: (user, myCallback) => {
-  const sql = `SELECT * FROM db_user WHERE email = ? AND password =?`;
-  db.query(sql, [user.email, user.password], (err, data) => {
-    if (err) {
-      myCallback(err); // Handle error appropriately (e.g., log, display message)
-    } else if (data.length > 0) {
-      // Successful login
-      myCallback(null, data[0]); // Pass the user data as the second argument
-    } else {
-      // Login failed
-      myCallback(new Error('Invalid email or password'));
-    }
-  });
-  },
+
+
+    login: (email, callback) => {
+      const sql = 'SELECT * FROM db_user WHERE email = ?';
+      db.query(sql, [email], (err, result) => {
+        if (err) return callback(err, null);
+        callback(null, result[0]);
+      });
+    },
+
   findEmail :(email) => {
     const sql = 'SELECT * FROM db_user WHERE email = ?';
     return new Promise((resolve, reject) => {
@@ -55,19 +52,31 @@ const User ={
       else{mycallback(result)}
     })
   },
-  getUser:(user,mycallback)=>{
-    const sql = `SELECT * FROM db_user WHERE email = ? AND password =?`;
-    db.query(sql, [user.email, user.password], (err, data) => {
-      if (err) {
-        mycallback(err); // Handle error appropriately (e.g., log, display message)
-      } else if (data.length > 0) {
-        // Successful login
-        mycallback(null, data[0]); // Pass the user data as the second argument
-      } else {
-        // Login failed
-        mycallback(new Error('Invalid email or password'));
-      }
+  // Method to check if an email exists
+  checkEmail: (user, callback) => {
+    const sql = `SELECT COUNT(*) AS count FROM db_user WHERE email = ?`;
+    db.query(sql, [user.email], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return callback(null);
+        } 
+        const exists = results[0].count > 0;
+        callback(exists);
     });
-  }
+},
+
+// Method to check if a phone number exists
+checkPhone: (user, callback) => {
+    const sql = `SELECT COUNT(*) AS count FROM db_user WHERE phone = ?`;
+    db.query(sql, [user.phone], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return callback(null);
+        }
+        const exists = results[0].count > 0;
+        callback(exists);
+    });
+},
+
 }
 module.exports=User

@@ -6,6 +6,7 @@ const apiRoutes =require("./routes")
 const fileUpload =require('express-fileupload')
 const bodyParser =require("body-parser")
 const path =require("path")
+require('dotenv').config(); // Đọc biến môi trường từ .env
 
 
 app.use("/assets", express.static(path.join(__dirname, "/assets")));
