@@ -14,7 +14,7 @@ router.get("/productdetail/:slug/:limit",ProductController.productdetail)
 router.get("/list_category/:categoryid/:limit",ProductController.list_category);
 router.get("/list_brand/:brandid/:limit", ProductController.list_brand);
 router.get("/list_product_category/:categoryid/:page/:limit",ProductController.list_product_category);
-
+router.get('/search', ProductController.search);
 
 // router.get("/cart",ProductController.getCart)
 module.exports=router

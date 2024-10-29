@@ -308,6 +308,30 @@ const ProductController ={
           }
         });
       },
-     
+      search: (req, res) => {
+        const query = req.query.query; // Lấy từ khóa tìm kiếm từ query string
+        if (!query) {
+          return res.status(400).json({
+            status: false,
+            message: "Vui lòng cung cấp từ khóa tìm kiếm.",
+          });
+        }
+    
+        Product.search(query, function (data) {
+          if (data == null || data.length === 0) {
+            return res.status(200).json({
+              products: [],
+              status: false,
+              message: "Không tìm thấy sản phẩm nào.",
+            });
+          } else {
+            return res.status(200).json({
+              products: data,
+              status: true,
+              message: "Tìm kiếm thành công.",
+            });
+          }
+        });
+      },
 }
 module.exports=ProductController

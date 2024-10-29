@@ -111,6 +111,16 @@ const Product ={
               }
           });
       });
-  }
+  },
+  search: (query, result) => {
+    const sql = `SELECT * FROM db_product WHERE name LIKE ?`; // Sử dụng LIKE để tìm kiếm
+    db.query(sql, [`%${query}%`], function (err, products) {
+      if (err) {
+        result(null);
+      } else {
+        result(products);
+      }
+    });
+  },
 }
 module.exports=Product

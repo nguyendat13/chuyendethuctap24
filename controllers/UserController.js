@@ -72,10 +72,11 @@ const UserController ={
         return res.status(200).json(result);
       }
     }, 
-    login :async (req, res) => {
+    login: async (req, res) => {
       try {
-        const { email, password } = req.body;
+        const { email, password } = req.body; // Không cần lấy id, phone, username, address ở đây
     
+        // Kiểm tra xem email và password có trống hay không
         if (!email || !password) {
           return res.status(400).json({
             user: null,
@@ -84,14 +85,9 @@ const UserController ={
           });
         }
     
-        const user = {
-          email: email,
-          password: password,
-        
-        };
-    
-        User.login(user, (err, data) => {
-          if (err) {
+        // Gọi hàm đăng nhập từ User
+        User.login({ email, password }, async (err, data) => {
+          if (err || !data) {
             return res.status(401).json({
               user: null,
               status: false,
@@ -99,8 +95,15 @@ const UserController ={
             });
           }
     
+          // Trả về thông tin người dùng đã đăng nhập thành công
           res.status(200).json({
-            user: data,
+            user: {
+              id: data.id, // Giả sử data chứa thông tin người dùng đã đăng nhập
+              email: data.email,
+              username: data.username,
+              phone: data.phone,
+              address: data.address,
+            },
             status: true,
             message: "Login successful",
           });
@@ -114,6 +117,8 @@ const UserController ={
         });
       }
     },
+    
+   
     show: (req, res) => {
       const id = req.params.id;
   
@@ -134,7 +139,30 @@ const UserController ={
       });
   },
   
-    
+  checkDuplicate: (req, res) => {
+    const { email, phone } = req.body;
+
+    User.checkDuplicate(email, phone, (err, isDuplicate) => {
+      if (err) {
+        return res.status(500).json({
+          status: false,
+          message: "Lỗi hệ thống",
+        });
+      }
+
+      if (isDuplicate) {
+        return res.status(200).json({
+          status: false,
+          message: "Email hoặc số điện thoại đã tồn tại.",
+        });
+      }
+
+      return res.status(200).json({
+        status: true,
+        message: "Email và số điện thoại hợp lệ.",
+      });
+    });
+  },
     forgotPassword :async (req, res) => {
       const { email } = req.body;
       try {

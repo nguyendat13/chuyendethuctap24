@@ -49,6 +49,9 @@ const User ={
         }
       });
       },
+
+     
+
       show: (id, result) => {
         const sql = `SELECT * FROM db_user WHERE id = ? LIMIT 1`; // Sử dụng câu truy vấn có tham số
         db.query(sql, [id], (err, rows) => {
@@ -59,7 +62,13 @@ const User ={
             result(rows.length > 0 ? rows[0] : null); // Nếu có kết quả, trả về dòng đầu tiên
         });
     },
-    
+    checkDuplicate: (email, phone, callback) => {
+      const sql = `SELECT * FROM db_user WHERE email = ? AND phone = ? LIMIT 1`;
+      db.query(sql, [email, phone], (err, result) => {
+        if (err) return callback(err, null);
+        callback(null, result.length > 0); // true nếu tìm thấy
+      });
+    },
 
   findEmail :(email) => {
     const sql = 'SELECT * FROM db_user WHERE email = ?';
