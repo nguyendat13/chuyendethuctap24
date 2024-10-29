@@ -25,10 +25,30 @@ const UserCreate = () => {
       return;
     }
   
-    if (password !== repassword) {
-      alert("Password confirmation does not match.");
+    const isPasswordComplex = (password) => {
+      const minLength = 8;
+      const hasUpperCase = /[A-Z]/.test(password);
+      const hasLowerCase = /[a-z]/.test(password);
+      const hasNumbers = /\d/.test(password);
+      const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+      return (
+          password.length >= minLength &&
+          hasUpperCase &&
+          hasLowerCase &&
+          hasNumbers &&
+          hasSpecialChars
+      );
+  };
+
+  if (!isPasswordComplex(password)) {
+      alert("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
       return;
-    }
+  }
+
+  if (repassword !== password) {
+      alert("Mật khẩu xác nhận không đúng");
+      return;
+  }
   
     // Create a form data object
     const user = new FormData();

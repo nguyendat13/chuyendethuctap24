@@ -19,31 +19,35 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    // Validate required fields
+  
     if (!deliveryName || !deliveryEmail || !deliveryPhone || !deliveryAddress) {
       setError("Please fill in all the required fields.");
       setLoading(false);
       return;
     }
-
+  
     const order = {
       delivery_name: deliveryName,
       delivery_email: deliveryEmail,
       delivery_phone: deliveryPhone,
       delivery_address: deliveryAddress,
       note,
-      total: subtotal, // Use subtotal directly
-      status: 2, // Assuming '2' means some default status
-      items: cartItems // Include items with quantities and prices
+      total: subtotal,
+      status: 2,
+      items: cartItems,
     };
-
+  
     try {
       const result = await OrderService.store(order);
       if (result.status) {
         // Navigate to Orders with order details
         navigate("/home/orders", { state: { order: { ...order, id: result.orderId } } });
       }
+      const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+      existingOrders.push(order);
+      localStorage.setItem("orders", JSON.stringify(existingOrders));
+  
+      navigate("/home/orders");
     } catch (error) {
       console.error("Error while saving order:", error);
       setError("Failed to save order. Please try again.");
@@ -51,6 +55,10 @@ const Checkout = () => {
       setLoading(false);
     }
   };
+  
+  
+  
+  
 
   if (cartItems.length === 0) {
     return (

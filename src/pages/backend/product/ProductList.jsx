@@ -66,7 +66,7 @@ const ProductList = () => {
                   <th>Tên sản phẩm</th>
                   <th>Danh mục</th>
                   <th>Thương hiệu</th>
-                  <th className='col-md-1'>Mô tả</th>
+                  {/* <th className='col-md-1'>Mô tả</th> */}
                   <th>Giá</th>
                   <th>Giá khuyến mãi</th>
                   <th>ID</th>
@@ -93,7 +93,7 @@ const ProductList = () => {
                         <td>{product.name}</td>
                         <td>{product.category_id}</td>
                         <td>{product.brand_id}</td>
-                        <td>{product.description}</td>
+                        {/* <td>{product.description}</td> */}
                         <td>{product.price}</td>
                         <td>{product.pricesale}</td>
                         <td>{product.id}</td>

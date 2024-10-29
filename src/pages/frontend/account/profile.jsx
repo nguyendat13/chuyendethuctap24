@@ -1,59 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import UserService from "../../../services/UserService";
 
 const Profile = () => {
-  const [userData, setUserData] = useState({});
+  const { id } = useParams(); // Lấy id từ URL
+  const [userData, setUserData] = useState(null); // Khởi tạo là null thay vì {}
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem("userData");
+    const fetchUser = async () => {
+      try {
+        const result = await UserService.show(id);
+        console.log("Fetched user:", result);
+        setUserData(result.order); // Đúng key trả về từ API
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (!user) {
-      alert("Bạn chưa đăng nhập. Vui lòng đăng nhập lại.");
-      navigate("/login"); // Điều hướng tới trang đăng nhập nếu không có dữ liệu người dùng
-    } else {
-      setUserData(JSON.parse(user)); // Cập nhật state với dữ liệu người dùng
-    }
-  }, [navigate]);
+    if (id) fetchUser(); // Chỉ fetch nếu có id
+  }, [id]);
+
+  if (loading) return <p>Đang tải...</p>;
+  if (!userData) return <p>Không tìm thấy tài khoản!</p>; // Xử lý khi không có dữ liệu
 
   return (
     <section className="profile-maincontent py-2">
       <div className="container">
-        <div className="row">
-          <div className="col-md-9 order-1 order-md-2">
-            <h1 className="fs-2 text-main">Account Information</h1>
-            <table className="table table-borderless">
-              <tbody>
-                <tr>
-                  <td>Tên tài khoản</td>
-                  <td>{userData.name || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Tên đăng nhập</td>
-                  <td>
-                    {userData.username || "N/A"}{" "}
-                    <Link to="/change-password">Đổi mật khẩu</Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Email</td>
-                  <td>{userData.email || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Điện thoại</td>
-                  <td>{userData.phone || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Địa chỉ</td>
-                  <td>
-                    {userData.address || "N/A"}{" "}
-                    <Link to="/edit-profile">Đổi địa chỉ</Link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <h1 className="fs-2">Thông Tin Tài Khoản</h1>
+        <table className="table table-borderless">
+          <tbody>
+            <tr>
+              <td>Tên Tài Khoản</td>
+              <td>{userData.name || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td>{userData.email || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td>Số Điện Thoại</td>
+              <td>{userData.phone || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td>Địa Chỉ</td>
+              <td>
+                {userData.address || 'N/A'}{' '}
+                <Link to="/edit-profile">Chỉnh Sửa Địa Chỉ</Link>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   );

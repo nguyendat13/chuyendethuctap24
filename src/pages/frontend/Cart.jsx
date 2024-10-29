@@ -56,11 +56,11 @@ const Cart = () => {
             console.log("Updating item with product_id:", item.product_id, "to quantity:", newQuantity);
             const result = await CartService.updateCartItem(item.product_id, { qty: newQuantity });
             console.log("Update result:", result.item.product_id);
-              
+
             if (result.status) {
                 // Instead of updating state manually, refetch the cart
                 fetchCartItems(); // Reset cart state
-                
+
             } else {
                 alert("Failed to update item quantity.");
             }
@@ -76,6 +76,8 @@ const Cart = () => {
     const handleQuantityChange = (item, delta) => {
         const newQuantity = item.qty + delta;
         updateCartItemQuantity(item, newQuantity);
+        window.location.href = "/home/cart";
+
     };
 
     const handleRemoveItem = async (product_id) => {
@@ -94,8 +96,11 @@ const Cart = () => {
             console.error("Error removing item:", error);
             alert("Failed to remove item.");
             fetchCartItems();
+
         } finally {
             setLoadingItem(null);
+            window.location.href = "/home/cart";
+
         }
     };
 

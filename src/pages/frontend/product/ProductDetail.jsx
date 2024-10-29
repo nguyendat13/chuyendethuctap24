@@ -32,7 +32,8 @@ const ProductDetail = () => {
       const result = await CartService.addToCart(productId, quantity); // Pass quantity when adding to cart
       console.log("Product added to cart successfully", result.productId);
       alert("Đã thêm một sản phẩm vào giỏ hàng");
-      navigate("/home/cart"); // Redirect to cart page
+      window.location.href = "/home/cart";
+
     } catch (error) {
       console.error("Failed to add product to cart", error);
     }

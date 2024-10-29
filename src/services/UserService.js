@@ -6,30 +6,25 @@ const UserService ={
     delete:async(id)=>{
         return await httpAxios.delete(`user/delete/${id}`)  
     },
-    store: async (user) => {
-        return await httpAxios.post(`user/store`, user)
+   store: async (user) => {
+         return await httpAxios.post(`user/store`, user)
       },
 
-
-   login: async (user) => {
-  try {
-    const response = await httpAxios.post(`user/login`, user, {
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (response.status === 200 && response.data.status) {
-      return response.data;
-    } else {
-      throw new Error(response.data.message || "Login failed");
-    }
-  } catch (error) {
-    console.error("Login API error:", error.message);
-    throw error;
-  }
-},
-
-
-
+    checkUserExists: async ({ email, phone }) => {
+        try {
+            const response = await httpAxios.post("user/check-user", { email, phone });
+            return response.data;
+        } catch (error) {
+            console.error("Lỗi khi kiểm tra người dùng:", error);
+            throw error;
+        }
+    },
+    login:async(user)=>{
+      return await httpAxios.post(`user/login`,user)
+  },
+    show: async (id) => {
+        return await httpAxios.get(`user/show/${id}`);
+    },
 
 
     forgotPassword:async(email) =>{
@@ -38,16 +33,7 @@ const UserService ={
     resetPassword:async(token, newPassword) =>{
         return await httpAxios.post(`user/reset_password`,token, newPassword);
     },
-    checkEmail:async(email)=> {
-        const response = await httpAxios.get(`user/check-email?email=${email}`);
-        return response.data; // Đảm bảo trả về { exists: true/false }
-    },
-    
-    // Ví dụ phương thức checkPhone trong UserService
-    checkPhone:async (phone) =>{
-        const response = await httpAxios.get(`users/check-phone?phone=${phone}`);
-        return response.data; // Đảm bảo trả về { exists: true/false }
-    }
+  
     
 }
 export default UserService

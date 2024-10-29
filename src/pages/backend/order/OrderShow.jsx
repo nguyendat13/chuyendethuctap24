@@ -6,42 +6,40 @@ import { urlImage } from "../../../config";
 
 const OrderShow = () => {
   const location = useLocation();
-  const { cartItems = [], subtotal = 0 } = location.state || {};
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const [order,setOrder]=useState();
+  const [order, setOrder] = useState(location.state?.order || null); // Nhận order từ state
+
   // Fetch the order details when the component mounts
   useEffect(() => {
-    if (order) {
-      setLoading(false); // Skip loading if order data is already available
-    } else {
-      const fetchOrder = async () => {
+    const fetchOrder = async () => {
+      if (!order) {
         try {
           const result = await OrderService.show(id);
           console.log("Fetched order:", result);
-          if (result.order) {
-            setOrder(result.order);
-          } else {
-            console.warn("Order not found in the response:", result);
-            setOrder(null);
-          }
+          setOrder(result.order || null);
         } catch (error) {
           console.error("Error fetching order details:", error);
         } finally {
           setLoading(false);
         }
-      };
-      fetchOrder();
-    }
-  }, [id, order]); // Add order to dependencies
+      } else {
+        setLoading(false); // Nếu order đã có thì không cần tải lại
+      }
+    };
+    fetchOrder();
+  }, [id, order]);
 
   if (loading) {
     return <p>Loading order details...</p>;
   }
 
-  if (!order && !cartItems.length) {
+  if (!order) {
     return <p>Order not found.</p>;
   }
+
+  // Kiểm tra nếu items tồn tại và là một mảng
+  const orderItems = Array.isArray(order.items) ? order.items : [];
 
   return (
     <div className="container py-5">
@@ -73,35 +71,35 @@ const OrderShow = () => {
               </tr>
             </thead>
             <tbody>
-            {cartItems.map((item) => (
-                    <tr key={item.product_id}>
-                      <td>
-                        <img
-                          className="img-fluid"
-                          src={`${urlImage}products/${item.image}`}
-                          alt={item.name}
-                        />
-                      </td>
-                      <td className="align-middle">{item.name}</td>
-                      <td className="text-center align-middle">{item.qty}</td>
-                      <td className="text-center align-middle">
-                        {item.price.toFixed(2)}
-                      </td>
-                      <td className="text-center align-middle">
-                        {(item.price * item.qty).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
+              {orderItems.map((item) => (
+                <tr key={item.product_id}>
+                  <td>
+                    <img
+                      className="img-fluid"
+                      src={`${urlImage}products/${item.image}`}
+                      alt={item.name}
+                    />
+                  </td>
+                  <td className="align-middle">{item.name}</td>
+                  <td className="text-center align-middle">{item.qty}</td>
+                  <td className="text-center align-middle">
+                    {item.price.toFixed(2)}
+                  </td>
+                  <td className="text-center align-middle">
+                    {(item.price * item.qty).toFixed(2)}
+                  </td>
+                </tr>
+              ))}
             </tbody>
             <tfoot>
-                  <tr>
-                    <td colSpan="4" className="text-end">
-                      <strong>Subtotal:</strong>
-                    </td>
-                    <td className="text-center">
-                      <strong>{subtotal.toFixed(2)}</strong>
-                    </td>
-                  </tr>
+              <tr>
+                <td colSpan="4" className="text-end">
+                  <strong>Subtotal:</strong>
+                </td>
+                <td className="text-center">
+                  <strong>{(orderItems.reduce((total, item) => total + (item.price * item.qty), 0)).toFixed(2)}</strong>
+                </td>
+              </tr>
             </tfoot>
           </table>
         </div>

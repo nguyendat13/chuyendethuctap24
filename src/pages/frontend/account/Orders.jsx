@@ -1,138 +1,128 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import OrderService from "../../../services/OrderService";
+import "../../../css/order.css"; // CSS phù hợp cho giao diện
 import { urlImage } from "../../../config";
+import OrderService from "../../../services/OrderService";
 
 const Orders = () => {
-  const location = useLocation();
-  const { cartItems = [], subtotal = 0 } = location.state || {};
-
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingItem, setLoadingItem] = useState(null);
-  const [error, setError] = useState(null);
+  const [isLoad, setIsLoad] = useState(false); // To trigger re-renders
 
+
+
+  // useEffect(() => {
+  //   fetchOrders();
+  // }, [isLoad]);
+
+  // const fetchOrders = async () => {
+  //   try {
+  //     const result = await OrderService.getAll();
+  //     setOrders(result.orders || []); // Lưu danh sách đơn hàng vào state
+  //   } catch (error) {
+  //     console.error("Error fetching orders:", error);
+  //   }
+  // };
+
+
+
+  // Lấy tất cả đơn hàng từ localStorage khi component được mount
   useEffect(() => {
-    fetchOrders();
+    const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    setOrders(savedOrders);
   }, []);
 
-  const fetchOrders = async () => {
-    try {
-      const result = await OrderService.getAll();
-      setOrders(result.orders || []);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      setError("Failed to fetch orders. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRemoveItem = async (orderId) => {
-    setLoadingItem(orderId);
-    try {
-      const result = await OrderService.delete(orderId);
-      if (result.status) {
-        setOrders((prevOrders) =>
-          prevOrders.filter((order) => order.id !== orderId)
-        );
-      } else {
-        setError("Failed to remove order. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error removing order:", error);
-      setError("Failed to remove order. Please try again.");
-    } finally {
-      setLoadingItem(null);
-    }
-  };
-
-  const calculateTotal = (items) => {
-    if (!items || !Array.isArray(items)) return 0;
-    return items.reduce((acc, item) => {
-      const itemTotal = (item.price || 0) * (item.qty || 0);
-      return acc + itemTotal;
-    }, 0);
-  };
-
-  if (loading) {
-    return <div>Loading orders...</div>;
+  if (orders.length === 0) {
+    return <p>Không có đơn hàng nào.</p>;
   }
 
+  const calculateTotal = (items = []) =>
+    items.reduce((total, item) => total + (item.price || 0) * (item.qty || 0), 0).toFixed(2);
+
+  const calculateQuantity = (items = []) =>
+    items.reduce((total, item) => total + (item.qty || 0), 0);
+
+  const handleDeleteOrder = (orderIndex) => {
+    const updatedOrders = orders.filter((_, index) => index !== orderIndex); // Loại bỏ đơn hàng theo index
+    setOrders(updatedOrders); // Cập nhật state
+    localStorage.setItem("orders", JSON.stringify(updatedOrders)); // Lưu vào localStorage
+  };
+  // const handleDelete = async (id) => {
+  //   try {
+  //     const result = await OrderService.delete(id);
+  //     if (result.status) {
+  //       setIsLoad(!isLoad); // Trigger re-fetch of data
+  //     } else {
+  //       alert("Failed to delete order.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting order:", error);
+  //     alert("Failed to delete order.");
+  //   }
+  // };
+ 
+  
   return (
-    <div className="orders">
-      <div className="container mt-5">
-        <h2>My Orders</h2>
+    <div className="order-details container">
+      <h2>Tất Cả Đơn Hàng</h2>
 
-        {error && <div className="alert alert-danger">{error}</div>}
+      {orders.map((order,index) => (
+        <div key={index} className="order-item mb-5">
+          <h3>Đơn Hàng #{index+1}</h3>
+          <button
+              className="btn btn-danger"
+              onClick={() => handleDeleteOrder(index)} // Gọi hàm xóa với id của đơn hàng
+              >
+              Xóa Đơn Hàng
+            </button>
+          <div className="order-info">
+            <p><strong>Tên người nhận:</strong> {order.delivery_name}</p>
+            <p><strong>Email:</strong> {order.delivery_email}</p>
+            <p><strong>Số điện thoại:</strong> {order.delivery_phone}</p>
+            <p><strong>Địa chỉ:</strong> {order.delivery_address}</p>
+            <p><strong>Ghi chú:</strong> {order.note}</p>
+            <p><strong>Tổng cộng:</strong> {calculateTotal(order.items)} VND</p>
+            <p><strong>Tổng số lượng:</strong> {calculateQuantity(order.items)}</p>
+          </div>
 
-        {orders.length > 0 ? (
-          <table className="table table-striped mt-4">
-            <thead>
+          <h4>Chi Tiết Sản Phẩm</h4>
+          <table className="table table-bordered align-middle">
+            <thead className="table-light">
               <tr>
-                <th>Order ID</th>
-                <th>Image</th>
-                <th>Creation Date</th>
-                <th>Order Status</th>
-                <th>Total</th>
-                <th>Quantity</th>
-                <th>Remove</th>
+                <th>Sản Phẩm</th>
+                <th>Phân Loại</th>
+                <th className="text-center">Số Lượng</th>
+                <th className="text-center">Đơn Giá</th>
+                <th className="text-center">Tổng</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
-                <tr key={order.id}>
-                  <td>{order.id || "N/A"}</td>
+              {order.items && order.items.length > 0 && order.items.map((item) => (
+                <tr key={item.product_id}>
                   <td>
-                    {order.items && order.items.length > 0 ? (
+                    <div className="d-flex align-items-center">
                       <img
-                        className="img-fluid"
-                        src={`${urlImage}products/${order.items[0].image}`} // Display the first item's image
-                        alt={order.items[0].name}
+                        src={urlImage + "products/" + item.image}
+                        alt={item.name}
+                        className="img-thumbnail me-3"
+                        style={{ width: "80px" }}
                       />
-                    ) : (
-                      "No Image"
-                    )}
+                      <div>
+                        <p className="mb-1">{item.name}</p>
+                        <span className="text-muted">Đợi ý 15 ngày</span>
+                      </div>
+                    </div>
                   </td>
-                  <td>
-                    {order.created_at
-                      ? new Date(order.created_at).toLocaleDateString()
-                      : "N/A"}
-                  </td>
-                  <td>{order.order_status || "Pending"}</td>
+                  <td>{item.variant || "Không xác định"}</td>
+                  <td className="text-center">{item.qty}</td>
+                  <td className="text-center">{item.price.toFixed(2)} VND</td>
                   <td className="text-center">
-                    {calculateTotal(order.items).toFixed(2)}
-                  </td>
-                  <td className="text-center">
-                    {order.items
-                      ? order.items.reduce((total, item) => total + item.qty, 0)
-                      : 0}
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-black"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleRemoveItem(order.id);
-                      }}
-                      disabled={loadingItem === order.id}
-                    >
-                      {loadingItem === order.id ? (
-                        <span className="spinner-border spinner-border-sm" />
-                      ) : (
-                        "X"
-                      )}
-                    </button>
+                    {(item.price * item.qty).toFixed(2)} VND
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        ) : (
-          <p>Bạn chưa có đơn hàng nào.</p> // "You have no orders."
-        )}
-        
-      </div>
+        </div>
+      ))}
     </div>
   );
 };
