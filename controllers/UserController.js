@@ -2,13 +2,8 @@ const User=require('../models/User')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../node_modules/utils/sendEmail');
-const generateToken = (user) => {
-  return jwt.sign(
-    { id: user.id, email: user.email, roles: user.roles },
-    process.env.JWT_SECRET,
-    { expiresIn: '1h' }
-  );
-};
+
+
 const UserController ={
 
     getAll:async(req,res)=>{
@@ -35,6 +30,7 @@ const UserController ={
     store: async (req, res) => {
       try {
         const formBody = req.body;
+        
         let image = req.files.image;
         image.mv("./assets/images/users/" + image.name, function (err, result) {
           if (err) throw err;
@@ -56,6 +52,7 @@ const UserController ={
           status: formBody.status,
           created_at: `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
         };
+        
         await User.store(user, function (data) {
           //data thứ mà nó trả về
           const result = {
@@ -75,46 +72,68 @@ const UserController ={
         return res.status(200).json(result);
       }
     }, 
-    
-    
-    login: async (req, res) => {
+    login :async (req, res) => {
       try {
         const { email, password } = req.body;
-  
+    
         if (!email || !password) {
-          return res.status(400).json({ status: false, message: 'Email and password are required' });
+          return res.status(400).json({
+            user: null,
+            status: false,
+            message: "Email and password cannot be empty",
+          });
         }
-  
-        User.login(email, async (err, user) => {
+    
+        const user = {
+          email: email,
+          password: password,
+        
+        };
+    
+        User.login(user, (err, data) => {
           if (err) {
-            return res.status(500).json({ status: false, message: 'Server error' });
+            return res.status(401).json({
+              user: null,
+              status: false,
+              message: "Invalid email or password",
+            });
           }
-          if (!user) {
-            return res.status(401).json({ status: false, message: 'Invalid credentials' });
-          }
-  
-          // Kiểm tra mật khẩu
-          const isMatch = await bcrypt.compare(password, user.password);
-          if (!isMatch) {
-            return res.status(401).json({ status: false, message: 'Invalid credentials' });
-          }
-  
-          // Tạo token và trả về thông tin người dùng
-          const token = generateToken(user);
+    
           res.status(200).json({
+            user: data,
             status: true,
-            message: 'Login successful',
-            user: { id: user.id, email: user.email },
-            token,
+            message: "Login successful",
           });
         });
       } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ status: false, message: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({
+          user: null,
+          status: false,
+          message: "Internal server error",
+        });
       }
     },
-    
-    
+    show: (req, res) => {
+      const id = req.params.id;
+  
+      User.show(id, (data) => {
+          if (!data) {
+              return res.status(404).json({
+                  order: null,
+                  status: false,
+                  message: "User not found",
+              });
+          }
+  
+          return res.status(200).json({
+              order: data, // Đúng key để phản hồi
+              status: true,
+              message: "Data loaded successfully",
+          });
+      });
+  },
+  
     
     forgotPassword :async (req, res) => {
       const { email } = req.body;
@@ -152,24 +171,6 @@ const UserController ={
     }
   },
   
-  checkEmail: async (req, res) => {
-    const { email } = req.query;
-    try {
-      const exists = await User.checkEmail(email);
-      res.status(200).json({ exists, message: exists ? "Email already exists." : "Email is available." });
-    } catch (err) {
-      res.status(500).json({ message: "Server error" });
-    }
-  },
-  
-  checkPhone: async (req, res) => {
-    const { phone } = req.query;
-    try {
-      const exists = await User.checkPhone(phone);
-      res.status(200).json({ exists, message: exists ? "Phone number already exists." : "Phone number is available." });
-    } catch (err) {
-      res.status(500).json({ message: "Server error" });
-    }
-  },
+ 
 }
 module.exports=UserController
