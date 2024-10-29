@@ -34,6 +34,10 @@ const ProductService={
       edit: async (id, product) => {
         return await httpAxios.put(`product/edit/${id}`, product);
       },
-    
+      searchProducts :async (query) => {
+        const response = await httpAxios.get(`product/search?query=${encodeURIComponent(query)}`);
+        return response.data; // Dữ liệu sản phẩm
+      },
+      
 }
 export default ProductService

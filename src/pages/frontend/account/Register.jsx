@@ -22,7 +22,8 @@
    
         const handleSubmit = (event) => {
             event.preventDefault();
-
+            console.log("Đã bấm nút đăng ký");
+            
             const image = document.querySelector("#image");
 
             // Validate input fields
@@ -62,13 +63,19 @@
                 return;
             }
 
-            const userCheckResponse =  UserService.checkUserExists({ email, phone });
-            if (userCheckResponse.exists) {
-                alert(userCheckResponse.message); // Thông báo nếu người dùng đã tồn tại
-                return;
-            }
+         
+            // try {
+            //     const duplicateCheck =  UserService.checkDuplicate(email, phone);
+            //     if (!duplicateCheck.status) {
+            //         setErrors({ general: duplicateCheck.message });
+            //         return;
+            //     }
+            // } catch (error) {
+            //     console.error("Lỗi khi kiểm tra trùng lặp:", error);
+            //     setErrors({ general: "Lỗi khi kiểm tra trùng lặp dữ liệu." });
+            //     return;
+            // }
         
-
             // Create a form data object
             const user = new FormData();
             user.append("username", username);
@@ -82,14 +89,18 @@
             user.append("status", status);
             user.append("image", image.files.length === 0 ? "" : image.files[0]);
 
+            console.log("Dữ liệu người dùng:", user);
             // Submit form using UserService
             (async () => {
                 const result = await UserService.store(user);
+                console.log("Kết quả đăng ký:", result);
+            
                 if (result.status === true) {
                     alert(result.message);
                     setInsertId(result.user.insertId);
-                    console.log(result.user);
                     navigate("/login");
+                } else {
+                    setErrors({ general: result.message });
                 }
             })();
         };

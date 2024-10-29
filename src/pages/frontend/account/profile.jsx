@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import UserService from "../../../services/UserService";
+import { Link, useNavigate } from 'react-router-dom';
+import UserService from '../../../services/UserService'; // Dịch vụ lấy thông tin người dùng
 
 const Profile = () => {
-  const { id } = useParams(); // Lấy id từ URL
-  const [userData, setUserData] = useState(null); // Khởi tạo là null thay vì {}
-  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const result = await UserService.show(id);
-        console.log("Fetched user:", result);
-        setUserData(result.order); // Đúng key trả về từ API
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const user = localStorage.getItem("userData");
 
-    if (id) fetchUser(); // Chỉ fetch nếu có id
-  }, [id]);
-
-  if (loading) return <p>Đang tải...</p>;
-  if (!userData) return <p>Không tìm thấy tài khoản!</p>; // Xử lý khi không có dữ liệu
+    if (!user) {
+      alert("Bạn chưa đăng nhập. Vui lòng đăng nhập lại.");
+      navigate("/login");
+    } else {
+      const parsedUser = JSON.parse(user);
+      console.log("Parsed User Data:", parsedUser); // Check the data structure
+      setUserData(parsedUser);
+    }
+  }, [navigate]);
+ 
 
   return (
     <section className="profile-maincontent py-2">
@@ -35,7 +28,7 @@ const Profile = () => {
           <tbody>
             <tr>
               <td>Tên Tài Khoản</td>
-              <td>{userData.name || 'N/A'}</td>
+              <td>{userData.username || 'N/A'}</td>
             </tr>
             <tr>
               <td>Email</td>
@@ -54,6 +47,7 @@ const Profile = () => {
             </tr>
           </tbody>
         </table>
+       
       </div>
     </section>
   );

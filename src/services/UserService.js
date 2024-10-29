@@ -10,22 +10,16 @@ const UserService ={
          return await httpAxios.post(`user/store`, user)
       },
 
-    checkUserExists: async ({ email, phone }) => {
-        try {
-            const response = await httpAxios.post("user/check-user", { email, phone });
-            return response.data;
-        } catch (error) {
-            console.error("Lỗi khi kiểm tra người dùng:", error);
-            throw error;
-        }
-    },
     login:async(user)=>{
       return await httpAxios.post(`user/login`,user)
   },
+ 
     show: async (id) => {
         return await httpAxios.get(`user/show/${id}`);
     },
-
+    checkDuplicate: async (email, phone) => {
+        return await httpAxios.get('user/check-duplicate', { email, phone });
+      },
 
     forgotPassword:async(email) =>{
         return await httpAxios.post(`user/forgot_password`,email);

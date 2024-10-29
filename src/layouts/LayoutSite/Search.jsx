@@ -1,14 +1,29 @@
-
-
-import React from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
-  return (
-    <form className='search' method="GET">
-  <input type="text" name="query" placeholder="find product..."/>
-  <button type="submit">Search</button>
- </form>
-  )
-}
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
 
-export default Search
+  const handleSearch = (event) => {
+    event.preventDefault();
+    if (query.trim()) {
+      navigate(`/search-results?query=${encodeURIComponent(query.trim())}`);
+    }
+  };
+
+  return (
+    <form className='search' onSubmit={handleSearch}>
+      <input
+        type="text"
+        name="query"
+        placeholder="Tìm sản phẩm..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)} // Cập nhật trạng thái query
+      />
+      <button type="submit">Tìm kiếm</button>
+    </form>
+  );
+};
+
+export default Search;

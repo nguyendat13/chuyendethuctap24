@@ -47,7 +47,7 @@ const Checkout = () => {
       existingOrders.push(order);
       localStorage.setItem("orders", JSON.stringify(existingOrders));
   
-      navigate("/home/orders");
+      navigate("/home/thanks");
     } catch (error) {
       console.error("Error while saving order:", error);
       setError("Failed to save order. Please try again.");

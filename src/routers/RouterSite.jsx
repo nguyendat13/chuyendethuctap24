@@ -18,9 +18,12 @@ import ForgotPassword from "../pages/frontend/account/ForgotPassword";
 import ResetPassword from "../pages/frontend/account/ResetPassword";
 import Thankyou from "../pages/frontend/thankyou";
 import Orders from "../pages/frontend/account/Orders";
+import SearchResults from "../pages/frontend/search/SearchResults ";
 const RouterSite = [
   
   {path: "/home",element: <Home />,},
+
+  {path: "/home/search-results",element: <SearchResults />,},
 
   {path: "/home/shop",element: <Shop />,},
   {path:"/home/shop/:slug",element:<ProductDetail/>},

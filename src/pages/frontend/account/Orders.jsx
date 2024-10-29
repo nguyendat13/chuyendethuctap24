@@ -40,24 +40,29 @@ const Orders = () => {
   const calculateQuantity = (items = []) =>
     items.reduce((total, item) => total + (item.qty || 0), 0);
 
-  const handleDeleteOrder = (orderIndex) => {
-    const updatedOrders = orders.filter((_, index) => index !== orderIndex); // Loại bỏ đơn hàng theo index
-    setOrders(updatedOrders); // Cập nhật state
-    localStorage.setItem("orders", JSON.stringify(updatedOrders)); // Lưu vào localStorage
-  };
-  // const handleDelete = async (id) => {
-  //   try {
-  //     const result = await OrderService.delete(id);
-  //     if (result.status) {
-  //       setIsLoad(!isLoad); // Trigger re-fetch of data
-  //     } else {
-  //       alert("Failed to delete order.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting order:", error);
-  //     alert("Failed to delete order.");
-  //   }
+  // const handleDeleteOrder = (orderIndex) => {
+  //   const updatedOrders = orders.filter((_, index) => index !== orderIndex); // Loại bỏ đơn hàng theo index
+  //   setOrders(updatedOrders); // Cập nhật state
+  //   localStorage.setItem("orders", JSON.stringify(updatedOrders)); // Lưu vào localStorage
   // };
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      const result = await OrderService.delete(orderId); // Gọi API xóa đơn hàng từ server
+  
+      if (result.status) {
+        const updatedOrders = orders.filter(order => order.id !== orderId); // Xóa khỏi state
+        setOrders(updatedOrders);
+        localStorage.setItem("orders", JSON.stringify(updatedOrders)); // Cập nhật localStorage
+        alert("Đã xóa đơn hàng thành công!");
+      } else {
+        alert("Không thể xóa đơn hàng. Vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi xóa đơn hàng:", error);
+      alert("Có lỗi xảy ra. Vui lòng thử lại.");
+    }
+  };
+  
  
   
   return (
@@ -65,11 +70,11 @@ const Orders = () => {
       <h2>Tất Cả Đơn Hàng</h2>
 
       {orders.map((order,index) => (
-        <div key={index} className="order-item mb-5">
-          <h3>Đơn Hàng #{index+1}</h3>
+        <div key={order.id} className="order-item mb-5">
+          <h3>Đơn Hàng #{order.id}</h3>
           <button
               className="btn btn-danger"
-              onClick={() => handleDeleteOrder(index)} // Gọi hàm xóa với id của đơn hàng
+              onClick={() => handleDeleteOrder(order.id)} // Gọi hàm xóa với id của đơn hàng
               >
               Xóa Đơn Hàng
             </button>
@@ -79,16 +84,15 @@ const Orders = () => {
             <p><strong>Số điện thoại:</strong> {order.delivery_phone}</p>
             <p><strong>Địa chỉ:</strong> {order.delivery_address}</p>
             <p><strong>Ghi chú:</strong> {order.note}</p>
-            <p><strong>Tổng cộng:</strong> {calculateTotal(order.items)} VND</p>
-            <p><strong>Tổng số lượng:</strong> {calculateQuantity(order.items)}</p>
+            {/* <p><strong>Tổng cộng:</strong> {calculateTotal(order.items)} VND</p>
+            <p><strong>Tổng số lượng:</strong> {calculateQuantity(order.items)}</p> */}
           </div>
 
-          <h4>Chi Tiết Sản Phẩm</h4>
+          {/* <h4>Chi Tiết Sản Phẩm</h4> */}
           <table className="table table-bordered align-middle">
             <thead className="table-light">
               <tr>
                 <th>Sản Phẩm</th>
-                <th>Phân Loại</th>
                 <th className="text-center">Số Lượng</th>
                 <th className="text-center">Đơn Giá</th>
                 <th className="text-center">Tổng</th>
@@ -111,7 +115,6 @@ const Orders = () => {
                       </div>
                     </div>
                   </td>
-                  <td>{item.variant || "Không xác định"}</td>
                   <td className="text-center">{item.qty}</td>
                   <td className="text-center">{item.price.toFixed(2)} VND</td>
                   <td className="text-center">
