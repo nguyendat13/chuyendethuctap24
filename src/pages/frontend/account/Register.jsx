@@ -62,10 +62,10 @@
 
             // Validate input fields
             const newErrors = {};
-            if (!username) newErrors.username = "Tên người dùng là bắt buộc.";
-            if (!email) newErrors.email = "Email là bắt buộc.";
-            if (!password) newErrors.password = "Mật khẩu là bắt buộc.";
-            if (!repassword) newErrors.repassword = "Cần xác nhận mật khẩu.";
+            if (!username) newErrors.username = "Username is required.";
+            if (!email) newErrors.email = "Email is required.";
+            if (!password) newErrors.password = "Password is required.";
+            if (!repassword) newErrors.repassword = "Password confirmation is required.";
 
             if (Object.keys(newErrors).length > 0) {
                 setErrors(newErrors);
@@ -88,12 +88,12 @@
             };
 
             if (!isPasswordComplex(password)) {
-                alert("Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
+                alert("Passwords must be at least 8 characters, including uppercase, lowercase, numbers, and special characters.");
                 return;
             }
 
             if (repassword !== password) {
-                alert("Mật khẩu xác nhận không đúng.");
+                alert("The confirmation password is incorrect.");
                 return;
             }
 

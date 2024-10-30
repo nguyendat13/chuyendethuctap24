@@ -17,11 +17,11 @@ const Search = () => {
       <input
         type="text"
         name="query"
-        placeholder="Tìm sản phẩm..."
+        placeholder="Find products..."
         value={query}
         onChange={(e) => setQuery(e.target.value)} // Cập nhật trạng thái query
       />
-      <button type="submit">Tìm kiếm</button>
+      <button type="submit">Search</button>
     </form>
   );
 };

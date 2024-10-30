@@ -11,6 +11,10 @@ import NoPage from "./pages/NoPage";
 import Login from "./pages/frontend/account/Login";
 import Register from "./pages/frontend/account/Register";
 import RouterRegister from "./routers/RouterRegister";
+import ForgotPassword from "./pages/frontend/account/ForgotPassword";
+import RouterForgotPass from "./routers/RouterForgotPass";
+import ResetPassword from "./pages/frontend/account/ResetPassword";
+import RouterResetPass from "./routers/RouterResetPass";
 function App() {
   let element =useRoutes([
     
@@ -34,6 +38,16 @@ function App() {
       path: "admin",
       element: <LayoutAdmin />,
       children:RouterAdmin,
+    },
+    {
+      path: "forgot_password",
+      element:<ForgotPassword/>,
+      children:RouterForgotPass,
+    },
+    {
+      path: "reset_password",
+      element:<ResetPassword/>,
+      children:RouterResetPass,
     },
     {
       path:"*",

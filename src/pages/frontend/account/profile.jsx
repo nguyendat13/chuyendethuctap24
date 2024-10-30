@@ -23,11 +23,11 @@ const Profile = () => {
   return (
     <section className="profile-maincontent py-2">
       <div className="container">
-        <h1 className="fs-2">Thông Tin Tài Khoản</h1>
+        <h1 className="fs-2">User Information</h1>
         <table className="table table-borderless">
           <tbody>
             <tr>
-              <td>Tên Tài Khoản</td>
+              <td>User Name</td>
               <td>{userData.username || 'N/A'}</td>
             </tr>
             <tr>
@@ -35,14 +35,14 @@ const Profile = () => {
               <td>{userData.email || 'N/A'}</td>
             </tr>
             <tr>
-              <td>Số Điện Thoại</td>
+              <td>Phone</td>
               <td>{userData.phone || 'N/A'}</td>
             </tr>
             <tr>
-              <td>Địa Chỉ</td>
+              <td>Address</td>
               <td>
                 {userData.address || 'N/A'}{' '}
-                <Link to="/edit-profile">Chỉnh Sửa Địa Chỉ</Link>
+                <Link to="/edit-profile">Edit</Link>
               </td>
             </tr>
           </tbody>

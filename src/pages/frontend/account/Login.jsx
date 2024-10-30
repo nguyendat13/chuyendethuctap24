@@ -54,9 +54,9 @@ const Login = () => {
     } catch (error) {
       console.error("Error during login:", error.message);
       if (error.response && error.response.status === 401) {
-        setErrors({ general: "Sai email hoặc mật khẩu. Vui lòng thử lại." });
+        setErrors({ general: "Wrong email or password. Please try again." });
     } else {
-        setErrors({ general: "Đã xảy ra lỗi. Vui lòng thử lại." });
+        setErrors({ general: "An error has occurred. Please try again." });
     }    }
   };
 
@@ -125,7 +125,7 @@ const Login = () => {
                     Remember me
                   </label>
                 </div>
-                <Link to="/home/forgot_password" className="text-body">
+                <Link to="/forgot_password" className="text-body">
                   Forgot password?
                 </Link>
               </div>

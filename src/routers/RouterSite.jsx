@@ -49,8 +49,7 @@ const RouterSite = [
   {path:"/home/brand",element:<PageBrand/>},
   {path:"/home/brand/:slug",element:<Productbrand/>},
 
-  {path: "/home/forgot_password",element:<ForgotPassword/>,},
-  {path: "/home/reset_password",element:<ResetPassword/>,},
+
 
 
 ];

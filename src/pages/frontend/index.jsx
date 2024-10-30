@@ -32,10 +32,9 @@ const index = () => {
       <section className="section_feedback pb-5">
         <div className="container">
           <div className="list-feedback">
-            <h2 className="text-center pt-5">Khách hàng nói gì về chúng tôi</h2>
+            <h2 className="text-center pt-5">What Our Customers Say About Us</h2>
             <p className="block-desc text-center mb-4">
-              Hơn 1.000 khách hàng đã hài lòng về dịch vụ và sản phẩm của chúng
-              tôi
+            More than 1,000 customers have been satisfied with our services and products
             </p>
           </div>
         </div>

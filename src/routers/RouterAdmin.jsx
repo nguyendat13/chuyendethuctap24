@@ -10,6 +10,7 @@ import { TopicCreate, TopicList } from "../pages/backend/topic"
 import { UserCreate, UserList } from "../pages/backend/user"
 import ProductEdit from "../pages/backend/product/ProductEdit"
 import OrderShow from "../pages/backend/order/OrderShow"
+import OrderEdit from "../pages/backend/order/OrderEdit"
 
 const RouterAdmin =[
    
@@ -34,6 +35,7 @@ const RouterAdmin =[
     {path:"order",element:<OrderList/>},
     {path:"order/create",element:<OrderCreate/>},
     {path:"order/show/:id",element:<OrderShow/>},
+    { path: "order/edit/:id",element:<OrderEdit/>},
 
     {path:"post",element:<PostList/>},
     {path:"post/create",element:<PostCreate/>},

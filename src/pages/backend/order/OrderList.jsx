@@ -35,7 +35,23 @@ const OrderList = () => {
       alert("Failed to delete order.");
     }
   };
-
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 1:
+        return "Đang xử lý";
+      case 2:
+        return "Đã xác nhận";
+      case 3:
+        return "Đang vận chuyển";
+      case 4:
+        return "Đã giao";
+      case 5:
+        return "Đã hủy"
+      default:
+        return "Không xác định";
+    }
+  };
+  
   return (
     <div>
       <section className="content-header">
@@ -81,6 +97,7 @@ const OrderList = () => {
                 <th>Ghi chú</th>
                 <th>Ngày tạo</th>
                 <th>ID</th>
+                <th>Trạng thái đơn hàng</th>
                 <th>Chức năng</th>
               </tr>
             </thead>
@@ -102,6 +119,7 @@ const OrderList = () => {
                   <td>{order.note}</td>
                   <td>{order.created_at}</td>
                   <td>{order.id}</td>
+                  <td>{getStatusLabel(order.order_status)}</td>
                   <td className="functional">
                     <button
                       className={order.status ? "btn btn-success" : "btn btn-danger"}

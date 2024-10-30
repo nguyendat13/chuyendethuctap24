@@ -115,9 +115,11 @@ const ProductList = () => {
                                                     </Link></div>
 
                                                     <div className='regedit col-md-2'><Link
-                                                    to={"/admin/product/edit/" + product.id}
-                                                        className="btn btn-sm btn-primary bproduct-0"
-                                                    >
+                                                   to={{
+                                                    pathname: `/admin/product/edit/${product.id}`,                                                                                                      
+                                                  }}
+                                                  className="btn btn-sm btn-primary bproduct-0"
+                                                >
                                                         <FaRegEdit />
                                                     </Link></div>
 

@@ -34,6 +34,7 @@ const Checkout = () => {
       note,
       total: subtotal,
       status: 2,
+      order_status: 1, // Thay đổi trạng thái đơn hàng, có thể điều chỉnh giá trị này theo yêu cầu
       items: cartItems,
     };
   
@@ -44,7 +45,7 @@ const Checkout = () => {
       if (result.status) {
         const newOrder = { ...order, id: result.order.id }; // Adjust this line if necessary
         updateLocalStorage(newOrder);
-        navigate("/home/orders", { state: { order: newOrder } });
+        navigate("/home/thanks", { state: { order: newOrder } });
       } else {
         setError(result.message || "Failed to save order. Please try again.");
       }

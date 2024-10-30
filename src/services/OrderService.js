@@ -12,5 +12,8 @@ const OrderService ={
     show: async (id) => {
         return await httpAxios.get(`order/show/${id}`);
       },
+      edit: async (id, orderData) => {
+        return await httpAxios.put(`/order/edit/${id}`, orderData);
+      },
 }
 export default OrderService
