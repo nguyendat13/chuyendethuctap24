@@ -86,5 +86,45 @@ const OrderController = {
       });
     });
   },
+  edit: async (req, res) => {
+    try {
+      const id = req.params.id; // Lấy ID từ URL params
+      let bodyData = req.body;  // Lấy dữ liệu từ request body
+
+      // Cấu trúc lại dữ liệu cần cập nhật
+      let d = new Date();
+      const order = {
+        delivery_name: bodyData.delivery_name,
+        delivery_email: bodyData.delivery_email,
+        delivery_phone: bodyData.delivery_phone,
+        delivery_address: bodyData.delivery_address,
+        note: bodyData.note,
+        order_status: bodyData.order_status,
+        updated_at: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+        updated_by: 1,  // Thay đổi tùy thuộc vào user đăng nhập
+      };
+
+      // Gọi hàm edit trong model Order để cập nhật dữ liệu
+      await Order.edit(order, id, (error, result) => {
+        if (error) {
+          throw new Error("Lỗi khi cập nhật order: " + error.message);
+        }
+
+        const response = {
+          order: order,
+          status: true,
+          message: "Cập nhật đơn hàng thành công!",
+        };
+        return res.status(200).json(response);
+      });
+    } catch (error) {
+      const response = {
+        order: null,
+        status: false,
+        message: error.message,
+      };
+      return res.status(500).json(response);
+    }
+  },
 };
 module.exports = OrderController;

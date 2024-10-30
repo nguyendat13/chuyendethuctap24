@@ -58,7 +58,7 @@ const UserController ={
           const result = {
             user: user,
             status: true,
-            message: "Thêm dữ liệu thành công!",
+            message: "Registered successfully",
             
           };
           return res.status(200).json(result);

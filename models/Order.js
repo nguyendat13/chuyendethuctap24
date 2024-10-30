@@ -45,6 +45,16 @@ const Order = {
       }
     });
   },
+  edit: (order, id, callback) => {
+    const sql = `UPDATE db_order SET ? WHERE id = ?`;
+    db.query(sql, [order, id], (err, result) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, result);
+      }
+    });
+  },
 };
 
 module.exports = Order;
