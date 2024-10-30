@@ -20,10 +20,44 @@
 
         // Fetch existing users on component mount
    
-        const handleSubmit = (event) => {
+        const handleSubmit = async (event) => {
             event.preventDefault();
-            console.log("Đã bấm nút đăng ký");
+
+        //     const handleCheckDuplicate = async () => {
+        //         try {
+        //             const response = await UserService.checkDuplicate(email, phone);
             
+        //             // Kiểm tra phản hồi có hợp lệ không
+        //             if (!response || !response.data) {
+        //                 setErrors({ general: "Lỗi hệ thống. Vui lòng thử lại sau." });
+        //                 return false;
+        //             }
+            
+        //             if (!response.data.status) {
+        //                 setErrors({ general: response.data.message });
+        //                 return false; // Ngừng nếu có trùng lặp
+        //             }
+            
+        //             return true; // Tiếp tục nếu không trùng lặp
+        //         } catch (error) {
+        //             console.error("Lỗi khi kiểm tra trùng lặp:", error);
+        //             setErrors({ general: "Lỗi hệ thống. Vui lòng thử lại sau." });
+        //             return false;
+        //         }
+        //     };
+            
+
+        // console.log("Đang kiểm tra trùng lặp email và số điện thoại...");
+
+        // const isValid = await handleCheckDuplicate();  // Đợi kết quả kiểm tra
+        // if (!isValid) {
+        //     alert("Email hoặc phone đã tồn tại")
+        //     console.log("Email hoặc số điện thoại đã tồn tại.");
+        //     return;  // Ngừng đăng ký nếu trùng lặp
+        // }
+
+        // console.log("Không có trùng lặp, tiếp tục đăng ký...");
+
             const image = document.querySelector("#image");
 
             // Validate input fields
@@ -63,18 +97,8 @@
                 return;
             }
 
-         
-            // try {
-            //     const duplicateCheck =  UserService.checkDuplicate(email, phone);
-            //     if (!duplicateCheck.status) {
-            //         setErrors({ general: duplicateCheck.message });
-            //         return;
-            //     }
-            // } catch (error) {
-            //     console.error("Lỗi khi kiểm tra trùng lặp:", error);
-            //     setErrors({ general: "Lỗi khi kiểm tra trùng lặp dữ liệu." });
-            //     return;
-            // }
+     
+
         
             // Create a form data object
             const user = new FormData();
@@ -235,7 +259,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                             
                                 <div className="text-center text-lg-start mt-4 pt-2">
                                     <button type="submit" className="btn btn-primary btn-lg">Register</button>
                                 </div>
@@ -252,3 +276,8 @@
     };
 
     export default Register;
+
+
+
+  
+    

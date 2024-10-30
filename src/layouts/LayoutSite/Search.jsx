@@ -8,7 +8,7 @@ const Search = () => {
   const handleSearch = (event) => {
     event.preventDefault();
     if (query.trim()) {
-      navigate(`/search-results?query=${encodeURIComponent(query.trim())}`);
+      navigate(`/home/search-results?query=${encodeURIComponent(query.trim())}`);
     }
   };
 

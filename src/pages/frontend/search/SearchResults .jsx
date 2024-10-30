@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ProductService from '../../../services/ProductService'; // Dịch vụ để lấy sản phẩm
-
+import { urlImage } from '../../../config';
 const SearchResults = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,15 +14,15 @@ const SearchResults = () => {
         const response = await ProductService.searchProducts(query); // Gọi dịch vụ tìm kiếm
         setProducts(response.products); // Cập nhật state với danh sách sản phẩm
       } catch (error) {
-        console.error("Lỗi khi tải sản phẩm:", error);
-        setError("Lỗi khi tải sản phẩm.");
+        console.error('Lỗi khi tải sản phẩm:', error);
+        setError('Lỗi khi tải sản phẩm.');
       } finally {
         setLoading(false);
       }
     };
 
-    if (query) { // Kiểm tra nếu có query
-      fetchProducts();
+    if (query) {
+      fetchProducts(); // Thực hiện tìm kiếm nếu có query
     }
   }, [query]);
 
@@ -35,10 +35,17 @@ const SearchResults = () => {
       <h1>Kết quả tìm kiếm cho: <strong>{query}</strong></h1>
       <ul>
         {products.map((product) => (
-          <li key={product.id}>
-            <h2>{product.name}</h2>
-            <p>{product.description}</p>
-            <p>Giá: {product.price} VNĐ</p>
+          <li key={product.id} style={{ marginBottom: '20px', listStyle: 'none' }}>
+            <Link to={`/home/shop/${product.slug}`} style={{ textDecoration: 'none', color: 'black' }}>
+              <h2>{product.name}</h2>
+              {/* <img
+                src={urlImage + "products/" + product.image}
+                alt={product.name}
+                style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+              />
+              <p>{product.description}</p>
+              <p>Giá: {product.price.toLocaleString()} VNĐ</p> */}
+            </Link>
           </li>
         ))}
       </ul>

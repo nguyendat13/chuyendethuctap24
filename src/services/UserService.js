@@ -17,10 +17,14 @@ const UserService ={
     show: async (id) => {
         return await httpAxios.get(`user/show/${id}`);
     },
-    checkDuplicate: async (email, phone) => {
-        return await httpAxios.get('user/check-duplicate', { email, phone });
-      },
-
+        // checkDuplicate: async (email, phone) => {
+        //     return await httpAxios.get('user/check-duplicate', { email, phone });
+        // },
+        checkDuplicate: async (email, phone) => {
+            return await httpAxios.get('user/check-duplicate', {
+                params: { email, phone } // Sử dụng params để gửi tham số
+            });
+        },
     forgotPassword:async(email) =>{
         return await httpAxios.post(`user/forgot_password`,email);
     },
