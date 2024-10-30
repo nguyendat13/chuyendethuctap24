@@ -63,7 +63,7 @@ const User ={
         });
     },
     checkDuplicate: (email, phone, callback) => {
-      const sql = `SELECT * FROM db_user WHERE email = ? AND phone = ? LIMIT 1`;
+      const sql = `SELECT * FROM db_user WHERE email = ? OR phone = ? LIMIT 1`;
       db.query(sql, [email, phone], (err, result) => {
         if (err) return callback(err, null);
         callback(null, result.length > 0); // true nếu tìm thấy
