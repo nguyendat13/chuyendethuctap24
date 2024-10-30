@@ -39,15 +39,15 @@ const Checkout = () => {
   
     try {
       const result = await OrderService.store(order);
+      console.log("API Response:", result); // Log the response
+
       if (result.status) {
-        // Navigate to Orders with order details
-        navigate("/home/orders", { state: { order: { ...order, id: result.orderId } } });
+        const newOrder = { ...order, id: result.order.id }; // Adjust this line if necessary
+        updateLocalStorage(newOrder);
+        navigate("/home/orders", { state: { order: newOrder } });
+      } else {
+        setError(result.message || "Failed to save order. Please try again.");
       }
-      const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
-      existingOrders.push(order);
-      localStorage.setItem("orders", JSON.stringify(existingOrders));
-  
-      navigate("/home/thanks");
     } catch (error) {
       console.error("Error while saving order:", error);
       setError("Failed to save order. Please try again.");
@@ -56,7 +56,12 @@ const Checkout = () => {
     }
   };
   
-  
+  const updateLocalStorage = (newOrder) => {
+    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    existingOrders.push(newOrder);
+    localStorage.setItem("orders", JSON.stringify(existingOrders));
+    console.log("Saved Orders:", existingOrders); // Log saved orders
+  };
   
   
 

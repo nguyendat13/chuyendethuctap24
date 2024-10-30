@@ -45,21 +45,19 @@ const Orders = () => {
   //   setOrders(updatedOrders); // Cập nhật state
   //   localStorage.setItem("orders", JSON.stringify(updatedOrders)); // Lưu vào localStorage
   // };
-  const handleDeleteOrder = async (orderId) => {
+  const handleDeleteOrder = async (id) => {
     try {
-      const result = await OrderService.delete(orderId); // Gọi API xóa đơn hàng từ server
-  
+      const result = await OrderService.delete(id); // Gọi API xóa đơn hàng
       if (result.status) {
-        const updatedOrders = orders.filter(order => order.id !== orderId); // Xóa khỏi state
+        const updatedOrders = orders.filter((order) => order.id !== id); // Cập nhật state
         setOrders(updatedOrders);
         localStorage.setItem("orders", JSON.stringify(updatedOrders)); // Cập nhật localStorage
-        alert("Đã xóa đơn hàng thành công!");
       } else {
-        alert("Không thể xóa đơn hàng. Vui lòng thử lại.");
+        alert("Không thể xóa đơn hàng.");
       }
     } catch (error) {
       console.error("Lỗi khi xóa đơn hàng:", error);
-      alert("Có lỗi xảy ra. Vui lòng thử lại.");
+      alert("Có lỗi xảy ra khi xóa đơn hàng.");
     }
   };
   
